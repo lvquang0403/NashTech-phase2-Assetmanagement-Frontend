@@ -8,6 +8,7 @@ export const getUpdatePass = async (formData) => {
 
     url += "/auth/updatePassword";
     let data;
+    
     let respone = await axios
         .post(url, {
             username: formData.username,
