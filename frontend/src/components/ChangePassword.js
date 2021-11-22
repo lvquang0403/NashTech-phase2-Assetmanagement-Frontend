@@ -40,7 +40,11 @@ const ChangePass = () => {
         if (data == null) {
             setIsInvalid(true)
             setMessage("Your password is incorrect")
-        } else if (data.message === "SUCCESS_CHANGE_PASSWORD") {
+        }else if (data.message ===""){
+            setIsInvalid(true)
+            setMessage("Your password is incorrect")
+        }
+         else if (data.message === "SUCCESS_CHANGE_PASSWORD") {
             setIsInvalid(false);
             setShow(false);
         }

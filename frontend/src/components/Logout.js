@@ -7,7 +7,7 @@ const Logout = () => {
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 
-	const [token, setToken] = useState({
+	const token =({
 		accessToken: localStorage.getItem("jwtToken"),
 		refreshToken: localStorage.getItem("refreshToken")
 	});
