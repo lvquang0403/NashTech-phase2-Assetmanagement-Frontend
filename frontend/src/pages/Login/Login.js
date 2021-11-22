@@ -10,6 +10,7 @@ const Login = () => {
 		username: "",
 		password: ""
 	});
+	const [isFilled, setIsFilled] = useState(false);
 	const [isInvalid, setIsInvalid] = useState(false);
 
 	const handleLogin = async () => {
@@ -26,6 +27,18 @@ const Login = () => {
 		}
 	};
 
+	const handleInput = (info) => {
+		if (info.username !== "" && info.password !== "") {
+			setIsFilled(true);
+		} else if (info.username === "" || info.password === "") {
+			setIsFilled(false);
+		}
+	};
+
+	useEffect(() => {
+		handleInput(info);
+	}, [info]);
+
 	return (
 		<div className="flex text-start d-grid">
 			<div className="flex flex-column mx-auto bg-white p-3 col-4 mt-5">
@@ -35,7 +48,9 @@ const Login = () => {
 						Username
 					</Form.Label>
 					<Form.Control
-						onChange={(e) => setInfo({ ...info, username: e.target.value })}
+						onChange={(e) => {
+							setInfo({ ...info, username: e.target.value });
+						}}
 						type="text"
 						value={info.username}
 						id="username"
@@ -46,7 +61,9 @@ const Login = () => {
 						Password
 					</Form.Label>
 					<Form.Control
-						onChange={(e) => setInfo({ ...info, password: e.target.value })}
+						onChange={(e) => {
+							setInfo({ ...info, password: e.target.value });
+						}}
 						type="password"
 						value={info.password}
 						id="password"
@@ -58,8 +75,19 @@ const Login = () => {
 				>
 					Username or password is incorrect. Please try again
 				</Alert>
-				<div className="d-grid mt-3" onClick={() => handleLogin()}>
-					<button className="col-4 offset-4 btn btn-danger">Log in</button>
+				<div className="d-grid mt-3">
+					{isFilled ? (
+						<button
+							className="col-4 offset-4 btn btn-danger"
+							onClick={() => handleLogin()}
+						>
+							Log in
+						</button>
+					) : (
+						<button className="col-4 offset-4 btn btn-danger" disabled>
+							Log in
+						</button>
+					)}
 				</div>
 			</div>
 		</div>
