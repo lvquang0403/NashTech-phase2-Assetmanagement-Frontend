@@ -19,9 +19,8 @@
 	},
 	"scripts": {
 		"dev": "set REACT_APP_ENV=dev && npm start",
-		"prod": "set REACT_APP_ENV=prod && npm start",
 		"start": "react-scripts start",
-		"build": "react-scripts build",
+		"build": "set REACT_APP_ENV=prod && react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"
 	},

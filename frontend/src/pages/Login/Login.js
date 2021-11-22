@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getLogin } from "../../api/getLogin";
 import { useHistory } from "react-router-dom";
+import { Alert, Form } from "react-bootstrap";
 const Login = () => {
 	let history = useHistory();
 	const [info, setInfo] = useState({
@@ -17,9 +18,9 @@ const Login = () => {
 			setIsInvalid(true);
 		} else if (data.message === "SUCCESS_LOGIN_USER") {
 			localStorage.setItem("jwtToken", data.data.token);
-			localStorage.setItem("username",data.data.username);
-			localStorage.setItem("refreshToken",data.data.refreshToken);
-			localStorage.setItem("email",data.data.email);
+			localStorage.setItem("username", data.data.username);
+			localStorage.setItem("refreshToken", data.data.refreshToken);
+			localStorage.setItem("email", data.data.email);
 			setIsInvalid(false);
 			history.push("/home");
 		}
@@ -27,38 +28,36 @@ const Login = () => {
 
 	return (
 		<div className="flex text-start d-grid">
-			<div className="flex flex-column mx-auto bg-white p-3 col-4">
+			<div className="flex flex-column mx-auto bg-white p-3 col-4 mt-5">
 				<p class="h3 text-secondary text-center">Log in</p>
-				<div>
-					<label className="form-label text-secondary" htmlFor="username">
+				<Form.Group className="mt-3">
+					<Form.Label className="form-label text-secondary" htmlFor="username">
 						Username
-					</label>
-					<input
-						class="form-control"
+					</Form.Label>
+					<Form.Control
 						onChange={(e) => setInfo({ ...info, username: e.target.value })}
 						type="text"
 						value={info.username}
 						id="username"
 					/>
-				</div>
-				<div className="flex flex-column mt-2">
-					<label className="form-label text-secondary" htmlFor="password">
+				</Form.Group>
+				<Form.Group className="flex flex-column mt-2">
+					<Form.Label className="form-label text-secondary" htmlFor="password">
 						Password
-					</label>
-					<input
-						class="form-control"
+					</Form.Label>
+					<Form.Control
 						onChange={(e) => setInfo({ ...info, password: e.target.value })}
 						type="password"
 						value={info.password}
 						id="password"
 					/>
-				</div>
-				<div
+				</Form.Group>
+				<Alert
 					class={`alert alert-danger my-2 ${isInvalid ? "" : "d-none"}`}
 					role="alert"
 				>
-					You have entered an invalid username or password
-				</div>
+					Username or password is incorrect. Please try again
+				</Alert>
 				<div className="d-grid mt-3" onClick={() => handleLogin()}>
 					<button className="col-4 offset-4 btn btn-danger">Log in</button>
 				</div>

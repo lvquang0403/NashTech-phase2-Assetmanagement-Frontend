@@ -2,7 +2,7 @@ import { Route } from "react-router";
 import ChangePass from "./components/ChangePassword";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
-import Home from "./Home/Home";
+import Home from "./pages/Home/Home";
 function App() {
 	return (
 		<div>
