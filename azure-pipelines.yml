@@ -7,8 +7,8 @@ trigger:
 - main
 
 variables:
-  uiSource: 'frontend/src'
-  uiBuild: 'frontend/build'
+  uiSource: 'frontend'
+  uiBuild: '$(uiSource)/build'
 
 pool:
   vmImage: ubuntu-latest
@@ -22,7 +22,7 @@ steps:
 - script: |
     pushd $(uiSource)
     npm install
-    npm run build --if-present
+    npm run build
     popd
   displayName: 'npm install and build'
 
