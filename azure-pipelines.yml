@@ -8,7 +8,7 @@ trigger:
 
 variables:
   uiSource: 'frontend/src'
-  uiBuild: 'build'
+  uiBuild: 'frontend/build'
 
 pool:
   vmImage: ubuntu-latest
