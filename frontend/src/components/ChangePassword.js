@@ -23,17 +23,31 @@ const ChangePass = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const [message, setMessage] = useState("");
+
+    const [isFilled, setIsFilled] = useState(false);
+
+    const handleFilled = (userRequest) => {
+        if (!userRequest.password == "" && !userRequest.newPassword == "") {
+            setIsFilled(true);
+        } else if (userRequest.password === "" || userRequest.newPassword === "") {
+            setIsFilled(false);
+        }
+    }
+
     const handleChangePass = async () => {
         let data = await getUpdatePass(userRequest);
         if (data == null) {
             setIsInvalid(true)
+            setMessage("Your password is incorrect")
         } else if (data.message === "SUCCESS_CHANGE_PASSWORD") {
             setIsInvalid(false);
             setShow(false);
-            
         }
 
     }
+
+    useEffect(() => handleFilled(userRequest),[userRequest]);
 
     return (
         <>
@@ -45,9 +59,16 @@ const ChangePass = () => {
                 <Modal.Header closeButton>
                     <Modal.Title><p class="h3 text-danger">Change password</p></Modal.Title>
                 </Modal.Header>
+
                 <Modal.Body>
                     <form className="flex flex-column mx-auto bg-white p-3">
-
+                        <div
+                            class={`alert alert-danger my-2 ${isInvalid ? "" : "d-none"}`}
+                            role="alert"
+                        >
+                            {message}
+                            { }
+                        </div>
                         <div>
                             <label className="form-label text-secondary" htmlFor="password">
                                 Current password
@@ -74,12 +95,7 @@ const ChangePass = () => {
                             />
                         </div>
 
-                        <div
-                            class={`alert alert-danger my-2 ${isInvalid ? "" : "d-none"}`}
-                            role="alert"
-                        >
-                            You have entered an invalid password or new password
-                        </div>
+
                     </form>
 
                 </Modal.Body>
@@ -87,13 +103,18 @@ const ChangePass = () => {
                     <Button variant="secondary" onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button variant="danger" onClick={() => handleChangePass()}>
-                        Change password
-                    </Button>
+                    {isFilled ? (
+                        <Button variant="danger" onClick={() => handleChangePass()}>
+                            Change password
+                        </Button>
+                    ) :
+                        <Button variant="danger" disabled>
+                            Change password
+                        </Button>}
+
                 </Modal.Footer>
             </Modal>
         </>
     );
 }
-
 export default ChangePass
