@@ -1,6 +1,6 @@
 import React from "react";
 import "./sidebar.scss";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
   // const navigate = useNavigate();
