@@ -6,7 +6,7 @@ import {
     BsXCircle
 } from '../icon';
 
-const Table = ({ cols, data, actions, sortFunc, onClickRecordFunc }) => {
+const Table = ({ cols, data, actions, sortFunc, onClickRecordFunc, onClickEditBtnFunc }) => {
 
     const handleSort = (col) => {
         if (sortFunc) {
@@ -18,6 +18,12 @@ const Table = ({ cols, data, actions, sortFunc, onClickRecordFunc }) => {
         if (onClickRecordFunc && id != undefined) {
             onClickRecordFunc(id)
             //console.log(id);
+        }
+    }
+    const handleOnEditBtn = (id) => {
+        if (onClickEditBtnFunc && id != undefined) {
+            onClickEditBtnFunc(id)
+            console.log(id);
         }
     }
 
@@ -37,9 +43,9 @@ const Table = ({ cols, data, actions, sortFunc, onClickRecordFunc }) => {
                 <tbody>
                     {data &&
                         Object.values(data).map((obj, index) =>
-                            <tr key={index} onClick={() => handleOnClickRecord(obj.id)} style={{ cursor: 'pointer' }} >
+                            <tr key={index} style={{ cursor: 'pointer' }} >
                                 {Object.values(obj).map((value, index2) =>
-                                    <td
+                                    <td onClick={() => handleOnClickRecord(obj.id)}
                                         key={index2}
                                         className="border-bottom"
                                         data-bs-toggle="modal">
@@ -49,8 +55,8 @@ const Table = ({ cols, data, actions, sortFunc, onClickRecordFunc }) => {
                                 {
                                     actions &&
                                     <td>
-                                        {actions["edit"] && <FaPen style={{ cursor: 'pointer', marginLeft: 15 }} />}
-                                        {actions.remove && <BsXCircle style={{ cursor: 'pointer', marginLeft: 15, color: 'red' }} />}
+                                        {actions["edit"] && <FaPen style={{ cursor: 'pointer', marginLeft: 15 }} onClick={() => handleOnEditBtn(obj.id)} />}
+                                        {actions.remove && <BsXCircle style={{ cursor: 'pointer', marginLeft: 15, color: 'red' }} onClick={null} />}
                                         {actions.return && <>ret</>}
                                     </td>
                                 }

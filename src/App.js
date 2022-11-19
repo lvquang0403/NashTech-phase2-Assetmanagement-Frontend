@@ -23,7 +23,7 @@ function App() {
             <Route path="/" element={<HomePage></HomePage>} />
 
             <Route path="/manage-user" element={<ManageUserPage></ManageUserPage>} />
-            <Route path="/manage-user/edit" element={<EditUserPage></EditUserPage>} />
+            <Route path="/manage-user/edit/:id" element={<EditUserPage></EditUserPage>} />
             <Route path="/manage-user/create" element={<CreateUserPage></CreateUserPage>} />
             <Route path="/manage-asset" element={<ManageAsset></ManageAsset>} />
             <Route path="/manage-assignment" element={<ManageAssignmentPage></ManageAssignmentPage>} />

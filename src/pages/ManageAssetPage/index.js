@@ -11,6 +11,7 @@ import {
 import Paging from '../../components/Paging';
 import queryString from 'query-string';
 import ModalInfoAsset from './ModalInfoAsset';
+import ReactPaginate from 'react-paginate';
 
 const cols = [
     { name: 'Asset Code', isDropdown: true },
@@ -64,9 +65,11 @@ const ManageAsset = () => {
         }, 500);
     }
 
-    const handlePageChange = (newPage) => {
-        console.log(newPage);
-        setCurrentPage(newPage)
+    const handlePageChange = (e) => {
+        const { selected } = e;
+        console.log(selected);
+        //console.log(newPage);
+        setCurrentPage(selected)
     }
     const handleCatesChange = (val) => {
         if (val === "All") {
@@ -121,6 +124,10 @@ const ManageAsset = () => {
         }
     }
 
+    const handleEditBtn = (id) => {
+        navigate(`/manage-assetr/edit/${id}`)
+    }
+
     const handleOpenModal = (id) => {
         setAssetId(id)
         setOpen(true)
@@ -128,8 +135,6 @@ const ManageAsset = () => {
     const handleCloseModal = (id) => {
         setOpen(false)
     }
-
-
 
     useEffect(() => {
         // var date =""
@@ -333,10 +338,25 @@ const ManageAsset = () => {
                         </div>
                     </div>
                 </div>
-                <Table cols={cols} data={assetList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} />
-                <Paging currentPage={currentPage + 1} totalPage={totalPage} changePageFunc={handlePageChange} />
+                <Table cols={cols} data={assetList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} onClickEditBtnFunc={handleEditBtn} />
 
-                <ModalInfoAsset title="Detail Asset Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={assetId}/>
+                <ReactPaginate
+                    breakLabel='...'
+                    nextLabel='Next'
+                    onPageChange={handlePageChange}
+                    pageRangeDisplayed={2}
+                    pageCount={totalPage}
+                    previousLabel='Previous'
+                    renderOnZeroPageCount={null}
+                    containerClassName='pagination'
+                    disabledClassName='page-disable'
+                    pageLinkClassName='page-num'
+                    previousLinkClassName='page-pre'
+                    nextLinkClassName='page-next'
+                    activeLinkClassName='active'
+                />
+
+                <ModalInfoAsset title="Detail Asset Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={assetId} />
             </div>
         </>
     );
