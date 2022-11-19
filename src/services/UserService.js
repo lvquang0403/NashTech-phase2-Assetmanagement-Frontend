@@ -27,8 +27,6 @@ class UserService {
         console.log("call update API", userId)
         return axios.put(`${API_BASE_URL}/${userId}`, user)
     }
-
-    
 }
 
 export default new UserService();

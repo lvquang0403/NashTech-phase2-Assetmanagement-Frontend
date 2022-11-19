@@ -63,6 +63,7 @@
         .right-board {
             display: flex;
             gap: .5rem;
+
             .search {
                 width: 14.5rem;
                 display: flex;
@@ -172,4 +173,46 @@ a.link-to-create {
 
 .detail-item {
     word-wrap: break-word;
+}
+
+.pagination {
+    list-style: none;
+    display: flex;
+    justify-content: end;
+    align-self: flex-end;
+    margin-bottom: 5rem;
+    margin-right: 5rem;
+    margin-top: 1rem;
+    font-size: 700;
+
+
+
+    .page-pre,.page-next {
+        padding: 5px 9px;
+        cursor: pointer;
+        color: lightgrey;
+        text-decoration: none;
+        border: 1px solid lightgrey;
+    }
+
+    .page-num {
+        padding: 5px 9px;
+        cursor: pointer;
+        color: #cf2338;
+        text-decoration: none;
+        border: 1px solid #c63748d5;
+    }
+
+    .page-num:hover,
+    .page-pre:hover,
+    .page-next:hover {
+        background-color: #c63748d5;
+        color: white;
+    }
+
+
+    .active {
+        background-color: #c63748d5;
+        color: white;
+    }
 }

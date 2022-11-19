@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import "../ManageAssetPage/index.scss";
 import SearchInput from '../../components/SearchInput';
 import Table from '../../components/Table';
-import AssetService from '../../services/AssetService';
-import CategoryService from '../../services/CategoryService';
 import { useNavigate } from "react-router-dom";
 import {
   FaFilter,
@@ -13,6 +11,7 @@ import queryString from 'query-string';
 import UserService from '../../services/UserService';
 import RoleService from '../../services/RoleService';
 import ModalUserInfo from './ModalUserInfo';
+import ReactPaginate from 'react-paginate';
 
 
 const cols = [
@@ -94,7 +93,9 @@ const ManageUserPage = () => {
     }
   }
 
-
+  const handleEditBtn = (id) => {
+    navigate(`/manage-user/edit/${id}`)
+  }
 
   const handleOpenModal = (id) => {
     setUserId(id)
@@ -241,16 +242,31 @@ const ManageUserPage = () => {
             <SearchInput input={input} handleInputChange={handleInputChange} />
             <div className="button">
               <button type="button" className="btn btn-danger" id="btnCreateAsset"
-                onClick={() => { navigate("/create-user") }}>
+                onClick={() => { navigate("/manage-user/create") }}>
                 Create new User
               </button>
             </div>
           </div>
         </div>
-        <Table cols={cols} data={userList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} />
-        <Paging currentPage={currentPage + 1} totalPage={totalPage} changePageFunc={handlePageChange} />
+        <Table cols={cols} data={userList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} onClickEditBtnFunc={handleEditBtn} />
+        <ReactPaginate
+          breakLabel='...'
+          nextLabel='Next'
+          onPageChange={handlePageChange}
+          pageRangeDisplayed={2}
+          pageCount={totalPage}
+          previousLabel='Previous'
+          renderOnZeroPageCount={null}
+          containerClassName='pagination'
+          disabledClassName='page-disable'
+          pageLinkClassName='page-num'
+          previousLinkClassName='page-pre'
+          nextLinkClassName='page-next'
+          activeLinkClassName='active'
+        />
 
-        <ModalUserInfo title="Detail User Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={userId}/>
+
+        <ModalUserInfo title="Detail User Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={userId} />
       </div>
     </>
   );
