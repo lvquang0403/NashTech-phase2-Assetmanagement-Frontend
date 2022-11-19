@@ -1,15 +1,23 @@
 import React from 'react';
+import Moment from 'react-moment';
 import {
     FaCaretDown,
     FaPen,
     BsXCircle
 } from '../icon';
 
-const Table = ({ cols, data, actions, sortFunc }) => {
+const Table = ({ cols, data, actions, sortFunc, onClickRecordFunc }) => {
 
     const handleSort = (col) => {
         if (sortFunc) {
             sortFunc(col)
+        }
+    }
+
+    const handleOnClickRecord = (id) => {
+        if (onClickRecordFunc && id != undefined) {
+            onClickRecordFunc(id)
+            //console.log(id);
         }
     }
 
@@ -27,26 +35,28 @@ const Table = ({ cols, data, actions, sortFunc }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {Object.values(data).map((obj, index) =>
-                        <tr key={index}>
-                            {Object.values(obj).map((value, index2) =>
-                                <td
-                                    key={index2}
-                                    className="border-bottom"
-                                    data-bs-toggle="modal">
-                                    {value}
-                                </td>
-                            )}
-                            {
-                                actions &&
-                                <td>
-                                    {actions["edit"] && <FaPen style={{ cursor: 'pointer', marginLeft: 15 }} />}
-                                    {actions.remove && <BsXCircle style={{ cursor: 'pointer', marginLeft: 15, color: 'red' }} />}
-                                    {actions.return && <>ret</>}
-                                </td>
-                            }
-                        </tr>
-                    )}
+                    {data &&
+                        Object.values(data).map((obj, index) =>
+                            <tr key={index} onClick={() => handleOnClickRecord(obj.id)} style={{ cursor: 'pointer' }} >
+                                {Object.values(obj).map((value, index2) =>
+                                    <td
+                                        key={index2}
+                                        className="border-bottom"
+                                        data-bs-toggle="modal">
+                                        {Date.parse(value) ? <Moment date={value} format="DD/MM/YYYY" /> : value}
+                                    </td>
+                                )}
+                                {
+                                    actions &&
+                                    <td>
+                                        {actions["edit"] && <FaPen style={{ cursor: 'pointer', marginLeft: 15 }} />}
+                                        {actions.remove && <BsXCircle style={{ cursor: 'pointer', marginLeft: 15, color: 'red' }} />}
+                                        {actions.return && <>ret</>}
+                                    </td>
+                                }
+                            </tr>
+                        )
+                    }
                 </tbody>
             </table>
         </div>

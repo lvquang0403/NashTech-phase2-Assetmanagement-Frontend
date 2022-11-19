@@ -1,37 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import {
-    FaFilter,
-} from '../../components/icon';
+import React, { useState, useEffect, useRef } from 'react';
 import "./index.scss";
 import SearchInput from '../../components/SearchInput';
 import Table from '../../components/Table';
 import AssetService from '../../services/AssetService';
 import CategoryService from '../../services/CategoryService';
-import StateService from '../../services/StateService';
 import { useNavigate } from "react-router-dom";
-
-const tempData = [
-    { id: "SD001", name: "Dell xps 9720", category: "laptop", state: "Available" },
-    { id: "SD002", name: "ASUS ROG Zephyrus Duo", category: "laptop", state: "Not Available" },
-    { id: "SD003", name: " ThinkBook 15 G4", category: "laptop", state: "Available" },
-    { id: "SD004", name: "Iphone 14 ProMax", category: "smartphone", state: "Available" },
-    { id: "SD001", name: "Dell xps 9720", category: "laptop", state: "Available" },
-    { id: "SD002", name: "ASUS ROG Zephyrus Duo", category: "laptop", state: "Not Available" },
-    { id: "SD003", name: " ThinkBook 15 G4", category: "laptop", state: "Available" },
-    { id: "SD004", name: "Iphone 14 ProMax", category: "smartphone", state: "Available" },
-    { id: "SD001", name: "Dell xps 9720", category: "laptop", state: "Available" },
-    { id: "SD002", name: "ASUS ROG Zephyrus Duo", category: "laptop", state: "Not Available" },
-    { id: "SD003", name: " ThinkBook 15 G4", category: "laptop", state: "Available" },
-    { id: "SD004", name: "Iphone 14 ProMax", category: "smartphone", state: "Available" },
-]
-const tempState = [
-    'Available', 'Not Available', 'Assigned', 'Waiting for recycling', 'Recycled'
-]
-
-const tempCate = [
-    'Laptop', 'Smartphone'
-]
-
+import {
+    FaFilter,
+} from '../../components/icon';
+import Paging from '../../components/Paging';
+import queryString from 'query-string';
+import ModalInfoAsset from './ModalInfoAsset';
 
 const cols = [
     { name: 'Asset Code', isDropdown: true },
@@ -44,66 +23,140 @@ const actions = {
     remove: true,
     return: false
 }
+
 const ManageAsset = () => {
+    const typingTimeOutRef = useRef(null);
     const navigate = useNavigate();
-    const [searchInput, setSearchInput] = useState([])
-    const [cateList, setCateList] = useState(tempCate)
-    const [stateList, setStateList] = useState(tempState)
-    const [assetList, setAssetList] = useState(tempData)
+    const [cateList, setCateList] = useState([])
+    const [stateList, setStateList] = useState([])
+    const [assetList, setAssetList] = useState([])
+
+    const [allState, setAllState] = useState(false)
+    const [allCate, setAllCate] = useState(true)
+    const [input, setInput] = useState('')
+    //filter
+    const [searchFilter, setSearchFilter] = useState('')
+    const [stateFilter, setStateFilter] = useState(['AVAILABLE', 'NOT_AVAILABLE', 'ASSIGNED'])
+    const [cateFitler, setCateFilter] = useState([])
+
+    //header table
     const [currentSortCol, setCurrentCol] = useState('')
 
+    //paging
+    const [totalPage, setTotalPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0)
+
+    //id asset to show detail asset
+    const [assetId, setAssetId] = useState()
+
+    //popup
+    const [isOpen, setOpen] = useState(false)
+
     const handleInputChange = (newValue) => {
-        setSearchInput(newValue)
+        var temp = newValue
+        setInput(temp)
+
+        if (typingTimeOutRef.current) {
+            clearTimeout(typingTimeOutRef.current);
+        }
+        typingTimeOutRef.current = setTimeout(() => {
+            setSearchFilter(temp)
+        }, 500);
     }
 
-    const sortByCol = (col) => {
-        console.log("sort " + col);
-        if (col === currentSortCol) {
-            // if click same column
-            setCurrentCol(""); // reset currentCol
-          } else {
-            // if click new column
-            setCurrentCol(col); // set currentCol
-          }
-        const _data = [...assetList];
+    const handlePageChange = (newPage) => {
+        console.log(newPage);
+        setCurrentPage(newPage)
+    }
+    const handleCatesChange = (val) => {
+        if (val === "All") {
+            var temp = allCate ? false : true
+            if (temp) {
+                setAllCate(temp)
+                setCateFilter([...cateList])
+            } else {
+                setAllCate(temp)
+                setCateFilter([])
+            }
+        } else {
+            let isExisted = cateFitler.findIndex((item) => item === val);
+            if (isExisted > -1) {
+                let tempList = [...cateFitler];
+                tempList.splice(isExisted, 1);
+                setCateFilter(tempList);
 
-        switch (col) {
-            case "Asset Code":
-                col === currentSortCol
-                    ? setAssetList(_data.sort((a, b) => a.id.localeCompare(b.id)))
-                    : setAssetList(_data.sort((a, b) => b.id.localeCompare(a.id)));
-                break;
-            case "Asset Name":
-                col === currentSortCol
-                    ? setAssetList(_data.sort((a, b) => a.name.localeCompare(b.name)))
-                    : setAssetList(_data.sort((a, b) => b.name.localeCompare(a.name)));
-                break;
-            case "Category":
-                col === currentSortCol
-                    ? setAssetList(_data.sort((a, b) => a.category.localeCompare(b.category)))
-                    : setAssetList(_data.sort((a, b) => b.category.localeCompare(a.category)));
-                break;
-
-            case "State":
-                col === currentSortCol
-                    ? setAssetList(_data.sort((a, b) => a.state.localeCompare(b.state)))
-                    : setAssetList(_data.sort((a, b) => b.state.localeCompare(a.state)));
-                break;
-            default:
-                break;
+            }
+            else {
+                let tempList = [...cateFitler];
+                tempList.push(val);
+                setCateFilter(tempList);
+            }
         }
-    };
+    }
+
+    const handleStatesChange = (val) => {
+        if (val === "All") {
+            var temp = allState ? false : true
+            if (temp) {
+                setAllState(temp)
+                setStateFilter(['AVAILABLE', 'NOT_AVAILABLE', 'ASSIGNED', 'RECYCLED', 'RECYCLING'])
+            } else {
+                setAllState(temp)
+                setStateFilter([])
+            }
+
+        } else {
+            let isExisted = stateFilter.findIndex((item) => item === val);
+            if (isExisted > -1) {
+                let tempList = [...stateFilter];
+                tempList.splice(isExisted, 1);
+                setStateFilter(tempList);
+
+            }
+            else {
+                let tempList = [...stateFilter];
+                tempList.push(val);
+                setStateFilter(tempList);
+            }
+        }
+    }
+
+    const handleOpenModal = (id) => {
+        setAssetId(id)
+        setOpen(true)
+    }
+    const handleCloseModal = (id) => {
+        setOpen(false)
+    }
+
+
 
     useEffect(() => {
-        console.log(assetList);
-        // fetchAssets();
-        // fetchCategories();
-        // fetchStates();
+        // var date =""
+        // console.log(Object.getPrototypeOf(date));
+        fetchAssets();
+    }, [currentPage, stateFilter, cateFitler, searchFilter])
+    useEffect(() => {
+        fetchAssets();
+        fetchCategories();
+        fetchStates();
     }, [])
 
-    const fetchAssets = async (productId) => {
-        await AssetService.getAllAssets(productId).then((res) => {
-            setAssetList(res.data)
+    const fetchAssets = async () => {
+        const filter = {
+            page: currentPage,
+            keyword: searchFilter,
+            states: stateFilter.length === 0 ? undefined : stateFilter,
+            categories: cateFitler.length === 0 ? undefined : cateFitler,
+            locationId: 1,
+        }
+        let predicates = queryString.stringify(filter);
+        // console.log(predicates);
+        await AssetService.getAllAssets(predicates).then((res) => {
+            setAssetList(res.data.listResponse)
+            if (res.data.listResponse != null) {
+                setTotalPage(res.data.totalPage)
+            }
         }, (err) => {
             console.log(err.toString());
         }
@@ -115,12 +168,11 @@ const ManageAsset = () => {
             setCateList(res.data)
         }, (err) => {
             console.log(err.toString());
-        }
-        )
+        })
     }
 
     const fetchStates = async () => {
-        await StateService.getAllStates().then((res) => {
+        await AssetService.getAllStates().then((res) => {
             setStateList(res.data)
         },
             (err) => {
@@ -129,16 +181,52 @@ const ManageAsset = () => {
         )
     }
 
+    const sortByCol = (col) => {
+        if (col === currentSortCol) {
+            // if click same column
+            setCurrentCol(""); // reset currentCol
+        } else {
+            // if click new column
+            setCurrentCol(col); // set currentCol
+        }
+        const data = [...assetList];
+
+        switch (col) {
+            case "Asset Code":
+                col === currentSortCol
+                    ? setAssetList(data.sort((a, b) => a.id.localeCompare(b.id)))
+                    : setAssetList(data.sort((a, b) => b.id.localeCompare(a.id)));
+                break;
+            case "Asset Name":
+                col === currentSortCol
+                    ? setAssetList(data.sort((a, b) => a.name.localeCompare(b.name)))
+                    : setAssetList(data.sort((a, b) => b.name.localeCompare(a.name)));
+                break;
+            case "Category":
+                col === currentSortCol
+                    ? setAssetList(data.sort((a, b) => a.category.localeCompare(b.category)))
+                    : setAssetList(data.sort((a, b) => b.category.localeCompare(a.category)));
+                break;
+
+            case "State":
+                col === currentSortCol
+                    ? setAssetList(data.sort((a, b) => a.state.localeCompare(b.state)))
+                    : setAssetList(data.sort((a, b) => b.state.localeCompare(a.state)));
+                break;
+            default:
+                break;
+        }
+    };
+
     return (
         <>
-            <div class="board-container">
-                <div class="title">
+            <div className="board-container">
+                <div className="title">
                     <h3>Asset List</h3>
                 </div>
                 <div class="table-board">
-                    <div class="left-board">
-                        <div class="filter">
-
+                    <div className="left-board">
+                        <div className="filter">
                             <div className="dropdown">
                                 <button
                                     className="btn btn-outline-secondary dropdown-toggle"
@@ -161,42 +249,41 @@ const ManageAsset = () => {
                                             <input
                                                 className="form-check-input"
                                                 type="checkbox"
-
-                                            />
+                                                checked={allState === true}
+                                                onChange={() => handleStatesChange("All")} />
                                             <label className="form-check-label" >
                                                 All
                                             </label>
                                         </div>
                                     </li>
-                                    {
-                                        stateList.map((item, index) =>
-                                            <li key={index}>
-                                                <div>
-                                                    <input
-                                                        className="form-check-input"
-                                                        type="checkbox"
-                                                    // checked={filterByCategory === "ALL"}
-                                                    // onClick={() => handleFilterByCategory("ALL")}
-                                                    />
-                                                    <label className="form-check-label" >
-                                                        {item}
-                                                    </label>
-                                                </div>
-                                            </li>
-                                        )
-                                    }
+                                    {stateList.map((i, index) => (
+                                        <li key={index}>
+                                            <div>
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    value={i}
+                                                    checked={stateFilter.findIndex((item) => item === i) > -1}
+                                                    onChange={() => handleStatesChange(i)}
+                                                />
+                                                <label className="form-check-label" htmlFor={i}>
+                                                    {i}
+                                                </label>
+                                            </div>
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
-                            <div className="dropdown" >
+                            <div className="dropdown">
                                 <button
                                     className="btn btn-outline-secondary dropdown-toggle"
                                     type="button"
                                     id="dropMenuFilterType"
                                     data-bs-toggle="dropdown"
-                                    aria-expanded="false"
+                                    aria-expanded="true"
                                 >
                                     Category
-                                    <div >
+                                    <div>
                                         <FaFilter />
                                     </div>
                                 </button>
@@ -209,58 +296,47 @@ const ManageAsset = () => {
                                             <input
                                                 className="form-check-input"
                                                 type="checkbox"
-                                                value="All"
-                                                id="typeAll"
-                                            // checked={filterByCategory === "ALL"}
-                                            // onClick={() => handleFilterByCategory("ALL")}
-                                            />
-                                            <label className="form-check-label" htmlFor="typeAll">
+                                                checked={allCate === true}
+                                                onChange={() => handleCatesChange("All")} />
+                                            <label className="form-check-label" >
                                                 All
                                             </label>
                                         </div>
                                     </li>
-                                    {
-                                        cateList.map((item, index) =>
-                                            <li key={index}>
-                                                <div>
-                                                    <input
-                                                        className="form-check-input"
-                                                        type="checkbox"
-                                                    // checked={filterByCategory === "ALL"}
-                                                    // onClick={() => handleFilterByCategory("ALL")}
-                                                    />
-                                                    <label className="form-check-label" >
-                                                        {item}
-                                                    </label>
-                                                </div>
-                                            </li>
-                                        )
-                                    }
+                                    {cateList.map((i, index) => (
+                                        <li key={index}>
+                                            <div>
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    value={i}
+                                                    checked={cateFitler.findIndex((item) => item === i) > -1}
+                                                    onChange={() => handleCatesChange(i)}
+                                                />
+                                                <label className="form-check-label" htmlFor={i}>
+                                                    {i}
+                                                </label>
+                                            </div>
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="right-board">
-                        <SearchInput input={searchInput} handleInputChange={handleInputChange} />
+                    <div className="right-board">
+                        <SearchInput input={input} handleInputChange={handleInputChange} />
                         <div className="button">
-                            <button
-                                type="button"
-                                className="btn btn-danger"
-                                id="btnCreateAsset"
-                                onClick={() => {
-                                    navigate("/create-asset");
-                                }}
-                            >
+                            <button type="button" className="btn btn-danger" id="btnCreateAsset"
+                                onClick={() => { navigate("/create-asset") }}>
                                 Create new asset
                             </button>
                         </div>
                     </div>
-
                 </div>
-                <Table cols={cols} data={assetList} actions={actions} sortFunc={sortByCol} />
-                <div class="paging">
+                <Table cols={cols} data={assetList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} />
+                <Paging currentPage={currentPage + 1} totalPage={totalPage} changePageFunc={handlePageChange} />
 
-                </div>
+                <ModalInfoAsset title="Detail Asset Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={assetId}/>
             </div>
         </>
     );
