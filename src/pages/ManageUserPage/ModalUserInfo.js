@@ -37,7 +37,7 @@ const ModalUserInfo = ({ title, objId, showModal, closePopupFunc }) => {
                 </div>
                 <div className='row' style={{ marginLeft: 20, marginTop: 10 }}>
                     <p className='col-4'>Full Name</p>
-                    <p className='col-7'>{data.fullName}</p>
+                    <p className='col-7'>{data.firstName} {data.lastName}</p>
                 </div>
                 <div className='row' style={{ marginLeft: 20, marginTop: 10 }}>
                     <p className='col-4'>Username</p>
@@ -53,7 +53,7 @@ const ModalUserInfo = ({ title, objId, showModal, closePopupFunc }) => {
                 </div>
                 <div className='row' style={{ marginLeft: 20, marginTop: 10 }}>
                     <p className='col-4'>Joined Date</p>
-                    <p className='col-7'>{data.location}</p>
+                    <p className='col-7'>{data.joinedDate}</p>
                 </div>
                 <div className='row' style={{ marginLeft: 20, marginTop: 10 }}>
                     <p className='col-4'>Type</p>

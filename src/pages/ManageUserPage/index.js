@@ -132,7 +132,7 @@ const ManageUserPage = () => {
   }
 
   const fetchRoles = async () => {
-    await RoleService.getAllRoles().then((res) => {
+    await RoleService.getRoles().then((res) => {
       setRoleList(res.data)
     }, (err) => {
       console.log(err.toString());
@@ -182,7 +182,7 @@ const ManageUserPage = () => {
     <>
       <div className="board-container">
         <div className="title">
-          <h3>Asset List</h3>
+          <h3>User List</h3>
         </div>
         <div class="table-board">
           <div className="left-board">
