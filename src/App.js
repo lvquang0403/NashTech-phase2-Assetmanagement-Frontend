@@ -12,6 +12,8 @@ import {
   HomePage,
   ManageAsset
 } from "./pages";
+import EditUserPage from './pages/EditUserPage';
+import CreateUserPage from './pages/CreateUserPage';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route element={<Main></Main>}>
             <Route path="/" element={<HomePage></HomePage>} />
             <Route path="/manage-user" element={<ManageUser></ManageUser>} />
+            <Route path="/manage-user/edit" element={<EditUserPage></EditUserPage>} />
+            <Route path="/manage-user/create" element={<CreateUserPage></CreateUserPage>} />
             <Route path="/manage-asset" element={<ManageAsset></ManageAsset>} />
             <Route path="/manage-assignment" element={<ManageAssignmentPage></ManageAssignmentPage>} />
             <Route path="/manage-request" element={<RequestPage></RequestPage>} />
