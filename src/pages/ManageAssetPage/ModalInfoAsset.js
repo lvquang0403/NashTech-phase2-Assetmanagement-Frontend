@@ -41,7 +41,7 @@ const ModalInfoAsset = ({ title, objId, showModal, closePopupFunc }) => {
 
     return (
         <Modal show={showModal} onHide={handleClosePopUp} size="lg" backdrop='static' keyboard={false} style={{ width: '100%' }}>
-            <Modal.Header closeButton>
+            <Modal.Header closeButton style={{color: '#cf2338', backgroundColor: 'lightgrey'}}>
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>

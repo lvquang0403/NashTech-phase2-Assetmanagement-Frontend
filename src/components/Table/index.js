@@ -43,8 +43,7 @@ const Table = ({ cols, data, actions, sortFunc, onClickRecordFunc }) => {
                                         key={index2}
                                         className="border-bottom"
                                         data-bs-toggle="modal">
-                                        {/* {console.log(Object.getPrototypeOf(value))} */}
-                                        {value}
+                                        {Date.parse(value) ? <Moment date={value} format="DD/MM/YYYY" /> : value}
                                     </td>
                                 )}
                                 {
