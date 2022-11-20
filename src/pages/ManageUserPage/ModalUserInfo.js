@@ -57,11 +57,11 @@ const ModalUserInfo = ({ title, objId, showModal, closePopupFunc }) => {
                 </div>
                 <div className='row' style={{ marginLeft: 20, marginTop: 10 }}>
                     <p className='col-4'>Type</p>
-                    <p className='col-7'>{data.role}</p>
+                    <p className='col-7'>{data?.role?.name}</p>
                 </div>
                 <div className='row' style={{ marginLeft: 20, marginTop: 10 }}>
                     <p className='col-4'>Location</p>
-                    <p className='col-7'>{data.location}</p>
+                    <p className='col-7'>{data?.location?.cityName}</p>
                 </div>
             </Modal.Body >
         </Modal >

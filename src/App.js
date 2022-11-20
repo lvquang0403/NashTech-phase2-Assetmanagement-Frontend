@@ -20,7 +20,7 @@ function App() {
       <Suspense fallback={<></>}>
         <Routes>
           <Route element={<Main></Main>}>
-            <Route path="/" element={<HomePage></HomePage>} />
+            <Route exact path="/" element={<HomePage></HomePage>} />
 
             <Route path="/manage-user" element={<ManageUserPage></ManageUserPage>} />
             <Route path="/manage-user/edit/:id" element={<EditUserPage></EditUserPage>} />
@@ -29,6 +29,7 @@ function App() {
             <Route path="/manage-assignment" element={<ManageAssignmentPage></ManageAssignmentPage>} />
             <Route path="/manage-request" element={<RequestPage></RequestPage>} />
             <Route path="/report" element={<ReportPage></ReportPage>} />
+  
           </Route>
         </Routes>
       </Suspense>

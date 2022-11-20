@@ -8,6 +8,10 @@ class RoleService {
     getRoles() {
         return axios.get(`${API_BASE_URL}`)
     }
+
+    getRoleNames() {
+        return axios.get(`${API_BASE_URL}/name`)
+    }
 }
 
 export default new RoleService();

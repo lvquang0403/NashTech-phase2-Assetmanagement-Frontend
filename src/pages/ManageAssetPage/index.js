@@ -125,7 +125,7 @@ const ManageAsset = () => {
     }
 
     const handleEditBtn = (id) => {
-        navigate(`/manage-assetr/edit/${id}`)
+        navigate(`/manage-asset/edit/${id}`)
     }
 
     const handleOpenModal = (id) => {

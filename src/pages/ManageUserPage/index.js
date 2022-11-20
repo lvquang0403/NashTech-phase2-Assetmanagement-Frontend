@@ -134,7 +134,7 @@ const ManageUserPage = () => {
   }
 
   const fetchRoles = async () => {
-    await RoleService.getRoles().then((res) => {
+    await RoleService.getRoleNames().then((res) => {
       setRoleList(res.data)
     }, (err) => {
       console.log(err.toString());
