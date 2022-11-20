@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_BASE_URL = `${process.env.REACT_APP_API_URL}/assets`;
+const API_BASE_URL = `https://rookie06assetmanagement.azurewebsites.net/assets`;
 
 
 class AssetService {
