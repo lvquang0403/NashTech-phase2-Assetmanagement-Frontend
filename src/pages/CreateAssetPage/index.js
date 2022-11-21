@@ -145,7 +145,8 @@ const CreateAsset = () => {
                         onChange={changInputName}
                         id='nameAsset'
                         type="text" 
-                        placeholder="Enter Name Asset"  />
+                        placeholder="Enter Name Asset"
+                        maxLength={50} />
                     {
                         (textError.name !== 'success')?
                         <Form.Text className="_text-error">
@@ -174,6 +175,7 @@ const CreateAsset = () => {
                         as="textarea"
                         onChange={changInputSpecification}
                         placeholder="Specification"
+                        maxLength={500}
                         style={{ height: '100px' }}
                     />
                     {

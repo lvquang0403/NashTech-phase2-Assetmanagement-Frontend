@@ -157,12 +157,14 @@ const SelectInsertAsset = () => {
                                 id='categoryName'  
                                 className='_textSelectCategory' 
                                 placeholder="Category name"
+                                maxLength={50}
                             />
                         </Col>
                         <Col xs={2}>
                             <input type={"text"} 
                                 onChange={changInput}
                                 id='categoryPrefix' 
+                                maxLength={2}
                                 className='_textSelectPrefix' 
                                 placeholder="Prefix"
                             />
