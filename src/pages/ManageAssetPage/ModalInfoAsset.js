@@ -60,7 +60,7 @@ const ModalInfoAsset = ({ title, objId, showModal, closePopupFunc }) => {
                     <p className='col-7'>{data.categoryName}</p>
                 </div>
                 <div className='row' style={{ marginLeft: 20, marginTop: 10 }}>
-                    <p className='col-3'>CreatedWhen</p>
+                    <p className='col-3'>Installed Date</p>
                     <p className='col-7'><Moment date={data.createdWhen} format="DD/MM/YYYY" /> </p>
                 </div>
                 <div className='row' style={{ marginLeft: 20, marginTop: 10 }}>

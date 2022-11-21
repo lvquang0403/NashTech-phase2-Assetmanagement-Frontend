@@ -358,7 +358,7 @@ const ManageAsset = () => {
                     activeLinkClassName='active'
                 />
 
-                <ModalInfoAsset title="Detail Asset Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={assetId} />
+                <ModalInfoAsset title="Detailed Asset Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={assetId} />
             </div>
         </>
     );

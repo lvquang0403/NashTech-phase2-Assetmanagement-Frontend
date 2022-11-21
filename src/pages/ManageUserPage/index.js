@@ -274,7 +274,7 @@ const ManageUserPage = () => {
         />
 
 
-        <ModalUserInfo title="Detail User Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={userId} />
+        <ModalUserInfo title="Detailed User Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={userId} />
       </div>
     </>
   );
