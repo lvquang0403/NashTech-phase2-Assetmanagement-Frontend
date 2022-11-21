@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal } from 'react-bootstrap';
 import AssetService from "../../services/AssetService";
 import Moment from 'react-moment';
-import Table from '../../components/Table';
-
+import { Loading } from "notiflix/build/notiflix-loading-aio";
 const cols = [
     { name: 'Date', isDropdown: false },
     { name: 'Assigned to', isDropdown: false },
@@ -24,11 +23,14 @@ const ModalInfoAsset = ({ title, objId, showModal, closePopupFunc }) => {
     }, [objId])
 
     const fetchAssetInfo = async () => {
+        Loading.standard("Loading...");
         await AssetService.getAssetById(objId).then((res) => {
             setData(res.data)
             console.log(res.data);
+            Loading.remove();
         }, (err) => {
             console.log(err.toString());
+            Loading.remove();
         })
     }
 
@@ -41,7 +43,7 @@ const ModalInfoAsset = ({ title, objId, showModal, closePopupFunc }) => {
 
     return (
         <Modal show={showModal} onHide={handleClosePopUp} size="lg" backdrop='static' keyboard={false} style={{ width: '100%' }}>
-            <Modal.Header closeButton style={{color: '#cf2338', backgroundColor: 'lightgrey'}}>
+            <Modal.Header closeButton style={{ color: '#cf2338', backgroundColor: 'lightgrey' }}>
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>

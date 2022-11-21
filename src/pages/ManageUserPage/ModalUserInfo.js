@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal } from 'react-bootstrap';
 import Moment from 'react-moment';
 import UserService from "../../services/UserService";
-
+import { Loading } from "notiflix/build/notiflix-loading-aio";
 
 const ModalUserInfo = ({ title, objId, showModal, closePopupFunc }) => {
     const [data, setData] = useState([])
@@ -18,10 +18,13 @@ const ModalUserInfo = ({ title, objId, showModal, closePopupFunc }) => {
     }, [objId])
 
     const fetchUserInfo = async () => {
+        Loading.standard("Loading...");
         await UserService.getUserById(objId).then((res) => {
             setData(res.data)
+            Loading.remove();
         }, (err) => {
             console.log(err.toString());
+            Loading.remove();
         })
     }
 
