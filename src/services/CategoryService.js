@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_BASE_URL = `https://rookie06assetmanagement.azurewebsites.net/categories`;
+const API_BASE_URL = `https://rookie06assetmanagement.azurewebsites.net/api/categories`;
 
 
 class CategoryService {
