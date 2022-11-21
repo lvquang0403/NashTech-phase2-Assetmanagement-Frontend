@@ -32,7 +32,7 @@ const ManageUserPage = () => {
   const navigate = useNavigate();
   const [roleList, setRoleList] = useState([])
   const [userList, setUserList] = useState([])
-  
+
 
   const [allRole, setAllRole] = useState(true)
   const [input, setInput] = useState('')
@@ -64,9 +64,9 @@ const ManageUserPage = () => {
     }, 500);
   }
 
-  const handlePageChange = (newPage) => {
-    console.log(newPage);
-    setCurrentPage(newPage)
+  const handlePageChange = (e) => {
+    const { selected } = e;
+    setCurrentPage(selected)
   }
   const handleRoleChange = (val) => {
     if (val === "All") {
@@ -166,8 +166,8 @@ const ManageUserPage = () => {
         break;
       case "Joined Date":
         col === currentSortCol
-          ? setUserList(data.sort((a, b) => a.createdWhen.localeCompare(b.createdWhen)))
-          : setUserList(data.sort((a, b) => b.createdWhen.localeCompare(a.categocreatedWhenry)));
+          ? setUserList(data.sort((a, b) => a.joinedDate.localeCompare(b.joinedDate)))
+          : setUserList(data.sort((a, b) => b.joinedDate.localeCompare(a.joinedDate)));
         break;
 
       case "Type":

@@ -66,9 +66,7 @@ const ManageAsset = () => {
     }
 
     const handlePageChange = (e) => {
-        const { selected } = e;
-        console.log(selected);
-        //console.log(newPage);
+        const { selected } = e;  
         setCurrentPage(selected)
     }
     const handleCatesChange = (val) => {
