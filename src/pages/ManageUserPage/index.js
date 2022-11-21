@@ -39,6 +39,7 @@ const ManageUserPage = () => {
   //filter
   const [searchFilter, setSearchFilter] = useState('')
   const [roleFilter, setRoleFilter] = useState([])
+  const [orderBy, setOrderBy] = useState()
 
   //header table
   const [currentSortCol, setCurrentCol] = useState('')
@@ -60,6 +61,7 @@ const ManageUserPage = () => {
       clearTimeout(typingTimeOutRef.current);
     }
     typingTimeOutRef.current = setTimeout(() => {
+      setOrderBy(null)
       setSearchFilter(temp)
     }, 500);
   }
@@ -89,6 +91,7 @@ const ManageUserPage = () => {
       else {
         let tempList = [...roleFilter];
         tempList.push(val);
+        setOrderBy(null)
         setRoleFilter(tempList);
       }
     }
@@ -108,7 +111,7 @@ const ManageUserPage = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, [currentPage, roleFilter, searchFilter])
+  }, [currentPage, roleFilter, searchFilter, orderBy])
   useEffect(() => {
     fetchUsers();
     fetchRoles();
@@ -120,6 +123,7 @@ const ManageUserPage = () => {
       keyword: searchFilter,
       types: roleFilter.length === 0 ? undefined : roleFilter,
       locationId: 1,
+      orderBy: orderBy
     }
     let predicates = queryString.stringify(filter);
     console.log(predicates);
@@ -151,29 +155,29 @@ const ManageUserPage = () => {
       // if click new column
       setCurrentCol(col); // set currentCol
     }
-    const data = [...userList];
+    //    const data = [...userList];
 
     switch (col) {
       case "Staff Code":
         col === currentSortCol
-          ? setUserList(data.sort((a, b) => a.id.localeCompare(b.id)))
-          : setUserList(data.sort((a, b) => b.id.localeCompare(a.id)));
+          ? setOrderBy('id_DESC')
+          : setOrderBy('id_ASC')
         break;
       case "Full Name":
         col === currentSortCol
-          ? setUserList(data.sort((a, b) => a.fullName.localeCompare(b.fullName)))
-          : setUserList(data.sort((a, b) => b.fullName.localeCompare(a.fullName)));
+          ? setOrderBy('firstName_DESC')
+          : setOrderBy('firstName_ASC')
         break;
       case "Joined Date":
         col === currentSortCol
-          ? setUserList(data.sort((a, b) => a.joinedDate.localeCompare(b.joinedDate)))
-          : setUserList(data.sort((a, b) => b.joinedDate.localeCompare(a.joinedDate)));
+          ? setOrderBy('joinedDate_DESC')
+          : setOrderBy('joinedDate_ASC')
         break;
 
       case "Type":
         col === currentSortCol
-          ? setUserList(data.sort((a, b) => a.role.localeCompare(b.role)))
-          : setUserList(data.sort((a, b) => b.role.localeCompare(a.role)));
+          ? setOrderBy('role_DESC')
+          : setOrderBy('role_ASC')
         break;
       default:
         break;

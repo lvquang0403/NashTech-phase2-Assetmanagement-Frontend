@@ -39,6 +39,7 @@ const ManageAsset = () => {
     const [searchFilter, setSearchFilter] = useState('')
     const [stateFilter, setStateFilter] = useState(['AVAILABLE', 'NOT_AVAILABLE', 'ASSIGNED'])
     const [cateFitler, setCateFilter] = useState([])
+    const [orderBy, setOrderBy] = useState()
 
     //header table
     const [currentSortCol, setCurrentCol] = useState('')
@@ -66,7 +67,7 @@ const ManageAsset = () => {
     }
 
     const handlePageChange = (e) => {
-        const { selected } = e;  
+        const { selected } = e;
         setCurrentPage(selected)
     }
     const handleCatesChange = (val) => {
@@ -138,7 +139,7 @@ const ManageAsset = () => {
         // var date =""
         // console.log(Object.getPrototypeOf(date));
         fetchAssets();
-    }, [currentPage, stateFilter, cateFitler, searchFilter])
+    }, [currentPage, stateFilter, cateFitler, searchFilter, orderBy])
     useEffect(() => {
         fetchAssets();
         fetchCategories();
@@ -152,6 +153,7 @@ const ManageAsset = () => {
             states: stateFilter.length === 0 ? undefined : stateFilter,
             categories: cateFitler.length === 0 ? undefined : cateFitler,
             locationId: 1,
+            orderBy: orderBy
         }
         let predicates = queryString.stringify(filter);
         // console.log(predicates);
@@ -192,29 +194,28 @@ const ManageAsset = () => {
             // if click new column
             setCurrentCol(col); // set currentCol
         }
-        const data = [...assetList];
 
         switch (col) {
             case "Asset Code":
                 col === currentSortCol
-                    ? setAssetList(data.sort((a, b) => a.id.localeCompare(b.id)))
-                    : setAssetList(data.sort((a, b) => b.id.localeCompare(a.id)));
+                    ? setOrderBy('id_DESC')
+                    : setOrderBy('id_ASC')
                 break;
             case "Asset Name":
                 col === currentSortCol
-                    ? setAssetList(data.sort((a, b) => a.name.localeCompare(b.name)))
-                    : setAssetList(data.sort((a, b) => b.name.localeCompare(a.name)));
+                    ? setOrderBy('name_DESC')
+                    : setOrderBy('name_ASC')
                 break;
             case "Category":
                 col === currentSortCol
-                    ? setAssetList(data.sort((a, b) => a.category.localeCompare(b.category)))
-                    : setAssetList(data.sort((a, b) => b.category.localeCompare(a.category)));
+                    ? setOrderBy('category_DESC')
+                    : setOrderBy('category_ASC')
                 break;
 
             case "State":
                 col === currentSortCol
-                    ? setAssetList(data.sort((a, b) => a.state.localeCompare(b.state)))
-                    : setAssetList(data.sort((a, b) => b.state.localeCompare(a.state)));
+                    ? setOrderBy('state_DESC')
+                    : setOrderBy('state_ASC')
                 break;
             default:
                 break;
