@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom'
@@ -9,9 +9,10 @@ const CreateUserForm = ({ user }) => {
     const [isDisable, setDisable] = useState(true)
     const [roles, setRoles] = useState([])
     const navigate = useNavigate();
+    const submitBtn = useRef();
     const locationId = 1;
     const onSubmit = (data) => {
-
+        submitBtn.current.disabled = true
         if (user) {
             UserService.updateById(data, user.id)
                 .then(res => {
@@ -78,8 +79,6 @@ const CreateUserForm = ({ user }) => {
         }
         return true
     }
-    console.log(watchAllFields)
-
     const joinedDateConditionNotSatAndSun = (date) => {
         const joinedDate = new Date(date);
         return joinedDate.getDay() !== 0 && joinedDate.getDay() !== 6;
@@ -245,7 +244,7 @@ const CreateUserForm = ({ user }) => {
                     </div>
                     <div className="row g-3 align-items-center mb-2">
                         <div>
-                            <input type="submit" disabled={isDisable} value="Save" className='btn btn-danger' style={{ border: "solid 1px black", marginLeft: "182px" }}></input>
+                            <input type="submit" disabled={isDisable} ref={submitBtn} value="Save" className='btn btn-danger' style={{ border: "solid 1px black", marginLeft: "182px" }}></input>
                             <Link to="/manage-user">
                                 <input type="button" value="Cancel" className='btn btn-light' style={{ border: "solid 1px black", marginLeft: "32px" }}></input>
                             </Link>
