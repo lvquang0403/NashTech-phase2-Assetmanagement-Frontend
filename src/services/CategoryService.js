@@ -8,7 +8,7 @@ class CategoryService {
     }
 
     getAllCategoriesName(){
-        return axios.get(`${API_BASE_URL}`);
+        return axios.get(`${API_BASE_URL}/name`);
     }
 
     insert(prefix, name){
