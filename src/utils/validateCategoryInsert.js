@@ -1,10 +1,10 @@
 const validateCategoryInsert = {
     name(name){
         if(name === null || name === undefined){
-            return "cannot be left blank"
+            return "This is a required field"
         }
         if( name.trim() === ""){
-            return "cannot be left blank"
+            return "This is a required field"
         }
         if (name.length > 50 ) {
             return 'max 50 characters';
@@ -22,10 +22,10 @@ const validateCategoryInsert = {
 
     prefix(prefix){
         if(prefix === null || prefix === undefined){
-            return "cannot be left blank"
+            return "This is a required field"
         }
         if (prefix.trim() === '') {
-            return 'cannot be left blank';
+            return 'This is a required field';
         }
         if (prefix.trim().length  !== 2 ) {
             return 'prefix only 2 characters';

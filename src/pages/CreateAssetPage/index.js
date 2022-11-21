@@ -35,8 +35,8 @@ const CreateAsset = () => {
         }else{
             setButtonSave(false)
         }
-        setNameAsset(name)
         setTextError(error)
+        setNameAsset(name)
     }
     const changInputSpecification = (e)=>{
         let inpSpecification = e.target.value;
@@ -49,8 +49,9 @@ const CreateAsset = () => {
         }else{
             setButtonSave(false)
         }
-        setSpecification(inpSpecification)
+        console.log(error);
         setTextError(error)
+        setSpecification(inpSpecification)
     }
     const changInputInstalledDate = (e)=>{
         let date = e.target.value;
@@ -63,8 +64,9 @@ const CreateAsset = () => {
         }else{
             setButtonSave(false)
         }
-        setInstalledDate(date)
+        console.log(error);
         setTextError(error)
+        setInstalledDate(date)
     }
 
     const handleSubmit = (e)=>{

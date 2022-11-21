@@ -1,10 +1,10 @@
 const validateAssetInsert = {
     name(name){
         if(name === null || name === undefined){
-            return "cannot be left blank"
+            return "This is a required field"
         }
         if( name.trim() === ""){
-            return "cannot be left blank"
+            return "This is a required field"
         }
         if (name.length > 50 ) {
             return 'name is too long, max 50 characters';
@@ -21,8 +21,12 @@ const validateAssetInsert = {
     },
 
     specification(specification){
+        
         if(specification === null || specification === undefined){
-            return "cannot be left blank"
+            return "This is a required field"
+        }
+        if(specification.trim() === '' ){
+            return "This is a required field"
         }
         if (specification.length > 500 ) {
             return 'name is too long, max 500 characters';
@@ -34,14 +38,14 @@ const validateAssetInsert = {
         let now = new Date();
         let newInstalledDate = new Date(installedDate);
         if(installedDate === null || installedDate === undefined){
-            return "cannot be left blank"
+            return "This is a required field"
         }
         if(now.getTime() <  newInstalledDate.getTime()){
             return "Select a date in the past or present"
         }
-        console.log(installedDate);
+       console.log(Number.isNaN(newInstalledDate.getDay()));
         if(Number.isNaN(newInstalledDate.getDay())){
-            return "This month has no 31st day"
+            return "this day does not exist"
         }
         
         return "success";
