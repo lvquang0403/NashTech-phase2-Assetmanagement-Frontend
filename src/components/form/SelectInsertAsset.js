@@ -84,10 +84,10 @@ const SelectInsertAsset = () => {
             })
             .catch((error)=>{
                 console.log(error);
-                if(error.data){
-                alert(error.data.message)
+                if(error.response.data){
+                    alert(error.response.data.message)
                 }else{
-                alert(error.message)
+                    alert(error.message)
                 }
             });
         }
@@ -121,19 +121,23 @@ const SelectInsertAsset = () => {
         <div class="content_dropdown">
             {
                 (categories)? categories.map((item,  index)=>(
-                    <div key={index} className="__content" onClick={hamDropdown} >
-                        <label for={"category"+index}  onClick={hamDropdown}>{item.name}</label>
+                    <div key={index} className="__content" onClick={(e)=>{
+                        document.getElementById('_select_'+item.id).checked = true;
+                        hamDropdown()
+                    }} >
+                        <label for={'_select_'+item.id}  onClick={hamDropdown}>{item.name}</label>
                         {
                             (index===0)?
-                            <input id={"category"+index} 
+                            <input 
                                 defaultChecked
                                 type={"radio"} 
                                 name="category" 
                                 data-name={item.name} 
                                 value={item.id} 
+                                id={'_select_'+item.id}
                                 className="_radioSelect"
                             />:
-                            <input id={"category"+index} 
+                            <input id={'_select_'+item.id} 
                                 type={"radio"} 
                                 name="category" 
                                 data-name={item.name} 

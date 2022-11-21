@@ -35,6 +35,7 @@ const validateAssetInsert = {
     },
 
     installedDate(installedDate){
+        console.log(installedDate);
         let now = new Date();
         let newInstalledDate = new Date(installedDate);
         if(installedDate === null || installedDate === undefined){
@@ -43,6 +44,9 @@ const validateAssetInsert = {
         if(now.getTime() <  newInstalledDate.getTime()){
             return "Select a date in the past or present"
         }
+       console.log(`start`);
+       console.log(newInstalledDate);
+       console.log(newInstalledDate.getDay());
        console.log(Number.isNaN(newInstalledDate.getDay()));
         if(Number.isNaN(newInstalledDate.getDay())){
             return "this day does not exist"

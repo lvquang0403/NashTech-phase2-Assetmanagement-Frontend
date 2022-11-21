@@ -15,7 +15,7 @@ const CreateAsset = () => {
     const [buttonSave, setButtonSave] = useState(false);
     const [nameAsset, setNameAsset] = useState('');
     const [specification, setSpecification] = useState('');
-    const [installedDate, setInstalledDate] = useState('');
+    const [installedDate, setInstalledDate] = useState(defaultDate);
 
     const [textError, setTextError] = useState({
         name:'success',
