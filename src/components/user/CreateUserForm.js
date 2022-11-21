@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom'
+import { Loading } from "notiflix/build/notiflix-loading-aio";
 import UserService from '../../services/UserService';
 import RoleService from '../../services/RoleService';
 const CreateUserForm = ({ user }) => {
@@ -13,9 +14,11 @@ const CreateUserForm = ({ user }) => {
     const locationId = 1;
     const onSubmit = (data) => {
         submitBtn.current.disabled = true
+        Loading.standard("Loading...");
         if (user) {
             UserService.updateById(data, user.id)
                 .then(res => {
+                    Loading.remove();
                     navigate("/manage-user");
                 })
         } else {
@@ -104,7 +107,7 @@ const CreateUserForm = ({ user }) => {
                         <div className="col-auto">
                             <input
                                 disabled={user ? true : false}
-                                maxlength="30"
+                                maxLength="30"
                                 type="text"
                                 {...register("firstName", { required: true, validate: { specialCharCondition } })}
                                 className="form-control ms-3"
@@ -130,7 +133,7 @@ const CreateUserForm = ({ user }) => {
                         <div className="col-auto">
                             <input
                                 disabled={user ? true : false}
-                                maxlength="30"
+                                maxLength="30"
                                 type="text"
                                 {...register("lastName", { required: true, validate: { specialCharCondition } })}
                                 className="form-control ms-3" />
@@ -143,7 +146,7 @@ const CreateUserForm = ({ user }) => {
                             }
                             {
                                 errors.lastName && errors.lastName.type === "specialCharCondition" && (
-                                    <div className="text-danger">Only accept wordr</div>
+                                    <div className="text-danger">Only accept word</div>
                                 )
                             }
                         </div>
@@ -230,7 +233,7 @@ const CreateUserForm = ({ user }) => {
                             <select class="form-select" {...register("roleId", { required: true })} aria-label="Default select example">
                                 <option value=""></option>
                                 {roles.length > 0 && roles.map(role => (
-                                    <option value={role.id}>{role.name}</option>
+                                    <option value={role.id} key={role.id}>{role.name}</option>
                                     // selected={user && user.roleId === role.id && "selected"}
                                 ))}
                             </select>
