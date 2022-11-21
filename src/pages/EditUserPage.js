@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom'
 const EditUserPage = () => {
     let { id } = useParams();
     const[user, setUser] = useState({})
+
     useEffect(()=>{
         Loading.standard("Loading...");
         UserService.getById(id).then(res => {
