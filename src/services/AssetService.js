@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_BASE_URL = `https://rookie06assetmanagement.azurewebsites.net/assets`;
+const API_BASE_URL = `https://rookie06assetmanagement.azurewebsites.net/api/assets`;
 
 
 class AssetService {
