@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {
   FaFilter,
 } from '../../components/icon';
-import Paging from '../../components/Paging';
+import { Loading } from "notiflix/build/notiflix-loading-aio";
 import queryString from 'query-string';
 import UserService from '../../services/UserService';
 import RoleService from '../../services/RoleService';
@@ -118,6 +118,7 @@ const ManageUserPage = () => {
   }, [])
 
   const fetchUsers = async () => {
+    Loading.standard("Loading...");
     const filter = {
       page: currentPage,
       keyword: searchFilter,
@@ -132,8 +133,10 @@ const ManageUserPage = () => {
       if (res.data.listResponse != null) {
         setTotalPage(res.data.totalPage)
       }
+      Loading.remove();
     }, (err) => {
       console.log(err.toString());
+      Loading.remove();
     })
   }
 

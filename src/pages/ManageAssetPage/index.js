@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import {
     FaFilter,
 } from '../../components/icon';
-import Paging from '../../components/Paging';
+import { Loading } from "notiflix/build/notiflix-loading-aio";
 import queryString from 'query-string';
 import ModalInfoAsset from './ModalInfoAsset';
 import ReactPaginate from 'react-paginate';
@@ -147,6 +147,7 @@ const ManageAsset = () => {
     }, [])
 
     const fetchAssets = async () => {
+        Loading.standard("Loading...");
         const filter = {
             page: currentPage,
             keyword: searchFilter,
@@ -162,8 +163,10 @@ const ManageAsset = () => {
             if (res.data.listResponse != null) {
                 setTotalPage(res.data.totalPage)
             }
+            Loading.remove();
         }, (err) => {
             console.log(err.toString());
+            Loading.remove();
         }
         )
     }
