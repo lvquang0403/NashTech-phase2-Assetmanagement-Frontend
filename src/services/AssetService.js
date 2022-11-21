@@ -18,6 +18,19 @@ class AssetService {
         return axios.get(`${API_BASE_URL}/states`);
     }
 
+    
+    insert({name, specification, categoryId, state, locationId, installedDate}){
+        return axios.post(`${API_BASE_URL}`,{
+            name : name,
+            specification: specification,
+            categoryId : categoryId,
+            state : state,
+            locationId : locationId,
+            installedDate : installedDate
+        });
+    }
+
+
 }
 
 export default new AssetService();

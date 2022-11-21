@@ -1,0 +1,36 @@
+@use "../../scss/index" as *;
+
+._createAsset{
+    margin: 6rem 6rem 10px 6rem;
+
+    ._title{
+        position: relative;
+        color: red;
+        font-weight: bold;
+        margin-bottom: 30px;
+        
+    }
+    form{
+        width: 35rem;
+
+        ._label{
+            vertical-align: middle;
+        }
+        
+        ._rowCreateAsset{
+            margin: 37px 0;
+        }
+        ._text-error{
+            position: absolute;
+            margin-top: -1px;
+            padding-left: 1px;
+            color: red;
+        }
+        ._textarea{
+            resize: none;
+        }
+        ._inputError{
+            border-color: red;
+        }
+    }
+}
