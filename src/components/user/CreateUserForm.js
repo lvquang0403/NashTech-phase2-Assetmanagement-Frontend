@@ -181,7 +181,7 @@ const CreateUserForm = ({ user }) => {
                                 style={{ accentColor: "red" }}
                                 {...register("gender")}
                                 value="FEMALE"
-                                checked={user ? "" : "checked"}
+                                // checked={user ? "" : "checked"}
                                 className='ms-3 me-1' />
                             <label >Female</label>
                         </div>
@@ -229,10 +229,10 @@ const CreateUserForm = ({ user }) => {
                         </div>
                         <div className="col-auto" style={{ marginLeft: "58px", width: "238px" }}>
                             <select class="form-select" {...register("roleId", { required: true })} aria-label="Default select example">
-                                <option value="" selected></option>
+                                <option value=""></option>
                                 {roles.length > 0 && roles.map(role => (
-                                    <option value={role.id} selected={user && user.roleId === role.id && "selected"}>{role.name}</option>
-
+                                    <option value={role.id}>{role.name}</option>
+                                    // selected={user && user.roleId === role.id && "selected"}
                                 ))}
                             </select>
                             {
