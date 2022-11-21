@@ -169,7 +169,7 @@ const ManageAsset = () => {
     }
 
     const fetchCategories = async () => {
-        await CategoryService.getAllCategories().then((res) => {
+        await CategoryService.getAllCategoriesName().then((res) => {
             setCateList(res.data)
         }, (err) => {
             console.log(err.toString());
