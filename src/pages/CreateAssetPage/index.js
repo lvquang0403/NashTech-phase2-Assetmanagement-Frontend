@@ -12,7 +12,6 @@ const now = new Date();
 const defaultDate = now.getFullYear() + '-' + (now.getMonth()+1) + '-' +now.getDate();
 const CreateAsset = () => {
     const navigate = useNavigate();
-    
     const [buttonSave, setButtonSave] = useState(false);
     const [nameAsset, setNameAsset] = useState('');
     const [specification, setSpecification] = useState('');
@@ -124,6 +123,12 @@ const CreateAsset = () => {
             });
         }
     }
+    const handleClickCanelButton = (e)=>{
+        e.preventDefault();
+        
+        navigate('/manage-asset');
+        
+    }
 
   return (
     <Container className='_createAsset'>
@@ -226,7 +231,7 @@ const CreateAsset = () => {
                     }
                 </Col>
                 <Col xs={2}>
-                    <Button variant="outline-secondary">Cancel</Button>
+                    <Button variant="outline-secondary" onClick={handleClickCanelButton}>Cancel</Button>
                 </Col>
             </Row>
             
