@@ -114,7 +114,7 @@ const CreateUserForm = ({ user }) => {
                                 disabled={user ? true : false}
                                 maxLength="30"
                                 type="text"
-                                {...register("firstName", { validate: { specialCharCondition, requiredCondition } })}
+                                {...register("firstName", { validate: { requiredCondition ,specialCharCondition } })}
                                 className="form-control ms-3"
                             />
                         </div>
@@ -140,7 +140,7 @@ const CreateUserForm = ({ user }) => {
                                 disabled={user ? true : false}
                                 maxLength="30"
                                 type="text"
-                                {...register("lastName", { validate: { specialCharCondition, requiredCondition } })}
+                                {...register("lastName", { validate: {requiredCondition ,specialCharCondition } })}
                                 className="form-control ms-3" />
                         </div>
                         <div style={{ marginLeft: "124px" }} >
