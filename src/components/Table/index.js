@@ -6,7 +6,7 @@ import {
     BsXCircle
 } from '../icon';
 
-const Table = ({ cols, data, actions, sortFunc, onClickRecordFunc, onClickEditBtnFunc }) => {
+const Table = ({ cols, data, actions, sortFunc, onClickRecordFunc, onClickEditBtnFunc, onClickDelBtn }) => {
 
     const handleSort = (col) => {
         if (sortFunc) {
@@ -23,6 +23,12 @@ const Table = ({ cols, data, actions, sortFunc, onClickRecordFunc, onClickEditBt
     const handleOnEditBtn = (id) => {
         if (onClickEditBtnFunc && id != undefined) {
             onClickEditBtnFunc(id)
+            console.log(id);
+        }
+    }
+    const handleDelBtn = (id) => {
+        if (onClickDelBtn && id != undefined) {
+            onClickDelBtn(id)
             console.log(id);
         }
     }
@@ -56,7 +62,7 @@ const Table = ({ cols, data, actions, sortFunc, onClickRecordFunc, onClickEditBt
                                     actions &&
                                     <td>
                                         {actions["edit"] && <FaPen style={{ cursor: 'pointer', marginLeft: 15 }} onClick={() => handleOnEditBtn(obj.id)} />}
-                                        {actions.remove && <BsXCircle style={{ cursor: 'pointer', marginLeft: 15, color: 'red' }} onClick={null} />}
+                                        {actions.remove && <BsXCircle style={{ cursor: 'pointer', marginLeft: 15, color: 'red' }} onClick={() => handleDelBtn(obj.id)} />}
                                         {actions.return && <>ret</>}
                                     </td>
                                 }

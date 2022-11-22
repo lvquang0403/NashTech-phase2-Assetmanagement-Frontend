@@ -12,6 +12,8 @@ import UserService from '../../services/UserService';
 import RoleService from '../../services/RoleService';
 import ModalUserInfo from './ModalUserInfo';
 import ReactPaginate from 'react-paginate';
+import PopUpConfirm from '../../components/PopUpConfim';
+import PopUpMessage from '../../components/PopUpMessage';
 
 
 const cols = [
@@ -52,6 +54,8 @@ const ManageUserPage = () => {
   const [userId, setUserId] = useState()
 
   const [isOpen, setOpen] = useState(false)
+  const [isOpenDel, setOpenDel] = useState(false)
+  const [isOpenMess, setOpenMess] = useState(false)
 
   const handleInputChange = (newValue) => {
     var temp = newValue
@@ -62,6 +66,7 @@ const ManageUserPage = () => {
     }
     typingTimeOutRef.current = setTimeout(() => {
       setOrderBy(null)
+      setCurrentPage(0)
       setSearchFilter(temp)
     }, 500);
   }
@@ -71,6 +76,7 @@ const ManageUserPage = () => {
     setCurrentPage(selected)
   }
   const handleRoleChange = (val) => {
+    setCurrentPage(0)
     if (val === "All") {
       var temp = allRole ? false : true
       if (temp) {
@@ -101,12 +107,23 @@ const ManageUserPage = () => {
     navigate(`/manage-user/edit/${id}`)
   }
 
+  const handleDelBtn = (id) => {
+    setUserId(id)
+    setOpenDel(true)
+    console.log(isOpenDel);
+  }
+
+  const handleDisableUser = (id) => {
+    console.log("dis");
+  }
+
   const handleOpenModal = (id) => {
     setUserId(id)
     setOpen(true)
   }
   const handleCloseModal = (id) => {
     setOpen(false)
+    setOpenDel(false)
   }
 
   useEffect(() => {
@@ -116,6 +133,7 @@ const ManageUserPage = () => {
     fetchUsers();
     fetchRoles();
   }, [])
+
 
   const fetchUsers = async () => {
     Loading.standard("Loading...");
@@ -189,6 +207,7 @@ const ManageUserPage = () => {
 
   return (
     <>
+
       <div className="board-container">
         <div className="title">
           <h3>User List</h3>
@@ -256,7 +275,7 @@ const ManageUserPage = () => {
             </div>
           </div>
         </div>
-        <Table cols={cols} data={userList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} onClickEditBtnFunc={handleEditBtn} />
+        <Table cols={cols} data={userList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} onClickEditBtnFunc={handleEditBtn} onClickDelBtn={handleDelBtn}/>
         <ReactPaginate
           breakLabel='...'
           nextLabel='Next'
@@ -273,8 +292,9 @@ const ManageUserPage = () => {
           activeLinkClassName='active'
         />
 
-
         <ModalUserInfo title="Detailed User Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={userId} />
+        <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDisableUser} title="Are you sure?"/>
+        <PopUpMessage showModal={isOpenDel} closePopupFunc={handleCloseModal} title="Are you sure?" message="message"/>
       </div>
     </>
   );
