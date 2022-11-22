@@ -13,6 +13,8 @@ const CreateUserForm = ({ user }) => {
     const submitBtn = useRef();
     const locationId = 1;
     const onSubmit = (data) => {
+        data.lastName = data.lastName.trim()
+        data.firstName = data.firstName.trim()
         submitBtn.current.disabled = true
         Loading.standard("Loading...");
         if (user) {
@@ -72,6 +74,9 @@ const CreateUserForm = ({ user }) => {
         return specialChars.test(string)
     }
 
+    const requiredCondition = (string) => {
+        return string.trim() !== '';
+    }
 
 
     const joinedDateCondition = (date) => {
@@ -109,13 +114,13 @@ const CreateUserForm = ({ user }) => {
                                 disabled={user ? true : false}
                                 maxLength="30"
                                 type="text"
-                                {...register("firstName", { required: true, validate: { specialCharCondition } })}
+                                {...register("firstName", { validate: { specialCharCondition, requiredCondition } })}
                                 className="form-control ms-3"
                             />
                         </div>
                         <div style={{ marginLeft: "124px" }} >
                             {
-                                errors.firstName && errors.firstName.type === "required" && (
+                                errors.firstName && errors.firstName.type === "requiredCondition" && (
                                     <div className="text-danger">This is required field</div>
                                 )
                             }
@@ -135,12 +140,12 @@ const CreateUserForm = ({ user }) => {
                                 disabled={user ? true : false}
                                 maxLength="30"
                                 type="text"
-                                {...register("lastName", { required: true, validate: { specialCharCondition } })}
+                                {...register("lastName", { validate: { specialCharCondition, requiredCondition } })}
                                 className="form-control ms-3" />
                         </div>
                         <div style={{ marginLeft: "124px" }} >
                             {
-                                errors.lastName && errors.lastName.type === "required" && (
+                                errors.lastName && errors.lastName.type === "requiredCondition" && (
                                     <div className="text-danger">This is required field</div>
                                 )
                             }
