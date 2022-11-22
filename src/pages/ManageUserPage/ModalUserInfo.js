@@ -56,7 +56,7 @@ const ModalUserInfo = ({ title, objId, showModal, closePopupFunc }) => {
                 </div>
                 <div className='row' style={{ marginLeft: 20, marginTop: 10 }}>
                     <p className='col-4'>Joined Date</p>
-                    <p className='col-7'>{data.joinedDate}</p>
+                    <p className='col-7'><Moment date={data.joinedDate} format="DD/MM/YYYY" /></p>
                 </div>
                 <div className='row' style={{ marginLeft: 20, marginTop: 10 }}>
                     <p className='col-4'>Type</p>

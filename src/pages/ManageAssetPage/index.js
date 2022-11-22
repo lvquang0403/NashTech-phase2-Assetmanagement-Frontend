@@ -37,7 +37,7 @@ const ManageAsset = () => {
     const [input, setInput] = useState('')
     //filter
     const [searchFilter, setSearchFilter] = useState('')
-    const [stateFilter, setStateFilter] = useState(['AVAILABLE', 'NOT_AVAILABLE', 'ASSIGNED'])
+    const [stateFilter, setStateFilter] = useState(['Available', 'Not available', 'Assigned'])
     const [cateFitler, setCateFilter] = useState([])
     const [orderBy, setOrderBy] = useState()
 
@@ -101,7 +101,7 @@ const ManageAsset = () => {
             var temp = allState ? false : true
             if (temp) {
                 setAllState(temp)
-                setStateFilter(['AVAILABLE', 'NOT_AVAILABLE', 'ASSIGNED', 'RECYCLED', 'RECYCLING'])
+                setStateFilter(['Available', 'Not available', 'Assigned', 'Recycled', 'Recycling'])
             } else {
                 setAllState(temp)
                 setStateFilter([])
@@ -113,7 +113,6 @@ const ManageAsset = () => {
                 let tempList = [...stateFilter];
                 tempList.splice(isExisted, 1);
                 setStateFilter(tempList);
-
             }
             else {
                 let tempList = [...stateFilter];
