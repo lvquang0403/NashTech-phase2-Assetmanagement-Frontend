@@ -41,6 +41,9 @@ const CreateUserForm = ({ user }) => {
             setValue("joinedDate", user.joinedDate);
             setValue("roleId", user.role.id);
         }
+        else{
+            setValue("gender", "FEMALE");
+        }
     }, [user, roles])
     useEffect(() => {
         if (watchAllFields.joinedDate) {
