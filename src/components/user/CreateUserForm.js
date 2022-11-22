@@ -34,10 +34,17 @@ const CreateUserForm = ({ user }) => {
     const watchAllFields = watch();
     useEffect(() => {
         if (user && user.id) {
+            let gender = ''
+            if(user.gender === 'Female'){
+                gender = 'FEMALE'
+            }
+            else{
+                gender = 'MALE'
+            }
             setValue("firstName", user.firstName);
             setValue("lastName", user.lastName);
             setValue("birth", user.birth);
-            setValue("gender", user.gender);
+            setValue("gender", gender );
             setValue("joinedDate", user.joinedDate);
             setValue("roleId", user.role.id);
         }
