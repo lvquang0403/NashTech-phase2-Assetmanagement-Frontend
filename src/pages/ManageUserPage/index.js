@@ -56,6 +56,7 @@ const ManageUserPage = () => {
   const [isOpen, setOpen] = useState(false)
   const [isOpenDel, setOpenDel] = useState(false)
   const [isOpenMess, setOpenMess] = useState(false)
+  const [message, setMessage] = useState('')
 
   const handleInputChange = (newValue) => {
     var temp = newValue
@@ -107,23 +108,43 @@ const ManageUserPage = () => {
     navigate(`/manage-user/edit/${id}`)
   }
 
-  const handleDelBtn = (id) => {
+  const handleDelBtn = async (id) => {
     setUserId(id)
-    setOpenDel(true)
-    console.log(isOpenDel);
+    await UserService.checkDisable(id).then((res) => {
+      setOpenDel(true)
+      Loading.remove();
+    }, (err) => {
+      setOpenMess(true)
+
+      const resMessage =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message
+      setMessage(resMessage)
+      Loading.remove();
+    })
   }
 
-  const handleDisableUser = (id) => {
-    console.log("dis");
+  const handleDisableUser = async() => {
+    await UserService.disableUserById(userId).then((res) => {
+      console.log(res);
+      handleCloseModal()
+      Loading.remove();
+    }, (err) => {
+      console.log(err);
+      Loading.remove();
+    })
   }
 
   const handleOpenModal = (id) => {
     setUserId(id)
     setOpen(true)
   }
-  const handleCloseModal = (id) => {
+  const handleCloseModal = () => {
     setOpen(false)
     setOpenDel(false)
+    setOpenMess(false)
   }
 
   useEffect(() => {
@@ -165,8 +186,6 @@ const ManageUserPage = () => {
       console.log(err.toString());
     })
   }
-
-
 
   const sortByCol = (col) => {
     if (col === currentSortCol) {
@@ -275,7 +294,7 @@ const ManageUserPage = () => {
             </div>
           </div>
         </div>
-        <Table cols={cols} data={userList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} onClickEditBtnFunc={handleEditBtn} onClickDelBtn={handleDelBtn}/>
+        <Table cols={cols} data={userList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} onClickEditBtnFunc={handleEditBtn} onClickDelBtn={handleDelBtn} />
         <ReactPaginate
           breakLabel='...'
           nextLabel='Next'
@@ -293,8 +312,8 @@ const ManageUserPage = () => {
         />
 
         <ModalUserInfo title="Detailed User Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={userId} />
-        <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDisableUser} title="Are you sure?"/>
-        <PopUpMessage showModal={isOpenDel} closePopupFunc={handleCloseModal} title="Are you sure?" message="message"/>
+        <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDisableUser} title="Are you sure?" />
+        <PopUpMessage showModal={isOpenMess} closePopupFunc={handleCloseModal} title="Can not disable user" message={message} />
       </div>
     </>
   );

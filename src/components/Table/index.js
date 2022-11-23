@@ -55,7 +55,7 @@ const Table = ({ cols, data, actions, sortFunc, onClickRecordFunc, onClickEditBt
                                         key={index2}
                                         className="border-bottom"
                                         data-bs-toggle="modal">
-                                        {Date.parse(value) ? <Moment date={value} format="DD/MM/YYYY" /> : value}
+                                        {value instanceof Date ? <Moment date={value} format="DD/MM/YYYY" /> : value}
                                     </td>
                                 )}
                                 {

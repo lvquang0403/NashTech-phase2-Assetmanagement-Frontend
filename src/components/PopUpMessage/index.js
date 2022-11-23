@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 
-const PopUpMessage = ({ title, message ,showModal, closePopupFunc }) => {
+const PopUpMessage = ({ title, message, showModal, closePopupFunc }) => {
 
     const handleClose = () => {
         if (closePopupFunc) {
@@ -17,8 +17,8 @@ const PopUpMessage = ({ title, message ,showModal, closePopupFunc }) => {
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div style={{ marginTop: 20, marginBottom: 20 }}>
-                    <div>{message}</div>
+                <div style={{ marginTop: 20, marginBottom: 20, display: 'flex' }}>
+                    <pre style={{ display: 'flex' }}>{message}</pre>
                 </div>
             </Modal.Body >
         </Modal >

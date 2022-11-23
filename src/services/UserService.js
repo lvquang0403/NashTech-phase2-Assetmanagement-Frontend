@@ -24,6 +24,14 @@ class UserService {
     updateById(user, userId) {
         return axios.put(`${API_BASE_URL}/${userId}`, user)
     }
+
+
+    checkDisable(id) {
+        return axios.get(`${API_BASE_URL}/${id}/disable`)
+    }
+    disableUserById(id) {
+        return axios.delete(`${API_BASE_URL}/${id}`)
+    }
 }
 
 export default new UserService();
