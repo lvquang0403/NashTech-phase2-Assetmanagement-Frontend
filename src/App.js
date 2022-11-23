@@ -8,6 +8,7 @@ import ReportPage from './pages/ReportPage';
 
 
 import {
+  EditAsset,
   CreateAsset,
   HomePage,
   ManageAsset, ManageUserPage
@@ -31,6 +32,7 @@ function App() {
             <Route path="/manage-request" element={<RequestPage></RequestPage>} />
             <Route path="/report" element={<ReportPage></ReportPage>} />
             <Route path="/create-asset" element={<CreateAsset></CreateAsset>} />
+            <Route path="/edit-asset/:id" element={<EditAsset></EditAsset>} />
   
           </Route>
         </Routes>

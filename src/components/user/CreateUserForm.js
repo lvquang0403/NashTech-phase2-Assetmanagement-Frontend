@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom'
+import { Loading } from "notiflix/build/notiflix-loading-aio";
 import UserService from '../../services/UserService';
 import RoleService from '../../services/RoleService';
 const CreateUserForm = ({ user }) => {
@@ -12,10 +13,14 @@ const CreateUserForm = ({ user }) => {
     const submitBtn = useRef();
     const locationId = 1;
     const onSubmit = (data) => {
+        data.lastName = data.lastName.trim()
+        data.firstName = data.firstName.trim()
         submitBtn.current.disabled = true
+        Loading.standard("Loading...");
         if (user) {
             UserService.updateById(data, user.id)
                 .then(res => {
+                    Loading.remove();
                     navigate("/manage-user");
                 })
         } else {
@@ -29,14 +34,24 @@ const CreateUserForm = ({ user }) => {
     const watchAllFields = watch();
     useEffect(() => {
         if (user && user.id) {
+            let gender = ''
+            if(user.gender === 'Female'){
+                gender = 'FEMALE'
+            }
+            else{
+                gender = 'MALE'
+            }
             setValue("firstName", user.firstName);
             setValue("lastName", user.lastName);
             setValue("birth", user.birth);
-            setValue("gender", user.gender);
+            setValue("gender", gender );
             setValue("joinedDate", user.joinedDate);
             setValue("roleId", user.role.id);
         }
-    }, [user])
+        else{
+            setValue("gender", "FEMALE");
+        }
+    }, [user, roles])
     useEffect(() => {
         if (watchAllFields.joinedDate) {
             trigger("joinedDate")
@@ -69,6 +84,9 @@ const CreateUserForm = ({ user }) => {
         return specialChars.test(string)
     }
 
+    const requiredCondition = (string) => {
+        return string.trim() !== '';
+    }
 
 
     const joinedDateCondition = (date) => {
@@ -104,15 +122,15 @@ const CreateUserForm = ({ user }) => {
                         <div className="col-auto">
                             <input
                                 disabled={user ? true : false}
-                                maxlength="30"
+                                maxLength="30"
                                 type="text"
-                                {...register("firstName", { required: true, validate: { specialCharCondition } })}
+                                {...register("firstName", { validate: { requiredCondition ,specialCharCondition } })}
                                 className="form-control ms-3"
                             />
                         </div>
                         <div style={{ marginLeft: "124px" }} >
                             {
-                                errors.firstName && errors.firstName.type === "required" && (
+                                errors.firstName && errors.firstName.type === "requiredCondition" && (
                                     <div className="text-danger">This is required field</div>
                                 )
                             }
@@ -130,20 +148,20 @@ const CreateUserForm = ({ user }) => {
                         <div className="col-auto">
                             <input
                                 disabled={user ? true : false}
-                                maxlength="30"
+                                maxLength="30"
                                 type="text"
-                                {...register("lastName", { required: true, validate: { specialCharCondition } })}
+                                {...register("lastName", { validate: {requiredCondition ,specialCharCondition } })}
                                 className="form-control ms-3" />
                         </div>
                         <div style={{ marginLeft: "124px" }} >
                             {
-                                errors.lastName && errors.lastName.type === "required" && (
+                                errors.lastName && errors.lastName.type === "requiredCondition" && (
                                     <div className="text-danger">This is required field</div>
                                 )
                             }
                             {
                                 errors.lastName && errors.lastName.type === "specialCharCondition" && (
-                                    <div className="text-danger">Only accept wordr</div>
+                                    <div className="text-danger">Only accept word</div>
                                 )
                             }
                         </div>
@@ -230,7 +248,7 @@ const CreateUserForm = ({ user }) => {
                             <select class="form-select" {...register("roleId", { required: true })} aria-label="Default select example">
                                 <option value=""></option>
                                 {roles.length > 0 && roles.map(role => (
-                                    <option value={role.id}>{role.name}</option>
+                                    <option value={role.id} key={role.id}>{role.name}</option>
                                     // selected={user && user.roleId === role.id && "selected"}
                                 ))}
                             </select>

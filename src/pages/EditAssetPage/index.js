@@ -1,28 +1,62 @@
 import React, { useState } from 'react'
+import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom';
+import { BsFillCaretDownFill } from 'react-icons/bs';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Loading } from "notiflix/build/notiflix-loading-aio";
 
-import SelectInsertAsset from '../../components/form/SelectInsertAsset';
 import AssetService from '../../services/AssetService';
 import validateAssetInsert from '../../utils/validateAssetInsert';
-import { Loading } from "notiflix/build/notiflix-loading-aio";
 
 import "./index.scss";
 
-const now = new Date();
-const defaultDate = now.getFullYear() + '-' + (now.getMonth()+1) + '-' +now.getDate();
-const CreateAsset = () => {
+
+
+const EditAsset = () => {
+    const params = useParams();
     const navigate = useNavigate();
-    const [buttonSave, setButtonSave] = useState(false);
+    const [asset, setAsset] = useState(undefined);
+    const [buttonSave, setButtonSave] = useState(true);
+    
     const [nameAsset, setNameAsset] = useState('');
     const [specification, setSpecification] = useState('');
-    const [installedDate, setInstalledDate] = useState(defaultDate);
-
+    const [installedDate, setInstalledDate] = useState('');
     const [textError, setTextError] = useState({
         name:'success',
         specification:'success',
         installedDate:'success'
     })
+
+    const loadAsset = useCallback(()=>{
+        Loading.standard("Loading...");
+        AssetService.getAssetById(params.id)
+            .then((response)=>{
+                console.log(response.data);
+                if (response.data.id === null) {
+                    alert("This asset does not exist");
+                    return navigate('/manage-asset')
+                }
+                if(response.data.state==="Assigned"){
+                    alert("This asset cannot be edited");
+                    return navigate('/manage-asset')
+                }
+                setAsset(response.data)
+                setNameAsset(response.data.name)
+                setSpecification(response.data.specification)
+                setInstalledDate(response.data.installedDate)
+                Loading.remove();
+            })
+            .catch((error)=>{
+                console.log(error);
+                if(error.response){
+                    alert(error.response.data.message)
+                }else{
+                    alert(error.message)
+                }
+                Loading.remove();
+            });
+      },[])
 
     // change data in input
     const changInputName = (e)=>{
@@ -42,6 +76,7 @@ const CreateAsset = () => {
     const changInputSpecification = (e)=>{
         let inpSpecification = e.target.value;
         let error = {};
+        console.log(nameAsset);
         error.specification = validateAssetInsert.specification(inpSpecification);
         error.name = validateAssetInsert.name(nameAsset);
         error.installedDate = validateAssetInsert.installedDate(installedDate);
@@ -86,19 +121,10 @@ const CreateAsset = () => {
                 state = radio[i].value;
             }
         }
-        if(state !== 'AVAILABLE' && state !== 'NOT_AVAILABLE'){
+        if(state !== 'AVAILABLE' && state !== 'NOT_AVAILABLE'  && state !== 'RECYCLING'  && state !== 'RECYCLED'){
             alert('state is malformed')
             Loading.remove();
             return null;
-        }
-
-        // setcategoryID
-        let categoryID='';
-        let select = document.getElementsByName('category')
-        for (const i in select) {
-            if (select[i].checked) {
-                categoryID = select[i].value;
-            }
         }
        
         if(error.name !=='success' || error.specification !=='success' || error.installedDate !=='success'){
@@ -107,18 +133,18 @@ const CreateAsset = () => {
             Loading.remove();
         }else{
             const data = {
+                id : params.id,
                 name : nameAsset, 
                 specification : specification, 
-                categoryId : categoryID, 
                 state : state, 
-                locationId : 1, 
                 installedDate: installedDate
             }
             
-            AssetService.insert(data)
+            console.log(data);
+            AssetService.update(data)
             .then((response)=>{
-                navigate('/manage-asset');
                 Loading.remove();
+                navigate('/manage-asset')
             })
             .catch((error)=>{
                 console.log(error);
@@ -130,6 +156,7 @@ const CreateAsset = () => {
                 Loading.remove();
             });
         }
+       
     }
     const handleClickCanelButton = (e)=>{
         e.preventDefault();
@@ -138,9 +165,13 @@ const CreateAsset = () => {
         
     }
 
-  return (
-    <Container className='_createAsset'>
-        <h5 className='_title'>Create New Asset</h5>
+    useEffect(() => {
+        loadAsset();
+    }, []);
+
+  return (asset)?(
+    <Container className='_editAsset'>
+        <h5 className='_title'>Edit Asset</h5>
         <form onSubmit={handleSubmit} >
             <Row className='_rowCreateAsset'>
                 <Col xs={3}>
@@ -149,6 +180,7 @@ const CreateAsset = () => {
                 <Col xs={9}>
                     <Form.Control 
                         onChange={changInputName}
+                        defaultValue={asset.name}
                         id='nameAsset'
                         type="text" 
                         placeholder="Enter Name Asset"
@@ -167,7 +199,12 @@ const CreateAsset = () => {
                     <label  className='_label'>Category</label>
                 </Col>
                 <Col xs={9}>
-                    <SelectInsertAsset/>
+                <div className="_select__dropdown" style={{backgroundColor:"#cdebe7"}}>
+                    <div className="_select" >
+                        <span className="_chooseCategory">{asset.categoryName}</span>
+                        <span className="_iconSelect"><BsFillCaretDownFill/></span> 
+                    </div>
+                </div>
                 </Col>
             </Row>
             <Row className='_rowCreateAsset'>
@@ -179,6 +216,7 @@ const CreateAsset = () => {
                         className={`_textarea `} 
                         id="specification"
                         as="textarea"
+                        defaultValue={asset.specification}
                         onChange={changInputSpecification}
                         placeholder="Specification"
                         maxLength={500}
@@ -201,7 +239,7 @@ const CreateAsset = () => {
                         id="installedDate"
                         type="date"
                         onChange={changInputInstalledDate}
-                        defaultValue={defaultDate}
+                        defaultValue={asset.installedDate}
                     />
                     {
                         (textError.installedDate !== 'success')?
@@ -216,19 +254,70 @@ const CreateAsset = () => {
                     <label className='_label'>State </label>
                 </Col>
                 <Col xs={9}>
-                    <Form.Check
-                        defaultChecked
-                        type='radio'
-                        name='stateAsset'
-                        label='Available'
-                        value='AVAILABLE'
-                    />
-                    <Form.Check
-                        type='radio'
-                        name='stateAsset'
-                        label='Not available'
-                        value='NOT_AVAILABLE'
-                    />
+                    {
+                        (asset.state.toLocaleLowerCase() === 'Available'.toLocaleLowerCase())?
+                        <Form.Check
+                            defaultChecked
+                            type='radio'
+                            name='stateAsset'
+                            label='Available'
+                            value='AVAILABLE'
+                        /> :
+                        <Form.Check
+                            type='radio'
+                            name='stateAsset'
+                            label='Available'
+                            value='AVAILABLE'
+                        />
+                    }
+                    {
+                        (asset.state.toLocaleLowerCase() === 'Not available'.toLocaleLowerCase())?
+                        <Form.Check
+                            defaultChecked
+                            type='radio'
+                            name='stateAsset'
+                            label='Not available'
+                            value='NOT_AVAILABLE'
+                        /> :
+                        <Form.Check
+                            type='radio'
+                            name='stateAsset'
+                            label='Not available'
+                            value='NOT_AVAILABLE'
+                        />
+                    }
+                    {
+                        (asset.state.toLocaleLowerCase() === 'Waiting for recycling'.toLocaleLowerCase())?
+                        <Form.Check
+                            defaultChecked
+                            type='radio'
+                            name='stateAsset'
+                            label='Waiting for recycling'
+                            value='RECYCLING'
+                        /> :
+                        <Form.Check
+                            type='radio'
+                            name='stateAsset'
+                            label='Waiting for recycling'
+                            value='RECYCLING'
+                        />
+                    }
+                    {
+                        (asset.state.toLocaleLowerCase() === 'Recycled'.toLocaleLowerCase())?
+                        <Form.Check
+                            defaultChecked
+                            type='radio'
+                            name='stateAsset'
+                            label='Recycled'
+                            value='RECYCLED'
+                        /> :
+                        <Form.Check
+                            type='radio'
+                            name='stateAsset'
+                            label='Recycled'
+                            value='RECYCLED'
+                        />
+                    }
                 </Col>
             </Row>
             <Row className='_rowCreateAsset'>
@@ -246,11 +335,13 @@ const CreateAsset = () => {
             </Row>
             
         </form>
-    </Container>
-    
+    </Container>    
   )
+  :null
 }
 
-export default CreateAsset
+export default EditAsset
+
+
 
 

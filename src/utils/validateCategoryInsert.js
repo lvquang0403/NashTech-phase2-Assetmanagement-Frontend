@@ -1,10 +1,10 @@
 const validateCategoryInsert = {
     name(name){
         if(name === null || name === undefined){
-            return "cannot be left blank"
+            return "This is a required field"
         }
         if( name.trim() === ""){
-            return "cannot be left blank"
+            return "This is a required field"
         }
         if (name.length > 50 ) {
             return 'max 50 characters';
@@ -14,7 +14,7 @@ const validateCategoryInsert = {
         if (regex.test(name)) {
             return 'Cannot special characters';
         }
-        if (regex2.test(name)) {
+        if (regex2.test(name.toLocaleLowerCase())) {
             return 'Do not use Vietnamese accents';
         }
         return "success";
@@ -22,10 +22,10 @@ const validateCategoryInsert = {
 
     prefix(prefix){
         if(prefix === null || prefix === undefined){
-            return "cannot be left blank"
+            return "This is a required field"
         }
         if (prefix.trim() === '') {
-            return 'cannot be left blank';
+            return 'This is a required field';
         }
         if (prefix.trim().length  !== 2 ) {
             return 'prefix only 2 characters';
@@ -35,7 +35,7 @@ const validateCategoryInsert = {
         if (regex.test(prefix)) {
             return 'Cannot special characters';
         }
-        if (regex2.test(prefix)) {
+        if (regex2.test(prefix.toLocaleLowerCase())) {
             return 'Do not use Vietnamese accents';
         }
         return "success";
