@@ -14,7 +14,7 @@ const validateCategoryInsert = {
         if (regex.test(name)) {
             return 'Cannot special characters';
         }
-        if (regex2.test(name)) {
+        if (regex2.test(name.toLocaleLowerCase())) {
             return 'Do not use Vietnamese accents';
         }
         return "success";
@@ -35,7 +35,7 @@ const validateCategoryInsert = {
         if (regex.test(prefix)) {
             return 'Cannot special characters';
         }
-        if (regex2.test(prefix)) {
+        if (regex2.test(prefix.toLocaleLowerCase())) {
             return 'Do not use Vietnamese accents';
         }
         return "success";

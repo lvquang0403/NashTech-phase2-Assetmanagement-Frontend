@@ -30,6 +30,15 @@ class AssetService {
         });
     }
 
+    update({id, name, specification, state,  installedDate}){
+        return axios.put(`${API_BASE_URL}/${id}`,{
+            name : name,
+            specification: specification,
+            state : state,
+            installedDate : installedDate
+        });
+    }
+
 
 }
 

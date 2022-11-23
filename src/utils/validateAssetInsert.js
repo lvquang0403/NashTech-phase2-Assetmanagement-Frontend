@@ -14,7 +14,7 @@ const validateAssetInsert = {
         if (regex.test(name)) {
             return 'Cannot special characters';
         }
-        if (regex2.test(name)) {
+        if (regex2.test(name.toLocaleLowerCase())) {
             return 'Do not use Vietnamese accents';
         }
         return "success";
@@ -35,7 +35,6 @@ const validateAssetInsert = {
     },
 
     installedDate(installedDate){
-        console.log(installedDate);
         let now = new Date();
         let newInstalledDate = new Date(installedDate);
         if(installedDate === null || installedDate === undefined){
@@ -44,10 +43,6 @@ const validateAssetInsert = {
         if(now.getTime() <  newInstalledDate.getTime()){
             return "Select a date in the past or present"
         }
-       console.log(`start`);
-       console.log(newInstalledDate);
-       console.log(newInstalledDate.getDay());
-       console.log(Number.isNaN(newInstalledDate.getDay()));
         if(Number.isNaN(newInstalledDate.getDay())){
             return "this day does not exist"
         }
