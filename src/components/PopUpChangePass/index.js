@@ -5,7 +5,7 @@ import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 const PopUpChangePass = ({ title, showModal, closePopupFunc, yesFunc }) => {
     const [newPassword, setNewPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-
+    const [error, setError] = useState(false)
     const handleClose = () => {
         if (closePopupFunc) {
             closePopupFunc()
@@ -30,25 +30,25 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, yesFunc }) => {
                             <label htmlFor="old-pass" className="">
                                 Old Password
                             </label>
-                            <div className="d-flex flex-column">
+                            <div className="d-flex flex-column" >
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     id="old-pass"
-                                // value={oldPassword}
-                                // className={
-                                //     error
-                                //         ? "border border-danger rounded"
-                                //         : "border rounded"
-                                // }
-                                // onChange={(e) => setOldPassword(e.target.value)}
-                                // onFocus={() => setError("")}
+                                    // value={oldPassword}
+                                    className={
+                                        error
+                                            ? "border border-danger rounded"
+                                            : "border rounded"
+                                    }
+                                    // onChange={(e) => setOldPassword(e.target.value)}
+                                    onFocus={() => setError("")}
                                 />
                                 {!showPassword ? (
-                                    <AiFillEye
+                                    <AiFillEye style={{ position: 'absolute', marginLeft: 160, marginTop: 5 }}
                                         onClick={() => setShowPassword(true)}
                                     ></AiFillEye>
                                 ) : (
-                                    <AiFillEyeInvisible
+                                    <AiFillEyeInvisible style={{ position: 'absolute', marginLeft: 160, marginTop: 5 }}
                                         onClick={() => setShowPassword(false)}
                                     ></AiFillEyeInvisible>
                                 )}
@@ -60,29 +60,37 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, yesFunc }) => {
                             <label htmlFor="new-pass" className="pe-3">
                                 New Password
                             </label>
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                id="new-pass"
-                                className="border rounded"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                            // onFocus={() => setError("")}
-                            />
-                            {!showPassword ? (
-                                <AiFillEye
-                                    onClick={() => setShowPassword(true)}
-                                ></AiFillEye>
-                            ) : (
-                                <AiFillEyeInvisible
-                                    onClick={() => setShowPassword(false)}
-                                ></AiFillEyeInvisible>
-                            )}
+                            <div className="d-flex flex-column">
+
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                         id="old-pass"
+                                    className="border rounded"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                // onFocus={() => setError("")}
+                                />
+
+
+                                {!showPassword ? (
+                                    <AiFillEye
+                                        style={{ position: 'absolute', marginLeft: 160, marginTop: 5 }}
+                                        onClick={() => setShowPassword(true)}
+                                    ></AiFillEye>
+                                ) : (
+                                    <AiFillEyeInvisible
+                                        style={{ position: 'absolute', marginLeft: 160, marginTop: 5 }}
+                                        onClick={() => setShowPassword(false)}
+                                    ></AiFillEyeInvisible>
+                                )}
+
+                            </div>
                         </div>
                         <br />
                         <div className="btn-group-footer d-flex justify-content-end">
                             <button
-                                 className="btn btn-danger"
-                                 id="disable-button"
+                                className="btn btn-danger"
+                                id="disable-button"
                                 onClick={handleSave}
                             //disabled={!(oldPassword && newPassword)}
                             >
@@ -92,8 +100,8 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, yesFunc }) => {
                                 type="button"
                                 className="btn btn-outline-secondary"
                                 id="cancel-button"
-                         
-                   
+
+
                                 onClick={handleClose}
                             >
                                 Cancel
