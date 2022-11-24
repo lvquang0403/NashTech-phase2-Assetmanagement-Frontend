@@ -14,6 +14,7 @@ import ModalInfoAsset from './ModalInfoAsset';
 import ReactPaginate from 'react-paginate';
 import PopUpConfirm from '../../components/PopUpConfim';
 import PopUpMessage from '../../components/PopUpMessage';
+import PopUpCantDel from './PopUpCantDel';
 
 const cols = [
     { name: 'Asset Code', isDropdown: true },
@@ -57,7 +58,9 @@ const ManageAsset = () => {
     const [isOpen, setOpen] = useState(false)
     const [isOpenDel, setOpenDel] = useState(false)
     const [isOpenMess, setOpenMess] = useState(false)
-    const [message, setMessage] = useState('')
+    // const [message, setMessage] = useState('')
+
+    const [isDel, setDel] = useState(false)
 
     const handleInputChange = (newValue) => {
         var temp = newValue
@@ -132,6 +135,7 @@ const ManageAsset = () => {
     }
 
     const handleDelBtn = async (id) => {
+        Loading.standard("Loading...");
         setAssetId(id)
         await AssetService.checkCanDelete(id).then((res) => {
           setOpenDel(true)
@@ -139,20 +143,22 @@ const ManageAsset = () => {
         }, (err) => {
           setOpenMess(true)
     
-          const resMessage =
-            (err.response &&
-              err.response.data &&
-              err.response.data.message) ||
-            err.message
-          setMessage(resMessage)
+        //   const resMessage =
+        //     (err.response &&
+        //       err.response.data &&
+        //       err.response.data.message) ||
+        //     err.message
+        //   setMessage(resMessage)
           Loading.remove();
         })
       }
     
       const handleDeleteAsset = async() => {
+        Loading.standard("Loading...");
         await AssetService.deleteAssetById(assetId).then((res) => {
           console.log(res);
           handleCloseModal()
+          setDel(isDel ? false : true)
           Loading.remove();
         }, (err) => {
           console.log(err);
@@ -175,7 +181,7 @@ const ManageAsset = () => {
         // var date =""
         // console.log(Object.getPrototypeOf(date));
         fetchAssets();
-    }, [currentPage, stateFilter, cateFitler, searchFilter, orderBy])
+    }, [currentPage, stateFilter, cateFitler, searchFilter, orderBy, isDel])
     useEffect(() => {
         fetchAssets();
         fetchCategories();
@@ -395,8 +401,8 @@ const ManageAsset = () => {
                 />
 
                 <ModalInfoAsset title="Detailed Asset Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={assetId} />
-                <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDeleteAsset} title="Are you sure?" />
-                <PopUpMessage showModal={isOpenMess} closePopupFunc={handleCloseModal} title="Cannot delete asset" message={message} />
+                <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDeleteAsset} title="Are you sure?"  message="Do you want to delete asset?" yesBtnName="Delete"/>
+                <PopUpCantDel showModal={isOpenMess} closePopupFunc={handleCloseModal} title="Cannot delete asset" id={assetId}/>
 
             </div>
         </>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 
-const PopUpConfirm = ({ title, showModal, closePopupFunc, yesFunc }) => {
+const PopUpConfirm = ({ title, message, showModal, closePopupFunc, yesFunc, yesBtnName }) => {
 
     const handleClose = () => {
         if (closePopupFunc) {
@@ -22,14 +22,14 @@ const PopUpConfirm = ({ title, showModal, closePopupFunc, yesFunc }) => {
             </Modal.Header>
             <Modal.Body>
                 <div style={{ marginTop: 20, marginBottom: 20 }}>
-                    <div>Do you want to disable user?</div>
+                    <div>{message}</div>
                     <div className="button">
                         <button
                             className="btn btn-danger"
                             id="disable-button"
                             onClick={handleDisable}
                         >
-                            Disable
+                            {yesBtnName}
                         </button>
                         <button
                             className="btn btn-outline-secondary"
