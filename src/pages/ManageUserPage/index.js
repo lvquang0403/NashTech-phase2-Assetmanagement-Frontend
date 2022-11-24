@@ -128,11 +128,13 @@ const ManageUserPage = () => {
   }
 
   const handleDisableUser = async() => {
+    Loading.standard("Loading...");
     await UserService.disableUserById(userId).then((res) => {
       console.log(res);
       handleCloseModal()
       Loading.remove();
     }, (err) => {
+      handleCloseModal()
       console.log(err);
       Loading.remove();
     })

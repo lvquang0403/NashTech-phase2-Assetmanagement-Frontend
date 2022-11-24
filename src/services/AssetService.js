@@ -40,7 +40,7 @@ class AssetService {
     }
 
     checkCanDelete(id){
-        return axios.get(`${API_BASE_URL}/${id}/disable`);
+        return axios.get(`${API_BASE_URL}/${id}/check-historical`);
     }
     deleteAssetById(id) {
         return axios.delete(`${API_BASE_URL}/${id}`)
