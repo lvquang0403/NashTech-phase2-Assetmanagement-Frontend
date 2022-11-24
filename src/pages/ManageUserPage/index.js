@@ -14,6 +14,7 @@ import ModalUserInfo from './ModalUserInfo';
 import ReactPaginate from 'react-paginate';
 import PopUpConfirm from '../../components/PopUpConfim';
 import PopUpMessage from '../../components/PopUpMessage';
+import TableUser from './TableUser';
 
 
 const cols = [
@@ -294,7 +295,8 @@ const ManageUserPage = () => {
             </div>
           </div>
         </div>
-        <Table cols={cols} data={userList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} onClickEditBtnFunc={handleEditBtn} onClickDelBtn={handleDelBtn} />
+        {/* <Table cols={cols} data={userList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} onClickEditBtnFunc={handleEditBtn} onClickDelBtn={handleDelBtn} /> */}
+        <TableUser cols={cols} data={userList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} onClickEditBtnFunc={handleEditBtn} onClickDelBtn={handleDelBtn} />
         <ReactPaginate
           breakLabel='...'
           nextLabel='Next'
