@@ -17,7 +17,7 @@ const CreateUserForm = ({ user }) => {
         data.firstName = data.firstName.trim()
         submitBtn.current.disabled = true
         Loading.standard("Loading...");
-        if (user) {
+        if (user.id) {
             UserService.updateById(data, user.id)
                 .then(res => {
                     Loading.remove();

@@ -18,20 +18,20 @@
   padding: 25px;
 
 
-  button {
-    background-color: #cf2338;
-    color: white;
-    border-style: none;
-    border-radius: 8px;  
-  }
+  // button {
+  //   background-color: #cf2338;
+  //   color: white;
+  //   border-style: none;
+  //   border-radius: 8px;  
+  // }
   button span{
     font-size: 25px;
     font-weight: bold;
   }
 
-  button:hover {
-    background-color: #d43548;
-  }
+  // button:hover {
+  //   background-color: #d43548;
+  // }
 
   button:not(:disabled):not(:disabled):active {
     background-color: #cf2338;

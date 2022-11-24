@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PopUpChangePass from "../PopUpChangePass";
+import PopUpConfirmLogout from "../modal/ConfirmLogout";
 import "./header.scss";
 
 const Header = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("Username");
   const [action, setAction] = useState(0);
+  const [showConfirmLogout, setShowConfirmLogout] = useState(false)
 
 
   const [openModelChangePass, setOpenModelChangePass] = useState(false);
   const [openModelMess, setModelMess] = useState(false);
 
-
+  console.log(showConfirmLogout)
   const handleCloseModal = () => {
     setOpenModelChangePass(false)
     setModelMess(false)
@@ -56,15 +58,16 @@ const Header = () => {
                 className="dropdown-item"
                 data-bs-toggle="modal"
                 data-bs-target="#logoutModal"
+                onClick={()=>setShowConfirmLogout(true)}
               >
-                Logout
+                Log out
               </li>
 
             </ul>
           </div>
           <PopUpChangePass showModal={openModelChangePass} closePopupFunc={handleCloseModal} yesFunc={handleChangePass} title="Change Password" />
-
-
+          <PopUpConfirmLogout show = {showConfirmLogout} setShow={setShowConfirmLogout} />
+          
         </div>
 
       </div>
