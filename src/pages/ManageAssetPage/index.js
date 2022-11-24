@@ -12,6 +12,8 @@ import { Loading } from "notiflix/build/notiflix-loading-aio";
 import queryString from 'query-string';
 import ModalInfoAsset from './ModalInfoAsset';
 import ReactPaginate from 'react-paginate';
+import PopUpConfirm from '../../components/PopUpConfim';
+import PopUpMessage from '../../components/PopUpMessage';
 
 const cols = [
     { name: 'Asset Code', isDropdown: true },
@@ -53,6 +55,9 @@ const ManageAsset = () => {
 
     //popup
     const [isOpen, setOpen] = useState(false)
+    const [isOpenDel, setOpenDel] = useState(false)
+    const [isOpenMess, setOpenMess] = useState(false)
+    const [message, setMessage] = useState('')
 
     const handleInputChange = (newValue) => {
         var temp = newValue
@@ -126,12 +131,44 @@ const ManageAsset = () => {
         navigate(`/edit-asset/${id}`)
     }
 
+    const handleDelBtn = async (id) => {
+        setAssetId(id)
+        await AssetService.checkCanDelete(id).then((res) => {
+          setOpenDel(true)
+          Loading.remove();
+        }, (err) => {
+          setOpenMess(true)
+    
+          const resMessage =
+            (err.response &&
+              err.response.data &&
+              err.response.data.message) ||
+            err.message
+          setMessage(resMessage)
+          Loading.remove();
+        })
+      }
+    
+      const handleDisableUser = async() => {
+        await AssetService.deleteAssetById(assetId).then((res) => {
+          console.log(res);
+          handleCloseModal()
+          Loading.remove();
+        }, (err) => {
+          console.log(err);
+          Loading.remove();
+        })
+      }
+    
+
     const handleOpenModal = (id) => {
         setAssetId(id)
         setOpen(true)
     }
     const handleCloseModal = (id) => {
         setOpen(false)
+        setOpenDel(false)
+        setOpenMess(false)
     }
 
     useEffect(() => {
@@ -339,7 +376,7 @@ const ManageAsset = () => {
                         </div>
                     </div>
                 </div>
-                <Table cols={cols} data={assetList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} onClickEditBtnFunc={handleEditBtn} />
+                <Table cols={cols} data={assetList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} onClickEditBtnFunc={handleEditBtn} onClickDelBtn={handleDelBtn}/>
 
                 <ReactPaginate
                     breakLabel='...'
@@ -358,6 +395,9 @@ const ManageAsset = () => {
                 />
 
                 <ModalInfoAsset title="Detailed Asset Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={assetId} />
+                <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDisableUser} title="Are you sure?" />
+                <PopUpMessage showModal={isOpenMess} closePopupFunc={handleCloseModal} title="Can not disable user" message={message} />
+
             </div>
         </>
     );

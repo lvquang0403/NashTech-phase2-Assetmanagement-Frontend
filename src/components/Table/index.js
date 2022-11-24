@@ -61,8 +61,10 @@ const Table = ({ cols, data, actions, sortFunc, onClickRecordFunc, onClickEditBt
                                 {
                                     actions &&
                                     <td>
-                                        {actions["edit"] && <FaPen style={{ cursor: 'pointer', marginLeft: 15, opacity:(obj.state==="Assigned")?'0.3':'1' }} onClick={() => (obj.state==="Assigned")?null:handleOnEditBtn(obj.id)} />}
-                                        {actions.remove && <BsXCircle style={{ cursor: 'pointer', marginLeft: 15, color: 'red' }} onClick={() => handleDelBtn(obj.id)} />}
+                                        {actions["edit"] && <FaPen style={{ cursor: 'pointer', marginLeft: 15, opacity: (obj.state === "Assigned") ? '0.3' : '1' }}
+                                            onClick={() => (obj.state === "Assigned") ? null : handleOnEditBtn(obj.id)} />}
+                                        {actions.remove && <BsXCircle style={{ cursor: 'pointer', marginLeft: 15, color: 'red', opacity: (obj.state === "Assigned") ? '0.3' : '1' }}
+                                            onClick={() => (obj.state === "Assigned") ? null : handleDelBtn(obj.id)} />}
                                         {actions.return && <>ret</>}
                                     </td>
                                 }

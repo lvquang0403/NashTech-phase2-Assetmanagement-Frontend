@@ -39,7 +39,12 @@ class AssetService {
         });
     }
 
-
+    checkCanDelete(id){
+        return axios.get(`${API_BASE_URL}/${id}/disable`);
+    }
+    deleteAssetById(id) {
+        return axios.delete(`${API_BASE_URL}/${id}`)
+    }
 }
 
 export default new AssetService();
