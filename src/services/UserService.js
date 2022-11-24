@@ -32,6 +32,15 @@ class UserService {
     disableUserById(id) {
         return axiosClient.delete(`${API_BASE_URL}/${id}`)
     }
+
+
+
+    changePass({ userId, oldPass, newPass }) {
+        return axiosClient.put(`${API_BASE_URL}/${userId}`, {
+            oldPass: oldPass,
+            newPass: newPass
+        });
+    }
 }
 
 export default new UserService();

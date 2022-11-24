@@ -2,17 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PopUpChangePass from "../PopUpChangePass";
 import PopUpConfirmLogout from "../modal/ConfirmLogout";
+import UserService from '../../services/UserService';
 import "./header.scss";
+import { Modal } from 'react-bootstrap';
 
 const Header = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("Username");
-  const [action, setAction] = useState(0);
   const [showConfirmLogout, setShowConfirmLogout] = useState(false)
 
 
   const [openModelChangePass, setOpenModelChangePass] = useState(false);
   const [openModelMess, setModelMess] = useState(false);
+
+  const [error, setError] = useState("")
 
   console.log(showConfirmLogout)
   const handleCloseModal = () => {
@@ -21,9 +24,20 @@ const Header = () => {
   }
 
   const handleChangePass = () => {
-    console.log("change");
+    setOpenModelChangePass(false)
+    setModelMess(true)
+    // UserService.changePass(null).then((res) => {
+    //   setOpenModelChangePass(false)
+    //   setModelMess(true)
+    // }, (err) => {
+    //   const resMessage =
+    //     (err.response &&
+    //       err.response.data &&
+    //       err.response.data.message) ||
+    //     err.message
+    //   setError(resMessage)
+    // })
   }
-
   useEffect(() => {
 
   }, []);
@@ -50,7 +64,7 @@ const Header = () => {
               <li
                 className="dropdown-item"
                 id="li-bottom"
-                onClick={()=>setOpenModelChangePass(true)}
+                onClick={() => setOpenModelChangePass(true)}
               >
                 Change password
               </li>
@@ -58,16 +72,37 @@ const Header = () => {
                 className="dropdown-item"
                 data-bs-toggle="modal"
                 data-bs-target="#logoutModal"
-                onClick={()=>setShowConfirmLogout(true)}
+                onClick={() => setShowConfirmLogout(true)}
               >
                 Log out
               </li>
 
             </ul>
           </div>
-          <PopUpChangePass showModal={openModelChangePass} closePopupFunc={handleCloseModal} yesFunc={handleChangePass} title="Change Password" />
-          <PopUpConfirmLogout show = {showConfirmLogout} setShow={setShowConfirmLogout} />
-          
+          <PopUpChangePass showModal={openModelChangePass} closePopupFunc={handleCloseModal} saveFunc={handleChangePass} title="Change Password" error={error} setError={() => setError("")} />
+          <Modal show={openModelMess} onHide={handleCloseModal} size="lg" backdrop='static' keyboard={false} size="md">
+            <Modal.Header closeButton style={{ color: '#cf2338', backgroundColor: 'lightgrey' }}>
+              <Modal.Title>Change Password</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div style={{ marginTop: 10 }}>
+                <pre>Your password has been changed successfully!</pre>
+                <div className="btn-group-footer d-flex justify-content-end" >
+
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    id="cancel-button"
+                    onClick={handleCloseModal}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </Modal.Body>
+          </Modal >
+          <PopUpConfirmLogout show={showConfirmLogout} setShow={setShowConfirmLogout} />
+
         </div>
 
       </div>

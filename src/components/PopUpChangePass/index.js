@@ -2,19 +2,28 @@ import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 
-const PopUpChangePass = ({ title, showModal, closePopupFunc, yesFunc }) => {
+
+const PopUpChangePass = ({ title, showModal, closePopupFunc, saveFunc, error, setError }) => {
+    const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState(false)
+
+    const [showOldPass, setShowOldPass] = useState(false);
+    const [showNewPass, setShowNewPass] = useState(false);
+
     const handleClose = () => {
         if (closePopupFunc) {
             closePopupFunc()
         }
     }
-
     const handleSave = () => {
-        if (yesFunc) {
-            yesFunc()
+        if (saveFunc) {
+            saveFunc()
+        }
+    }
+
+    const handleError = () => {
+        if (setError) {
+            setError()
         }
     }
 
@@ -32,27 +41,28 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, yesFunc }) => {
                             </label>
                             <div className="d-flex flex-column" >
                                 <input
-                                    type={showPassword ? "text" : "password"}
+                                    type={showOldPass ? "text" : "password"}
                                     id="old-pass"
-                                    // value={oldPassword}
+                                    value={oldPassword}
                                     className={
                                         error
                                             ? "border border-danger rounded"
                                             : "border rounded"
                                     }
-                                    // onChange={(e) => setOldPassword(e.target.value)}
-                                    onFocus={() => setError("")}
+                                    onChange={(e) => setOldPassword(e.target.value)}
+                                    onFocus={handleError}
+                                    required
                                 />
-                                {!showPassword ? (
+                                {!showOldPass ? (
                                     <AiFillEye style={{ position: 'absolute', marginLeft: 160, marginTop: 5 }}
-                                        onClick={() => setShowPassword(true)}
+                                        onClick={() => setShowOldPass(true)}
                                     ></AiFillEye>
                                 ) : (
                                     <AiFillEyeInvisible style={{ position: 'absolute', marginLeft: 160, marginTop: 5 }}
-                                        onClick={() => setShowPassword(false)}
+                                        onClick={() => setShowOldPass(false)}
                                     ></AiFillEyeInvisible>
                                 )}
-                                {/* {error && <p className="text-danger fs-6">{error}</p>} */}
+                                {error && <p className="text-danger fs-6">{error}</p>}
                             </div>
                         </div>
 
@@ -63,24 +73,25 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, yesFunc }) => {
                             <div className="d-flex flex-column">
 
                                 <input
-                                    type={showPassword ? "text" : "password"}
-                                         id="old-pass"
+                                    type={showNewPass ? "text" : "password"}
+                                    id="old-pass"
                                     className="border rounded"
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
-                                // onFocus={() => setError("")}
+                                    required
+                                //onFocus={() => setError("")}
                                 />
 
 
-                                {!showPassword ? (
+                                {!showNewPass ? (
                                     <AiFillEye
                                         style={{ position: 'absolute', marginLeft: 160, marginTop: 5 }}
-                                        onClick={() => setShowPassword(true)}
+                                        onClick={() => setShowNewPass(true)}
                                     ></AiFillEye>
                                 ) : (
                                     <AiFillEyeInvisible
                                         style={{ position: 'absolute', marginLeft: 160, marginTop: 5 }}
-                                        onClick={() => setShowPassword(false)}
+                                        onClick={() => setShowNewPass(false)}
                                     ></AiFillEyeInvisible>
                                 )}
 
@@ -92,7 +103,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, yesFunc }) => {
                                 className="btn btn-danger"
                                 id="disable-button"
                                 onClick={handleSave}
-                            //disabled={!(oldPassword && newPassword)}
+                                disabled={!(oldPassword && newPassword)}
                             >
                                 Save
                             </button>
