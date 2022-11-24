@@ -5,6 +5,7 @@ import Main from './components/layout/Main';
 import ManageAssignmentPage from './pages/ManageAssignmentPage';
 import RequestPage from './pages/RequestPage';
 import ReportPage from './pages/ReportPage';
+import LoginPage from './pages/Login';
 
 
 import {
@@ -21,6 +22,7 @@ function App() {
     <Fragment>
       <Suspense fallback={<></>}>
         <Routes>
+          <Route path="/login" element={<LoginPage></LoginPage>} />
           <Route element={<Main></Main>}>
             <Route exact path="/" element={<HomePage></HomePage>} />
 
@@ -33,7 +35,7 @@ function App() {
             <Route path="/report" element={<ReportPage></ReportPage>} />
             <Route path="/create-asset" element={<CreateAsset></CreateAsset>} />
             <Route path="/edit-asset/:id" element={<EditAsset></EditAsset>} />
-  
+
           </Route>
         </Routes>
       </Suspense>

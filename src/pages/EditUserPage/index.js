@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import CreateUserForm from '../components/user/CreateUserForm'
-import UserService from '../services/UserService'
+import CreateUserForm from '../../components/user/CreateUserForm'
+import UserService from '../../services/UserService'
 import { Loading } from "notiflix/build/notiflix-loading-aio";
 import { useParams } from 'react-router-dom'
 

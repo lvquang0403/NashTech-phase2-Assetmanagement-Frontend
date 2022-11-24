@@ -1,36 +1,29 @@
-import axios from "axios";
+import axiosClient from "./AxiosCilent";
 
-const API_BASE_URL = `https://rookie06assetmanagement.azurewebsites.net/api/users`;
+const API_BASE_URL = `api/users`;
 
 
 class UserService {
     getAllUsers(query) {
-        return axios.get(`${API_BASE_URL}?${query}`);
+        return axiosClient.get(`${API_BASE_URL}?${query}`);
     }
 
     createUser(user, locationId) {
         user.roleId = parseInt(user.roleId)
         user.locationId = locationId
-        return axios.post(API_BASE_URL, user)
+        // return axios.post(API_BASE_URL, user)
+        return axiosClient.get("sadsadsad")
     }
 
     getById(userId) {
-        return axios.get(`${API_BASE_URL}/${userId}`)
+        return axiosClient.get(`${API_BASE_URL}/${userId}`)
     }
     getUserById(id) {
-        return axios.get(`${API_BASE_URL}/${id}`);
+        return axiosClient.get(`${API_BASE_URL}/${id}`);
     }
 
     updateById(user, userId) {
-        return axios.put(`${API_BASE_URL}/${userId}`, user)
-    }
-
-
-    checkDisable(id) {
-        return axios.get(`${API_BASE_URL}/${id}/disable`)
-    }
-    disableUserById(id) {
-        return axios.delete(`${API_BASE_URL}/${id}`)
+        return axiosClient.put(`${API_BASE_URL}/${userId}`, user)
     }
 }
 

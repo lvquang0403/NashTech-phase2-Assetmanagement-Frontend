@@ -1,18 +1,18 @@
-import axios from "axios";
-const API_BASE_URL = `https://rookie06assetmanagement.azurewebsites.net/api/categories`;
+import axiosClient from "./AxiosCilent";
+const API_BASE_URL = `api/categories`;
 
 
 class CategoryService {
     getAllCategories(){
-        return axios.get(`${API_BASE_URL}`);
+        return axiosClient.get(`${API_BASE_URL}`);
     }
 
     getAllCategoriesName(){
-        return axios.get(`${API_BASE_URL}/name`);
+        return axiosClient.get(`${API_BASE_URL}/name`);
     }
 
     insert(prefix, name){
-        return axios.post(`${API_BASE_URL}`,{
+        return axiosClient.post(`${API_BASE_URL}`,{
             id: prefix,
             name:name
         });

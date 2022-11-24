@@ -1,16 +1,16 @@
-import axios from "axios";
+import axiosClient from "./AxiosCilent";
 
-const API_BASE_URL = `https://rookie06assetmanagement.azurewebsites.net/api/roles`;
+const API_BASE_URL = `api/roles`;
 
 
 
 class RoleService {
     getRoles() {
-        return axios.get(`${API_BASE_URL}`)
+        return axiosClient.get(`${API_BASE_URL}`)
     }
 
     getRoleNames() {
-        return axios.get(`${API_BASE_URL}/name`)
+        return axiosClient.get(`${API_BASE_URL}/name`)
     }
 }
 
