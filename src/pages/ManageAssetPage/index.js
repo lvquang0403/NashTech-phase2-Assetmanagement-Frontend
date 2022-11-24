@@ -149,7 +149,7 @@ const ManageAsset = () => {
         })
       }
     
-      const handleDisableUser = async() => {
+      const handleDeleteAsset = async() => {
         await AssetService.deleteAssetById(assetId).then((res) => {
           console.log(res);
           handleCloseModal()
@@ -395,8 +395,8 @@ const ManageAsset = () => {
                 />
 
                 <ModalInfoAsset title="Detailed Asset Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={assetId} />
-                <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDisableUser} title="Are you sure?" />
-                <PopUpMessage showModal={isOpenMess} closePopupFunc={handleCloseModal} title="Can not disable user" message={message} />
+                <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDeleteAsset} title="Are you sure?" />
+                <PopUpMessage showModal={isOpenMess} closePopupFunc={handleCloseModal} title="Cannot delete asset" message={message} />
 
             </div>
         </>

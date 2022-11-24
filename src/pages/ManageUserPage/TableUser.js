@@ -62,6 +62,11 @@ const TableUser = ({ cols, data, actions, sortFunc, onClickRecordFunc, onClickEd
                                     {obj.fullName}
                                 </td>
                                 <td onClick={() => handleOnClickRecord(obj.id)}
+                                    className="border-bottom"
+                                    data-bs-toggle="modal">
+                                    {obj.userName}
+                                </td>
+                                <td onClick={() => handleOnClickRecord(obj.id)}
 
                                     className="border-bottom"
                                     data-bs-toggle="modal">

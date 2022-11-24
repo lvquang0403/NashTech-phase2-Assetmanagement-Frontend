@@ -18,9 +18,9 @@ const PopUpMessage = ({ title, message, showModal, closePopupFunc }) => {
             </Modal.Header>
             <Modal.Body>
                 <div style={{ marginTop: 20, marginBottom: 20, display: 'flex' }}>
-                    <pre style={{ display: 'flex' }}>{message}</pre>
+                    <pre>{message}</pre>
                 </div>
-            </Modal.Body >
+            </Modal.Body>
         </Modal >
     );
 }
