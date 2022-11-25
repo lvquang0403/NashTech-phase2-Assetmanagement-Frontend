@@ -59,6 +59,8 @@ const ManageUserPage = () => {
   const [isOpenMess, setOpenMess] = useState(false)
   const [message, setMessage] = useState('')
 
+  const [isDel, setDel] = useState(false)
+
   const handleInputChange = (newValue) => {
     var temp = newValue
     setInput(temp)
@@ -132,6 +134,7 @@ const ManageUserPage = () => {
     await UserService.disableUserById(userId).then((res) => {
       console.log(res);
       handleCloseModal()
+      setDel(isDel ? false : true)
       Loading.remove();
     }, (err) => {
       handleCloseModal()
@@ -152,7 +155,7 @@ const ManageUserPage = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, [currentPage, roleFilter, searchFilter, orderBy])
+  }, [currentPage, roleFilter, searchFilter, orderBy, isDel])
   useEffect(() => {
     fetchUsers();
     fetchRoles();
