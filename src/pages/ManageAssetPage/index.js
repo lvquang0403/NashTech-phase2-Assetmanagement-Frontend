@@ -407,7 +407,7 @@ const ManageAsset = () => {
                 />
 
                 <ModalInfoAsset title="Detailed Asset Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={assetId} />
-                <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDeleteAsset} title="Are you sure?" message="Do you want to delete asset?" yesBtnName="Delete" />
+                <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDeleteAsset} title="Are you sure?" message="Do you want to delete this asset?" yesBtnName="Delete" />
                 <PopUpCantDel showModal={isOpenMess} closePopupFunc={handleCloseModal} title="Cannot delete asset" id={assetId} />
 
             </div>
