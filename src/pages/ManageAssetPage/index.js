@@ -237,7 +237,8 @@ const ManageAsset = () => {
 
     const fetchStates = async () => {
         await AssetService.getAllStates().then((res) => {
-            setStateList(res.data)
+            setStateList(res.data.sort((a,b)=>a.localeCompare(b)))
+          
         },
             (err) => {
                 console.log(err.toString());
