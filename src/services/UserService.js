@@ -10,9 +10,9 @@ class UserService {
     }
     createUser(user, locationId) {
         user.roleId = parseInt(user.roleId)
-        user.locationId = locationId
+        user.locationId = parseInt(locationId)
         // return axios.post(API_BASE_URL, user)
-        return axiosClient.get("sadsadsad")
+        return axiosClient.post(`${API_BASE_URL}`,user)
     }
 
     getById(userId) {
