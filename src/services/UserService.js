@@ -4,6 +4,7 @@ const API_BASE_URL = `api/users`;
 
 
 class UserService {
+    
     getAllUsers(query) {
         return axiosClient.get(`${API_BASE_URL}?${query}`);
     }

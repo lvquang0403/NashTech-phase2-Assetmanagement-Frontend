@@ -8,6 +8,7 @@ import validateAssetInsert from '../../utils/validateAssetInsert';
 import { Loading } from "notiflix/build/notiflix-loading-aio";
 
 import "./index.scss";
+import getLocationInSession from '../../utils/getLocationInSession';
 
 const now = new Date();
 const defaultDate = now.getFullYear() + '-' + (now.getMonth()+1) + '-' +now.getDate();
@@ -23,6 +24,7 @@ const CreateAsset = () => {
         specification:'success',
         installedDate:'success'
     })
+    
 
     // change data in input
     const changInputName = (e)=>{
@@ -74,12 +76,22 @@ const CreateAsset = () => {
         e.preventDefault();
         Loading.standard("Loading...");
         let error = {};
+        let state='';
+        let categoryID='';
+        // check location id
+        let locationID = getLocationInSession();
+        if(locationID === null){
+            alert("The administrator's location could not be found");
+            Loading.remove();
+            return null;
+        }
+
         // validate
         error.name = validateAssetInsert.name(nameAsset);
         error.specification = validateAssetInsert.specification(specification);
         error.installedDate = validateAssetInsert.installedDate(installedDate);
+
         // setState
-        let state='';
         let radio = document.getElementsByName('stateAsset')
         for (const i in radio) {
             if (radio[i].checked) {
@@ -93,13 +105,14 @@ const CreateAsset = () => {
         }
 
         // setcategoryID
-        let categoryID='';
         let select = document.getElementsByName('category')
         for (const i in select) {
             if (select[i].checked) {
                 categoryID = select[i].value;
             }
         }
+
+        
        
         if(error.name !=='success' || error.specification !=='success' || error.installedDate !=='success'){
             setButtonSave(false)
@@ -111,10 +124,10 @@ const CreateAsset = () => {
                 specification : specification, 
                 categoryId : categoryID, 
                 state : state, 
-                locationId : 1, 
+                locationId : locationID, 
                 installedDate: installedDate
             }
-            
+            console.log(data);
             AssetService.insert(data)
             .then((response)=>{
                 navigate('/manage-asset');

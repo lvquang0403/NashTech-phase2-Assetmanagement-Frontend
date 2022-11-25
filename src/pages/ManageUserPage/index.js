@@ -17,6 +17,7 @@ import PopUpMessage from '../../components/PopUpMessage';
 import TableUser from './TableUser';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import getLocationInSession from '../../utils/getLocationInSession';
 
 
 const cols = [
@@ -173,11 +174,18 @@ const ManageUserPage = () => {
 
   const fetchUsers = async () => {
     Loading.standard("Loading...");
+    // check location id
+    let locationID = getLocationInSession();
+    if(locationID === null){
+        alert("The administrator's location could not be found");
+        Loading.remove();
+        return null;
+    }
     const filter = {
       page: currentPage,
       keyword: searchFilter,
       types: roleFilter.length === 0 ? undefined : roleFilter,
-      locationId: 1,
+      locationId: locationID,
       orderBy: orderBy
     }
     let predicates = queryString.stringify(filter);

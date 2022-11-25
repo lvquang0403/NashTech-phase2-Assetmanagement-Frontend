@@ -17,6 +17,7 @@ import PopUpMessage from '../../components/PopUpMessage';
 import PopUpCantDel from './PopUpCantDel';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import getLocationInSession from '../../utils/getLocationInSession';
 
 const cols = [
     { name: 'Asset Code', isDropdown: true },
@@ -196,12 +197,19 @@ const ManageAsset = () => {
 
     const fetchAssets = async () => {
         Loading.standard("Loading...");
+        // check location id
+        let locationID = getLocationInSession();
+        if(locationID === null){
+            alert("The administrator's location could not be found");
+            Loading.remove();
+            return null;
+        }
         const filter = {
             page: currentPage,
             keyword: searchFilter,
             states: stateFilter.length === 0 ? undefined : stateFilter,
             categories: cateFitler.length === 0 ? undefined : cateFitler,
-            locationId: 1,
+            locationId: locationID,
             orderBy: orderBy
         }
         let predicates = queryString.stringify(filter);

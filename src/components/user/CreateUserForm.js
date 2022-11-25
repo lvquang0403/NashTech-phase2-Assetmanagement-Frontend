@@ -5,18 +5,27 @@ import { useNavigate } from 'react-router-dom'
 import { Loading } from "notiflix/build/notiflix-loading-aio";
 import UserService from '../../services/UserService';
 import RoleService from '../../services/RoleService';
+import getLocationInSession from '../../utils/getLocationInSession';
 const CreateUserForm = ({ user }) => {
     const { register, watch, handleSubmit, trigger, setValue, formState: { errors } } = useForm({ mode: "onChange" });
     const [isDisable, setDisable] = useState(true)
     const [roles, setRoles] = useState([])
     const navigate = useNavigate();
     const submitBtn = useRef();
-    const locationId = 1;
+
     const onSubmit = (data) => {
         data.lastName = data.lastName.trim()
         data.firstName = data.firstName.trim()
         submitBtn.current.disabled = true
         Loading.standard("Loading...");
+        
+        // check location id
+        let locationID = getLocationInSession();
+        if(locationID === null){
+            alert("The administrator's location could not be found");
+            Loading.remove();
+            return null;
+        }
         if (user.id) {
             UserService.updateById(data, user.id)
                 .then(res => {
@@ -24,7 +33,7 @@ const CreateUserForm = ({ user }) => {
                     navigate("/manage-user");
                 })
         } else {
-            UserService.createUser(data, locationId)
+            UserService.createUser(data, locationID)
                 .then(res => {
                     navigate("/manage-user");
                 })
