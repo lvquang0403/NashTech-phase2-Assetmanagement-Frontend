@@ -1,40 +1,60 @@
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import UserService from '../../services/UserService';
+import { Loading } from "notiflix/build/notiflix-loading-aio";
 
-
-const PopUpChangePass = ({ title, showModal, closePopupFunc, saveFunc, error, setError }) => {
+const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFunc }) => {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
 
     const [showOldPass, setShowOldPass] = useState(false);
     const [showNewPass, setShowNewPass] = useState(false);
 
+
+    const [error, setError] = useState("")
+    const [errorNewPass, setErrorNewPass] = useState("")
+
     const handleClose = () => {
         if (closePopupFunc) {
             closePopupFunc()
         }
     }
-    const handleSave = () => {
-        if (saveFunc) {
-            saveFunc()
-        }
+    const handleChangePass = () => {
+        Loading.standard("Loading...");
+        const oldPass = oldPassword
+        const newPass = newPassword
+        UserService.changePass(oldPass, newPass).then((res) => {
+            handleClose()
+            openModalSuccessFunc(true)
+          
+            Loading.remove();
+        }, (err) => {
+            console.log(err);
+            const resMessage =
+                (err.response &&
+                    err.response.data &&
+                    err.response.data.message) ||
+                err.message
+
+
+            err?.response?.data?.status === "BAD_REQUEST" ? setErrorNewPass("Must different old password.") :  setError("Password incorrect") 
+            Loading.remove();
+        })
+
+
     }
 
-    const handleError = () => {
-        if (setError) {
-            setError()
-        }
-    }
+
 
     return (
-        <Modal show={showModal} onHide={handleClose} size="lg" backdrop='static' keyboard={false} size="md">
+        <Modal show={showModal} onHide={handleClose} size="lg" backdrop='static' keyboard={false} size="md" >
             <Modal.Header closeButton style={{ color: '#cf2338', backgroundColor: 'lightgrey' }}>
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className="modal-body">
-                    <div className="mx-0 mx-md-3 mx-lg-5 my-2">
+                    <div className="mx-0 mx-md-1 mx-lg-3 my-2">
                         <div className="old-password w-100 d-flex justify-content-between ">
                             <label htmlFor="old-pass" className="">
                                 Old Password
@@ -50,7 +70,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, saveFunc, error, se
                                             : "border rounded"
                                     }
                                     onChange={(e) => setOldPassword(e.target.value)}
-                                    onFocus={handleError}
+                                    onFocus={() => setError("")}
                                     required
                                 />
                                 {!showOldPass ? (
@@ -79,7 +99,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, saveFunc, error, se
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
                                     required
-                                //onFocus={() => setError("")}
+                                    onFocus={() => setErrorNewPass("")}
                                 />
 
 
@@ -94,7 +114,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, saveFunc, error, se
                                         onClick={() => setShowNewPass(false)}
                                     ></AiFillEyeInvisible>
                                 )}
-
+                                {errorNewPass && <p className="text-danger fs-6">{errorNewPass}</p>}
                             </div>
                         </div>
                         <br />
@@ -102,7 +122,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, saveFunc, error, se
                             <button
                                 className="btn btn-danger"
                                 id="disable-button"
-                                onClick={handleSave}
+                                onClick={handleChangePass}
                                 disabled={!(oldPassword && newPassword)}
                             >
                                 Save

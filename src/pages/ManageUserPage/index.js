@@ -138,6 +138,7 @@ const ManageUserPage = () => {
       console.log(res);
       handleCloseModal()
       setDel(isDel ? false : true)
+
       toast.success('Disable success !!!', {
         position: toast.POSITION.TOP_CENTER
       });
