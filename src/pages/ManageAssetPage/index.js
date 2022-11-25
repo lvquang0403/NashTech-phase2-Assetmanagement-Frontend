@@ -112,7 +112,7 @@ const ManageAsset = () => {
             var temp = allState ? false : true
             if (temp) {
                 setAllState(temp)
-                setStateFilter(['Available', 'Not available', 'Assigned', 'Recycled', 'Recycling'])
+                setStateFilter(['Available', 'Not available', 'Assigned', 'Recycled', 'Waiting for recycling'])
             } else {
                 setAllState(temp)
                 setStateFilter([])

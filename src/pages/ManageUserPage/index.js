@@ -177,10 +177,10 @@ const ManageUserPage = () => {
     Loading.standard("Loading...");
     // check location id
     let locationID = getLocationInSession();
-    if(locationID === null){
-        alert("The administrator's location could not be found");
-        Loading.remove();
-        return null;
+    if (locationID === null) {
+      alert("The administrator's location could not be found");
+      Loading.remove();
+      return null;
     }
     const filter = {
       page: currentPage,
@@ -204,8 +204,9 @@ const ManageUserPage = () => {
   }
 
   const fetchRoles = async () => {
-    await RoleService.getRoleNames().then((res) => {
-      setRoleList(res.data)
+    await RoleService.getRoles().then((res) => {
+     // console.log();
+      setRoleList([...res.data].map(x => x.name))
     }, (err) => {
       console.log(err.toString());
     })
