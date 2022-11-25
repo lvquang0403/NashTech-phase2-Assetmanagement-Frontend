@@ -15,6 +15,8 @@ import ReactPaginate from 'react-paginate';
 import PopUpConfirm from '../../components/PopUpConfim';
 import PopUpMessage from '../../components/PopUpMessage';
 import TableUser from './TableUser';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const cols = [
@@ -127,15 +129,22 @@ const ManageUserPage = () => {
     })
   }
 
-  const handleDisableUser = async() => {
+  const handleDisableUser = async () => {
     Loading.standard("Loading...");
     await UserService.disableUserById(userId).then((res) => {
       console.log(res);
       handleCloseModal()
+      toast.success('Disable success !!!', {
+        position: toast.POSITION.TOP_CENTER
+      });
       Loading.remove();
     }, (err) => {
+
       handleCloseModal()
       console.log(err);
+      toast.error('Error !!!', {
+        position: toast.POSITION.TOP_CENTER
+      });
       Loading.remove();
     })
   }
@@ -229,7 +238,7 @@ const ManageUserPage = () => {
 
   return (
     <>
-
+      <ToastContainer />
       <div className="board-container">
         <div className="title">
           <h3>User List</h3>
@@ -316,9 +325,9 @@ const ManageUserPage = () => {
         />
 
         <ModalUserInfo title="Detailed User Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={userId} />
-        <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDisableUser} title="Are you sure?" message="Do you want to disable user?" yesBtnName="Disable"/>
+        <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDisableUser} title="Are you sure?" message="Do you want to disable user?" yesBtnName="Disable" />
         <PopUpMessage showModal={isOpenMess} closePopupFunc={handleCloseModal} title="Can not disable user" message={message} />
-        
+
       </div>
     </>
   );

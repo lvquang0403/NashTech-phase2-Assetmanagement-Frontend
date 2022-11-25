@@ -15,6 +15,8 @@ import ReactPaginate from 'react-paginate';
 import PopUpConfirm from '../../components/PopUpConfim';
 import PopUpMessage from '../../components/PopUpMessage';
 import PopUpCantDel from './PopUpCantDel';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const cols = [
     { name: 'Asset Code', isDropdown: true },
@@ -138,34 +140,38 @@ const ManageAsset = () => {
         Loading.standard("Loading...");
         setAssetId(id)
         await AssetService.checkCanDelete(id).then((res) => {
-          setOpenDel(true)
-          Loading.remove();
+            setOpenDel(true)
+            Loading.remove();
         }, (err) => {
-          setOpenMess(true)
-    
-        //   const resMessage =
-        //     (err.response &&
-        //       err.response.data &&
-        //       err.response.data.message) ||
-        //     err.message
-        //   setMessage(resMessage)
-          Loading.remove();
+            setOpenMess(true)
+
+            //   const resMessage =
+            //     (err.response &&
+            //       err.response.data &&
+            //       err.response.data.message) ||
+            //     err.message
+            //   setMessage(resMessage)
+            Loading.remove();
         })
-      }
-    
-      const handleDeleteAsset = async() => {
+    }
+
+    const handleDeleteAsset = async () => {
         Loading.standard("Loading...");
         await AssetService.deleteAssetById(assetId).then((res) => {
-          console.log(res);
-          handleCloseModal()
-          setDel(isDel ? false : true)
-          Loading.remove();
+            toast.success('Delete success !!!', {
+                position: toast.POSITION.TOP_CENTER
+            });
+            handleCloseModal()
+            setDel(isDel ? false : true)
+            Loading.remove();
         }, (err) => {
-          console.log(err);
-          Loading.remove();
+            toast.error('Error !!!', {
+                position: toast.POSITION.TOP_CENTER
+            });
+            Loading.remove();
         })
-      }
-    
+    }
+
 
     const handleOpenModal = (id) => {
         setAssetId(id)
@@ -268,7 +274,7 @@ const ManageAsset = () => {
     };
 
     return (
-        <>
+        <><ToastContainer />
             <div className="board-container">
                 <div className="title">
                     <h3>Asset List</h3>
@@ -382,7 +388,7 @@ const ManageAsset = () => {
                         </div>
                     </div>
                 </div>
-                <Table cols={cols} data={assetList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} onClickEditBtnFunc={handleEditBtn} onClickDelBtn={handleDelBtn}/>
+                <Table cols={cols} data={assetList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} onClickEditBtnFunc={handleEditBtn} onClickDelBtn={handleDelBtn} />
 
                 <ReactPaginate
                     breakLabel='...'
@@ -401,8 +407,8 @@ const ManageAsset = () => {
                 />
 
                 <ModalInfoAsset title="Detailed Asset Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={assetId} />
-                <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDeleteAsset} title="Are you sure?"  message="Do you want to delete asset?" yesBtnName="Delete"/>
-                <PopUpCantDel showModal={isOpenMess} closePopupFunc={handleCloseModal} title="Cannot delete asset" id={assetId}/>
+                <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDeleteAsset} title="Are you sure?" message="Do you want to delete asset?" yesBtnName="Delete" />
+                <PopUpCantDel showModal={isOpenMess} closePopupFunc={handleCloseModal} title="Cannot delete asset" id={assetId} />
 
             </div>
         </>
