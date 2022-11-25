@@ -15,7 +15,6 @@ const Header = () => {
   const [openModelChangePass, setOpenModelChangePass] = useState(false);
   const [openModelMess, setModelMess] = useState(false);
 
-  const [error, setError] = useState("")
 
   console.log(showConfirmLogout)
   const handleCloseModal = () => {
@@ -23,21 +22,7 @@ const Header = () => {
     setModelMess(false)
   }
 
-  const handleChangePass = () => {
-    setOpenModelChangePass(false)
-    setModelMess(true)
-    // UserService.changePass(null).then((res) => {
-    //   setOpenModelChangePass(false)
-    //   setModelMess(true)
-    // }, (err) => {
-    //   const resMessage =
-    //     (err.response &&
-    //       err.response.data &&
-    //       err.response.data.message) ||
-    //     err.message
-    //   setError(resMessage)
-    // })
-  }
+
   useEffect(() => {
 
   }, []);
@@ -79,7 +64,8 @@ const Header = () => {
 
             </ul>
           </div>
-          <PopUpChangePass showModal={openModelChangePass} closePopupFunc={handleCloseModal} saveFunc={handleChangePass} title="Change Password" error={error} setError={() => setError("")} />
+          <PopUpChangePass showModal={openModelChangePass} closePopupFunc={handleCloseModal} title="Change Password" openModalSuccessFunc={() => setModelMess(true)} />
+
           <Modal show={openModelMess} onHide={handleCloseModal} size="lg" backdrop='static' keyboard={false} size="md">
             <Modal.Header closeButton style={{ color: '#cf2338', backgroundColor: 'lightgrey' }}>
               <Modal.Title>Change Password</Modal.Title>

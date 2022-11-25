@@ -35,10 +35,10 @@ class UserService {
 
 
 
-    changePass({ userId, oldPass, newPass }) {
-        return axiosClient.put(`${API_BASE_URL}/${userId}`, {
-            oldPass: oldPass,
-            newPass: newPass
+    changePass(oldPass, newPass ) {
+        return axiosClient.post(`${API_BASE_URL}/reset-password`, {
+            oldPassword: oldPass,
+            newPassword: newPass
         });
     }
 }
