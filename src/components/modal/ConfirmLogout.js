@@ -33,7 +33,6 @@ const PopUpConfirmLogout = ({ show, setShow }) => {
                                 type="button"
                                 className="btn btn-danger "
                                 onClick={() => handleLogout()}
-                                id="btnSave"
                             >
                                 Log out
                             </button>
@@ -41,7 +40,6 @@ const PopUpConfirmLogout = ({ show, setShow }) => {
                                 type="button"
                                 className="btn btn-outline-secondary"
                                 onClick={() => setShow(false)}
-                                id="btnSave"
                             >
                                 Cancel
                             </button>

@@ -40,20 +40,22 @@ const LoginPage = () => {
             role: res.data.data.role.name,
             locationId: res.data.data.location.id,
             accessToken: res.data.data.accessToken,
-            status: ""
+            status: res.data.data.state
           }
           sessionStorage.clear();
           sessionStorage.setItem("user", JSON.stringify(user));
           Loading.remove();
           toast.success('Login success!!!', {
-            position: toast.POSITION.TOP_CENTER
+            position: toast.POSITION.TOP_CENTER,
+            className: "border border-success text-success",
           });
           navigate("/")
         })
         .catch(res => {
           Loading.remove();
           toast.error('Username or Password Invalid', {
-            position: toast.POSITION.TOP_CENTER
+            position: toast.POSITION.TOP_CENTER,
+            className: "border border-danger text-danger",
           });
           return null;
         })

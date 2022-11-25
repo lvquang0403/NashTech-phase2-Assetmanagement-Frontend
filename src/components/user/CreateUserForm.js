@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { Loading } from "notiflix/build/notiflix-loading-aio";
 import UserService from '../../services/UserService';
 import RoleService from '../../services/RoleService';
+import { ToastContainer, toast } from 'react-toastify';
 import getLocationInSession from '../../utils/getLocationInSession';
 const CreateUserForm = ({ user }) => {
     const { register, watch, handleSubmit, trigger, setValue, formState: { errors } } = useForm({ mode: "onChange" });
@@ -18,7 +19,6 @@ const CreateUserForm = ({ user }) => {
         data.firstName = data.firstName.trim()
         submitBtn.current.disabled = true
         Loading.standard("Loading...");
-        
         // check location id
         let locationID = getLocationInSession();
         if(locationID === null){
@@ -26,7 +26,7 @@ const CreateUserForm = ({ user }) => {
             Loading.remove();
             return null;
         }
-        if (user.id) {
+        if (user) {
             UserService.updateById(data, user.id)
                 .then(res => {
                     Loading.remove();
@@ -37,27 +37,32 @@ const CreateUserForm = ({ user }) => {
                 .then(res => {
                     navigate("/manage-user");
                 })
-                .catch(res => console.log(res))
+                .catch(res => {
+                    Loading.remove();
+                    toast.error('Error !!', {
+                        position: toast.POSITION.TOP_CENTER
+                      });  
+                })
         }
     }
     const watchAllFields = watch();
     useEffect(() => {
         if (user && user.id) {
             let gender = ''
-            if(user.gender === 'Female'){
+            if (user.gender === 'Female') {
                 gender = 'FEMALE'
             }
-            else{
+            else {
                 gender = 'MALE'
             }
             setValue("firstName", user.firstName);
             setValue("lastName", user.lastName);
             setValue("birth", user.birth);
-            setValue("gender", gender );
+            setValue("gender", gender);
             setValue("joinedDate", user.joinedDate);
             setValue("roleId", user.role.id);
         }
-        else{
+        else {
             setValue("gender", "FEMALE");
         }
     }, [user, roles])
@@ -99,7 +104,7 @@ const CreateUserForm = ({ user }) => {
 
 
     const joinedDateCondition = (date) => {
-        if(watchAllFields.birth){
+        if (watchAllFields.birth) {
             const joinedDate = new Date(date);
             const dateOfBirth = new Date(watchAllFields.birth)
             return joinedDate.getTime() > dateOfBirth.getTime()
@@ -119,6 +124,7 @@ const CreateUserForm = ({ user }) => {
 
     return (
         <div className="container d-flex justify-content-center align-items-center">
+            <ToastContainer></ToastContainer>
             <form onSubmit={handleSubmit(onSubmit)} className="w-50">
                 <div>{
                     user ? <h4 className="text-danger">Edit User</h4> :
@@ -133,7 +139,7 @@ const CreateUserForm = ({ user }) => {
                                 disabled={user ? true : false}
                                 maxLength="30"
                                 type="text"
-                                {...register("firstName", { validate: { requiredCondition ,specialCharCondition } })}
+                                {...register("firstName", { validate: { requiredCondition, specialCharCondition } })}
                                 className="form-control ms-3"
                             />
                         </div>
@@ -159,7 +165,7 @@ const CreateUserForm = ({ user }) => {
                                 disabled={user ? true : false}
                                 maxLength="30"
                                 type="text"
-                                {...register("lastName", { validate: {requiredCondition ,specialCharCondition } })}
+                                {...register("lastName", { validate: { requiredCondition, specialCharCondition } })}
                                 className="form-control ms-3" />
                         </div>
                         <div style={{ marginLeft: "124px" }} >

@@ -5,24 +5,31 @@ import PopUpConfirmLogout from "../modal/ConfirmLogout";
 import UserService from '../../services/UserService';
 import "./header.scss";
 import { Modal } from 'react-bootstrap';
+import { set } from "react-hook-form";
 
 const Header = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState({});
   const [username, setUsername] = useState("Username");
+  const [action, setAction] = useState(0);
   const [showConfirmLogout, setShowConfirmLogout] = useState(false)
 
 
   const [openModelChangePass, setOpenModelChangePass] = useState(false);
   const [openModelMess, setModelMess] = useState(false);
-
-
+  const [error, setError] = useState("")
   console.log(showConfirmLogout)
   const handleCloseModal = () => {
     setOpenModelChangePass(false)
     setModelMess(false)
   }
-
-
+  useEffect(() => {
+    if(window.sessionStorage.getItem('user')){
+      const userJson = window.sessionStorage.getItem('user')
+      const user = JSON.parse(userJson)
+      setUser(user)
+  }
+  },[])
   useEffect(() => {
 
   }, []);
@@ -40,7 +47,7 @@ const Header = () => {
               aria-expanded="false"
               data-bs-reference="parent"
             >
-              <span className="mx-2" style={{ color: 'white', fontWeight: 'bold' }}>{username}</span>
+              <span className="mx-2" style={{ color: 'white', fontWeight: 'bold' }}>{user.firstName && (user.lastName + " " + user.firstName)}</span>
             </button>
             <ul
               className="dropdown-menu"
@@ -57,7 +64,7 @@ const Header = () => {
                 className="dropdown-item"
                 data-bs-toggle="modal"
                 data-bs-target="#logoutModal"
-                onClick={() => setShowConfirmLogout(true)}
+                onClick={()=>setShowConfirmLogout(true)}
               >
                 Log out
               </li>
@@ -88,7 +95,6 @@ const Header = () => {
             </Modal.Body>
           </Modal >
           <PopUpConfirmLogout show={showConfirmLogout} setShow={setShowConfirmLogout} />
-
         </div>
 
       </div>
