@@ -21,31 +21,33 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFun
         }
     }
     const handleChangePass = () => {
+
         Loading.standard("Loading...");
         const oldPass = oldPassword
         const newPass = newPassword
-        UserService.changePass(oldPass, newPass).then((res) => {
-            handleClose()
-            openModalSuccessFunc(true)
-          
-            Loading.remove();
-        }, (err) => {
-            console.log(err);
-            const resMessage =
-                (err.response &&
-                    err.response.data &&
-                    err.response.data.message) ||
-                err.message
+        if (newPass.length >= 8) {
+            UserService.changePass(oldPass, newPass).then((res) => {
+                handleClose()
+                openModalSuccessFunc(true)
+
+                Loading.remove();
+            }, (err) => {
+                console.log(err);
+                const resMessage =
+                    (err.response &&
+                        err.response.data &&
+                        err.response.data.message) ||
+                    err.message
 
 
-            err?.response?.data?.status === "BAD_REQUEST" ? setErrorNewPass("Must different old password.") :  setError("Password incorrect") 
-            Loading.remove();
-        })
-
-
+                err?.response?.data?.status === "BAD_REQUEST" ? setErrorNewPass("Must different old password.") : setError("Password incorrect")
+                Loading.remove();
+            })
+        }else{
+            setErrorNewPass("Length must be greater than 8")
+        }
+        Loading.remove()
     }
-
-
 
     return (
         <Modal show={showModal} onHide={handleClose} size="lg" backdrop='static' keyboard={false} size="md" >
