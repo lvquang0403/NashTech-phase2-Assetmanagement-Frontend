@@ -43,10 +43,11 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFun
                 err?.response?.data?.status === "BAD_REQUEST" ? setErrorNewPass("Must different old password.") : setError("Password incorrect")
                 Loading.remove();
             })
-        }else{
+        } else {
             setErrorNewPass("Length must be greater than 8")
+            Loading.remove()
         }
-        Loading.remove()
+
     }
 
     return (
