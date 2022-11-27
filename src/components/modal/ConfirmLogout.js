@@ -19,7 +19,7 @@ const PopUpConfirmLogout = ({ show, setShow }) => {
         >
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content modal-sm  border border-dark">
-                    <div className="modal-header">
+                    <div className="modal-header" style={{ color: '#cf2338', backgroundColor: 'lightgrey' }}>
                         <h5 className="modal-title text-danger">Are you sure ?</h5>
                     </div>
                     <div className="modal-body">

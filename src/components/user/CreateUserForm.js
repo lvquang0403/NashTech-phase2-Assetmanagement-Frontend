@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom';
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom'
 import { Loading } from "notiflix/build/notiflix-loading-aio";
 import UserService from '../../services/UserService';
@@ -8,7 +8,7 @@ import RoleService from '../../services/RoleService';
 import { ToastContainer, toast } from 'react-toastify';
 import getLocationInSession from '../../utils/getLocationInSession';
 const CreateUserForm = ({ user }) => {
-    const { register, watch, handleSubmit, trigger, setValue, formState: { errors } } = useForm({ mode: "onChange" });
+    const { register, watch, handleSubmit, trigger, setValue, control,  formState: { errors } } = useForm({ mode: "onChange" });
     const [isDisable, setDisable] = useState(true)
     const [roles, setRoles] = useState([])
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ const CreateUserForm = ({ user }) => {
         Loading.standard("Loading...");
         // check location id
         let locationID = getLocationInSession();
-        if(locationID === null){
+        if (locationID === null) {
             alert("The administrator's location could not be found");
             Loading.remove();
             return null;
@@ -41,11 +41,12 @@ const CreateUserForm = ({ user }) => {
                     Loading.remove();
                     toast.error('Error !!', {
                         position: toast.POSITION.TOP_CENTER
-                      });  
+                    });
                 })
         }
     }
     const watchAllFields = watch();
+    console.log(watchAllFields.birth)
     useEffect(() => {
         if (user && user.id) {
             let gender = ''
@@ -186,6 +187,20 @@ const CreateUserForm = ({ user }) => {
                             <label className="col-form-label">Date of Birth</label>
                         </div>
                         <div className="col-auto">
+                            {/* <Controller
+                                control={control}
+                                name='date-input'
+                                render={({ field }) => (
+                                    <DatePicker
+                                        placeholderText='Select date'
+                                        onChange={(date) => field.onChange(date)}
+                                        selected={field.value}
+                                        format="DD/MM/YYYY"
+                                        placeholder='dd/mm/yyyy'
+                                        style={{padding: "18px 0px", paddingLeft: "12px", paddingRight:"27px"}}
+                                    />
+                                )}
+                            /> */}
                             <input
                                 style={{ width: "225px" }}
                                 type="date"
