@@ -7,6 +7,7 @@ import UserService from '../../services/UserService';
 import RoleService from '../../services/RoleService';
 import { ToastContainer, toast } from 'react-toastify';
 import getLocationInSession from '../../utils/getLocationInSession';
+import formatDate from '../../utils/formatDate';
 const CreateUserForm = ({ user }) => {
     const { register, watch, handleSubmit, trigger, setValue, control,  formState: { errors } } = useForm({ mode: "onChange" });
     const [isDisable, setDisable] = useState(true)
@@ -203,9 +204,10 @@ const CreateUserForm = ({ user }) => {
                             /> */}
                             <input
                                 style={{ width: "225px" }}
+                                data-date={watchAllFields.birth ==='' ? "dd/mm/yyyy" : formatDate(watchAllFields.birth)}
                                 type="date"
                                 {...register("birth", { validate: { ageCondition }, required: true })}
-                                className="form-control pe-4" />
+                                className="form-control pe-4 __input-date" />
                             {
                                 errors.birth && errors.birth.type === "ageCondition" && (
                                     <div className="error text-danger">User is under 18. Please select a different date</div>
@@ -249,9 +251,10 @@ const CreateUserForm = ({ user }) => {
                         <div className="col-auto">
                             <input
                                 style={{ width: "222px" }}
+                                data-date={watchAllFields.joinedDate ==='' ? "dd/mm/yyyy" : formatDate(watchAllFields.joinedDate)}
                                 type="date"
                                 {...register("joinedDate", { validate: { joinedDateConditionNotSatAndSun, joinedDateCondition }, required: true })}
-                                className="form-control" />
+                                className="form-control __input-date" />
                         </div>
                         <div style={{ marginLeft: "122px" }}>  {
                             errors.joinedDate && errors.joinedDate.type === "joinedDateCondition" && (
