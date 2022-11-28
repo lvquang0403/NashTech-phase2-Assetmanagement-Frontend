@@ -102,6 +102,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFun
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
                                     required
+                                    maxLength={20}
                                     onFocus={() => setErrorNewPass("")}
                                 />
 
