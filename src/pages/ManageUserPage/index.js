@@ -337,7 +337,7 @@ const ManageUserPage = () => {
           activeLinkClassName='active'
         />
 
-        <ModalUserInfo title="Detailed User Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={userId} />
+        <ModalUserInfo title="Detailed User Information" showModal={isOpen} closePopupFunc={handleCloseModal} objId={userId} />
         <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDisableUser} title="Are you sure?" message="Do you want to disable this user?" yesBtnName="Disable" />
         <PopUpMessage showModal={isOpenMess} closePopupFunc={handleCloseModal} title="Can not disable user" message={message} />
 

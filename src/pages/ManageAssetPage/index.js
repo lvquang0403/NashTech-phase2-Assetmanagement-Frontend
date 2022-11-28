@@ -415,7 +415,7 @@ const ManageAsset = () => {
                     activeLinkClassName='active'
                 />
 
-                <ModalInfoAsset title="Detailed Asset Infomation" showModal={isOpen} closePopupFunc={handleCloseModal} objId={assetId} />
+                <ModalInfoAsset title="Detailed Asset Information" showModal={isOpen} closePopupFunc={handleCloseModal} objId={assetId} />
                 <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDeleteAsset} title="Are you sure?" message="Do you want to delete this asset?" yesBtnName="Delete" />
                 <PopUpCantDel showModal={isOpenMess} closePopupFunc={handleCloseModal} title="Cannot delete asset" id={assetId} />
 
