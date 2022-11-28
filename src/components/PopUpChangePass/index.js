@@ -44,7 +44,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFun
                 Loading.remove();
             })
         } else {
-            setErrorNewPass("Length must be greater than 8")
+            setErrorNewPass("At least 6 characters")
             Loading.remove()
         }
 
