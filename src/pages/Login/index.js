@@ -126,7 +126,7 @@ const LoginPage = () => {
           className="px-4"
           style={{ fontWeight: "500" }}
         >
-          Login
+          Log In
         </Button>
       </div>
     </div>
