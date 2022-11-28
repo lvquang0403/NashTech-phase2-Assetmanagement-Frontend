@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Moment from 'react-moment';
 import {
     FaCaretDown,
@@ -7,6 +7,8 @@ import {
 } from '../../components/icon';
 
 const TableUser = ({ cols, data, actions, sortFunc, onClickRecordFunc, onClickEditBtnFunc, onClickDelBtn }) => {
+    const [userId, setUserId] = useState()
+
 
     const handleSort = (col) => {
         if (sortFunc) {
@@ -32,6 +34,17 @@ const TableUser = ({ cols, data, actions, sortFunc, onClickRecordFunc, onClickEd
             console.log(id);
         }
     }
+
+    const getUserIdInSession = () => {
+
+    }
+
+    useEffect(() => {
+
+        const userJson = window.sessionStorage.getItem('user')
+        setUserId(JSON.parse(userJson).id)
+        console.log(JSON.parse(userJson).id);
+    }, [])
 
     return (
         <div class="table-listing">
@@ -82,7 +95,9 @@ const TableUser = ({ cols, data, actions, sortFunc, onClickRecordFunc, onClickEd
                                     actions &&
                                     <td>
                                         {actions["edit"] && <FaPen style={{ cursor: 'pointer', marginLeft: 15, opacity: (obj.state === "Assigned") ? '0.3' : '1' }} onClick={() => (obj.state === "Assigned") ? null : handleOnEditBtn(obj.id)} />}
-                                        {actions.remove && <BsXCircle style={{ cursor: 'pointer', marginLeft: 15, color: 'red' }} onClick={() => handleDelBtn(obj.id)} />}
+                                        {actions.remove && <BsXCircle style={{ cursor: 'pointer', marginLeft: 15, color: 'red', opacity: (obj.id == userId) ? '0.3' : '1' }}
+                                            onClick={obj.id == userId ? null : () => handleDelBtn(obj.id)} />}
+
                                         {actions.return && <>ret</>}
                                     </td>
                                 }

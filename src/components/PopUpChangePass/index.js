@@ -25,7 +25,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFun
         Loading.standard("Loading...");
         const oldPass = oldPassword
         const newPass = newPassword
-        if (newPass.length >= 8) {
+        if (newPass.length >= 6) {
             UserService.changePass(oldPass, newPass).then((res) => {
                 handleClose()
                 openModalSuccessFunc(true)
