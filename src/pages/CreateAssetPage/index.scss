@@ -36,29 +36,29 @@
 }
 
 
-.__input-date {
-    position: relative;
-    width: 150px; height: 40px;
-    color: white;
-}
+// .__input-date {
+//     position: relative;
+//     width: 150px; height: 40px;
+//     color: white;
+// }
 
-.__input-date:before {
-    position: absolute;
-    top: 6px; left: 3px;
-    content: attr(data-date);
-    display: inline-block;
-    color: black;
-}
+// .__input-date:before {
+//     position: absolute;
+//     top: 6px; left: 3px;
+//     content: attr(data-date);
+//     display: inline-block;
+//     color: black;
+// }
 
-.__input-date::-webkit-datetime-edit, .__input-date::-webkit-inner-spin-button, .__input-date::-webkit-clear-button {
-    display: none;
-}
+// .__input-date::-webkit-datetime-edit, .__input-date::-webkit-inner-spin-button, .__input-date::-webkit-clear-button {
+//     display: none;
+// }
 
-.__input-date::-webkit-calendar-picker-indicator {
-    position: absolute;
-    top: 6px;
-    right: 0;
-    color: black;
-    opacity: 1;
-    font-size: 20px;
-}
+// .__input-date::-webkit-calendar-picker-indicator {
+//     position: absolute;
+//     top: 6px;
+//     right: 0;
+//     color: black;
+//     opacity: 1;
+//     font-size: 20px;
+// }
