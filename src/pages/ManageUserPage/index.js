@@ -72,9 +72,10 @@ const ManageUserPage = () => {
       clearTimeout(typingTimeOutRef.current);
     }
     typingTimeOutRef.current = setTimeout(() => {
+      setSearchFilter(temp.trim())
       setOrderBy(null)
       setCurrentPage(0)
-      setSearchFilter(temp)
+     
     }, 500);
   }
 
