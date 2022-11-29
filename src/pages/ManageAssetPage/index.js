@@ -73,7 +73,7 @@ const ManageAsset = () => {
             clearTimeout(typingTimeOutRef.current);
         }
         typingTimeOutRef.current = setTimeout(() => {
-            setSearchFilter(temp)
+            setSearchFilter(temp.trim())
         }, 500);
     }
 
