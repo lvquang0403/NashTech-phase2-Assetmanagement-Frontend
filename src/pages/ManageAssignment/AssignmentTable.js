@@ -2,7 +2,7 @@ import React from "react";
 import Moment from "react-moment";
 import { FaCaretDown, FaPen, BsXCircle } from "../../components/icon";
 
-const TableUser = ({
+const AssingmentTable = ({
   cols,
   data,
   actions,
@@ -20,7 +20,7 @@ const TableUser = ({
   const handleOnClickRecord = (id) => {
     if (onClickRecordFunc && id != undefined) {
       onClickRecordFunc(id);
-      //console.log(id);
+      console.log(id);
     }
   };
   const handleOnEditBtn = (id) => {
@@ -65,35 +65,50 @@ const TableUser = ({
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
-                  {obj.id}
+                  {index + 1}
                 </td>
                 <td
                   onClick={() => handleOnClickRecord(obj.id)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
-                  {obj.fullName}
+                  {obj.assetCode}
                 </td>
                 <td
                   onClick={() => handleOnClickRecord(obj.id)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
-                  {obj.userName}
+                  {obj.assetName}
+                </td>
+
+                <td
+                  onClick={() => handleOnClickRecord(obj.id)}
+                  className="border-bottom"
+                  data-bs-toggle="modal"
+                >
+                  {obj.assignedTo}
                 </td>
                 <td
                   onClick={() => handleOnClickRecord(obj.id)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
-                  <Moment date={obj.joinedDate} format="DD/MM/YYYY" />
+                  {obj.assignedBy}
                 </td>
                 <td
                   onClick={() => handleOnClickRecord(obj.id)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
-                  {obj.role}
+                  <Moment date={obj.assignedDate} format="DD/MM/YYYY" />
+                </td>
+                <td
+                  onClick={() => handleOnClickRecord(obj.id)}
+                  className="border-bottom"
+                  data-bs-toggle="modal"
+                >
+                  {obj.state}
                 </td>
                 {actions && (
                   <td>
@@ -132,4 +147,4 @@ const TableUser = ({
   );
 };
 
-export default TableUser;
+export default AssingmentTable;
