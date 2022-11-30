@@ -3,7 +3,7 @@ import Table from "../../components/Table";
 import TableUser from "../ManageUserPage/TableUser";
 import ReactPaginate from "react-paginate";
 import ModalUserInfo from "../ManageUserPage/ModalUserInfo";
-import AssingmentTable from "./AssignmentTable";
+import AssignmentTable from "./AssignmentTable";
 import queryString from "query-string";
 import SearchInput from "../../components/SearchInput/index";
 import AssingementService from "../../services/AssignmentService";
@@ -24,7 +24,7 @@ import getLocationInSession from "../../utils/getLocationInSession";
 
 const ManageAssignmentPage = () => {
   const cols = [
-    { name: "No.", isDropdown: true },
+    { name: "No.", isDropdown: false },
     { name: "Asset Code", isDropdown: true },
     { name: "Asset Name", isDropdown: true },
     { name: "Assigned To", isDropdown: true },
@@ -36,6 +36,7 @@ const ManageAssignmentPage = () => {
   const navigate = useNavigate();
   const typingTimeOutRef = useRef(null);
   const [allState, setAllState] = useState(false);
+  const [currentNo, setCurrentNo] = useState(0);
   const calendarIcon = <FaCalendar />;
 
   const [assignmentList, setAssignmentList] = useState([]);
@@ -123,9 +124,6 @@ const ManageAssignmentPage = () => {
     const data = [...assignmentList];
 
     switch (col) {
-      case "No.":
-        col === currentSortCol ? setOrderBy("No._DESC") : setOrderBy("id_ASC");
-        break;
       case "Asset Code":
         col === currentSortCol
           ? setOrderBy("assetCode_DESC")
@@ -172,6 +170,15 @@ const ManageAssignmentPage = () => {
     return: false,
   };
 
+  const handleAssignedDateChange = (date) => {
+    if (typingTimeOutRef.current) {
+      clearTimeout(typingTimeOutRef.current);
+    }
+    typingTimeOutRef.current = setTimeout(() => {
+      setAssignedDate(date);
+    }, 1000);
+  };
+
   const handleCloseModal = () => {
     setOpen(false);
     setOpenDel(false);
@@ -182,6 +189,14 @@ const ManageAssignmentPage = () => {
     const { selected } = e;
     setCurrentPage(selected);
   };
+
+  useEffect(() => {
+    if (currentPage === 0) {
+      setCurrentNo(0);
+    } else {
+      setCurrentNo(currentPage * 15);
+    }
+  }, [currentPage]);
 
   const handleOpenModal = (id) => {
     setUserId(id);
@@ -298,7 +313,7 @@ const ManageAssignmentPage = () => {
                   <DatePicker
                     className="btn btn-outline-secondary dropdown-toggle"
                     selected={assignedDate}
-                    onChange={(date) => setAssignedDate(date)}
+                    onChange={(date) => handleAssignedDateChange(date)}
                     placeholderText="Assigned Date    🗓️"
                   />
                 </div>
@@ -330,12 +345,13 @@ const ManageAssignmentPage = () => {
           // onClickEditBtnFunc={handleEditBtn}
           // onClickDelBtn={handleDelBtn}
         /> */}
-        <AssingmentTable
+        <AssignmentTable
           cols={cols}
           data={assignmentList}
           actions={actions}
           sortFunc={sortByCol}
           onClickRecordFunc={handleOpenModal}
+          currentNo={currentNo}
           // onClickEditBtnFunc={handleEditBtn}
           // onClickDelBtn={handleDelBtn}
         />

@@ -10,6 +10,7 @@ const AssingmentTable = ({
   onClickRecordFunc,
   onClickEditBtnFunc,
   onClickDelBtn,
+  currentNo,
 }) => {
   const handleSort = (col) => {
     if (sortFunc) {
@@ -35,6 +36,7 @@ const AssingmentTable = ({
       console.log(id);
     }
   };
+  console.log(currentNo);
 
   return (
     <div class="table-listing">
@@ -65,7 +67,7 @@ const AssingmentTable = ({
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
-                  {index + 1}
+                  {index + 1 + currentNo}
                 </td>
                 <td
                   onClick={() => handleOnClickRecord(obj.id)}

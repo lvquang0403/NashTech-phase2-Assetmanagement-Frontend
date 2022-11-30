@@ -25,7 +25,6 @@ function App() {
           <Route path="/login" element={<LoginPage></LoginPage>} />
           <Route element={<Main></Main>}>
             <Route exact path="/" element={<HomePage></HomePage>} />
-
             <Route
               path="/manage-user"
               element={<ManageUserPage></ManageUserPage>}
