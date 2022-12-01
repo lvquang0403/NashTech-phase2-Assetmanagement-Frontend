@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Moment from "react-moment";
-import { FaCaretDown, FaPen, BsXCircle } from "../../components/icon";
+import {
+  FaCaretDown,
+  FaPen,
+  BsXCircle,
+  FaUndoAlt,
+} from "../../components/icon";
 
-const TableUser = ({
+const AssingmentTable = ({
   cols,
   data,
   actions,
@@ -10,9 +15,8 @@ const TableUser = ({
   onClickRecordFunc,
   onClickEditBtnFunc,
   onClickDelBtn,
+  currentNo,
 }) => {
-  const [userId, setUserId] = useState();
-
   const handleSort = (col) => {
     if (sortFunc) {
       sortFunc(col);
@@ -20,31 +24,25 @@ const TableUser = ({
   };
 
   const handleOnClickRecord = (id) => {
-    if (onClickRecordFunc && id != undefined) {
+    if (onClickRecordFunc && id !== undefined) {
       onClickRecordFunc(id);
-      //console.log(id);
-    }
-  };
-  const handleOnEditBtn = (id) => {
-    if (onClickEditBtnFunc && id != undefined) {
-      onClickEditBtnFunc(id);
       console.log(id);
     }
   };
+  const handleOnEditBtn = (id) => {
+    console.log(id);
+
+    if (onClickEditBtnFunc && id !== undefined) {
+      onClickEditBtnFunc(id);
+    }
+  };
   const handleDelBtn = (id) => {
-    if (onClickDelBtn && id != undefined) {
+    if (onClickDelBtn && id !== undefined) {
       onClickDelBtn(id);
       console.log(id);
     }
   };
-
-  const getUserIdInSession = () => {};
-
-  useEffect(() => {
-    const userJson = window.sessionStorage.getItem("user");
-    setUserId(JSON.parse(userJson).id);
-    console.log(JSON.parse(userJson).id);
-  }, []);
+  console.log(currentNo);
 
   return (
     <div class="table-listing">
@@ -75,35 +73,50 @@ const TableUser = ({
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
-                  {obj.id}
+                  {index + 1 + currentNo}
                 </td>
                 <td
                   onClick={() => handleOnClickRecord(obj.id)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
-                  {obj.fullName}
+                  {obj.assetId}
                 </td>
                 <td
                   onClick={() => handleOnClickRecord(obj.id)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
-                  {obj.userName}
+                  {obj.assetName}
+                </td>
+
+                <td
+                  onClick={() => handleOnClickRecord(obj.id)}
+                  className="border-bottom"
+                  data-bs-toggle="modal"
+                >
+                  {obj.assignTo}
                 </td>
                 <td
                   onClick={() => handleOnClickRecord(obj.id)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
-                  <Moment date={obj.joinedDate} format="DD/MM/YYYY" />
+                  {obj.assignBy}
                 </td>
                 <td
                   onClick={() => handleOnClickRecord(obj.id)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
-                  {obj.role}
+                  <Moment date={obj.assignedDate} format="DD/MM/YYYY" />
+                </td>
+                <td
+                  onClick={() => handleOnClickRecord(obj.id)}
+                  className="border-bottom"
+                  data-bs-toggle="modal"
+                >
+                  {obj.state}
                 </td>
                 {actions && (
                   <td>
@@ -112,12 +125,15 @@ const TableUser = ({
                         style={{
                           cursor: "pointer",
                           marginLeft: 15,
-                          opacity: obj.state === "Assigned" ? "0.3" : "1",
+                          opacity:
+                            obj.state !== "Waiting for acceptance"
+                              ? "0.3"
+                              : "1",
                         }}
                         onClick={() =>
-                          obj.state === "Assigned"
-                            ? null
-                            : handleOnEditBtn(obj.id)
+                          obj.state === "Waiting for acceptance"
+                            ? handleOnEditBtn(obj.id)
+                            : null
                         }
                       />
                     )}
@@ -127,15 +143,20 @@ const TableUser = ({
                           cursor: "pointer",
                           marginLeft: 15,
                           color: "red",
-                          opacity: obj.id == userId ? "0.3" : "1",
                         }}
-                        onClick={
-                          obj.id == userId ? null : () => handleDelBtn(obj.id)
-                        }
+                        // onClick={() => handleDelBtn(obj.id)}
                       />
                     )}
-
-                    {actions.return && <>ret</>}
+                    {actions.remove && (
+                      <FaUndoAlt
+                        style={{
+                          cursor: "pointer",
+                          marginLeft: 15,
+                          color: "blue",
+                        }}
+                        // onClick={() => handleDelBtn(obj.id)}
+                      />
+                    )}
                   </td>
                 )}
               </tr>
@@ -146,4 +167,4 @@ const TableUser = ({
   );
 };
 
-export default TableUser;
+export default AssingmentTable;

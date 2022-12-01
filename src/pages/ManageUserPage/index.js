@@ -1,95 +1,91 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import "../ManageAssetPage/index.scss";
-import SearchInput from '../../components/SearchInput';
-import Table from '../../components/Table';
+import SearchInput from "../../components/SearchInput";
+import Table from "../../components/Table";
 import { useNavigate } from "react-router-dom";
-import {
-  FaFilter,
-} from '../../components/icon';
+import { FaFilter } from "../../components/icon";
 import { Loading } from "notiflix/build/notiflix-loading-aio";
-import queryString from 'query-string';
-import UserService from '../../services/UserService';
-import RoleService from '../../services/RoleService';
-import ModalUserInfo from './ModalUserInfo';
-import ReactPaginate from 'react-paginate';
-import PopUpConfirm from '../../components/PopUpConfim';
-import PopUpMessage from '../../components/PopUpMessage';
-import TableUser from './TableUser';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import getLocationInSession from '../../utils/getLocationInSession';
-
+import queryString from "query-string";
+import UserService from "../../services/UserService";
+import RoleService from "../../services/RoleService";
+import ModalUserInfo from "./ModalUserInfo";
+import ReactPaginate from "react-paginate";
+import PopUpConfirm from "../../components/PopUpConfim";
+import PopUpMessage from "../../components/PopUpMessage";
+import TableUser from "./TableUser";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import getLocationInSession from "../../utils/getLocationInSession";
 
 const cols = [
-  { name: 'Staff Code', isDropdown: true },
-  { name: 'Full Name', isDropdown: true },
-  { name: 'Username', isDropdown: false },
-  { name: 'Joined Date', isDropdown: true },
-  { name: 'Type', isDropdown: true }
-]
+  { name: "Staff Code", isDropdown: true },
+  { name: "Full Name", isDropdown: true },
+  { name: "Username", isDropdown: false },
+  { name: "Joined Date", isDropdown: true },
+  { name: "Type", isDropdown: true },
+];
 const actions = {
   edit: true,
   remove: true,
-  return: false
-}
+  return: false,
+};
 
 const ManageUserPage = () => {
   const typingTimeOutRef = useRef(null);
   const navigate = useNavigate();
-  const [roleList, setRoleList] = useState([])
-  const [userList, setUserList] = useState([])
+  const [roleList, setRoleList] = useState([]);
+  const [userList, setUserList] = useState([]);
 
-
-  const [allRole, setAllRole] = useState(true)
-  const [input, setInput] = useState('')
+  const [allRole, setAllRole] = useState(true);
+  const [input, setInput] = useState("");
   //filter
-  const [searchFilter, setSearchFilter] = useState('')
-  const [roleFilter, setRoleFilter] = useState([])
-  const [orderBy, setOrderBy] = useState()
+  const [searchFilter, setSearchFilter] = useState("");
+  const [roleFilter, setRoleFilter] = useState([]);
+  const [orderBy, setOrderBy] = useState();
 
   //header table
-  const [currentSortCol, setCurrentCol] = useState('')
+  const [currentSortCol, setCurrentCol] = useState("");
 
   //paging
   const [totalPage, setTotalPage] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0)
+  const [currentPage, setCurrentPage] = useState(0);
 
   //id asset to show detail asset
-  const [userId, setUserId] = useState()
+  const [userId, setUserId] = useState();
 
-  const [isOpen, setOpen] = useState(false)
-  const [isOpenDel, setOpenDel] = useState(false)
-  const [isOpenMess, setOpenMess] = useState(false)
-  const [message, setMessage] = useState('')
+  const [isOpen, setOpen] = useState(false);
+  const [isOpenDel, setOpenDel] = useState(false);
+  const [isOpenMess, setOpenMess] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const [isDel, setDel] = useState(false)
+  const [isDel, setDel] = useState(false);
 
   const handleInputChange = (newValue) => {
-    var temp = newValue
-    setInput(temp)
+    var temp = newValue;
+    setInput(temp);
 
     if (typingTimeOutRef.current) {
       clearTimeout(typingTimeOutRef.current);
     }
     typingTimeOutRef.current = setTimeout(() => {
-      setSearchFilter(temp.trim())
-      setOrderBy(null)
-      setCurrentPage(0)
-
+      setSearchFilter(temp.trim());
+      setOrderBy(null);
+      setCurrentPage(0);
     }, 500);
-  }
+  };
 
   const handlePageChange = (e) => {
     const { selected } = e;
-    setCurrentPage(selected)
-  }
+    setCurrentPage(selected);
+  };
+
   const handleRoleChange = (val) => {
-    setCurrentPage(0)
+    setCurrentPage(0);
 
     if (val === "All") {
       if (allRole) {
-        setAllRole(true)
-        setRoleFilter([...roleList])
+        setAllRole(true);
+        setRoleFilter([...roleList]);
       }
     } else {
       let isExisted = roleFilter.findIndex((item) => item === val);
@@ -97,94 +93,92 @@ const ManageUserPage = () => {
         let tempList = [...roleFilter];
         tempList.splice(isExisted, 1);
         setRoleFilter(tempList);
-
-      }
-      else {
+      } else {
         let tempList = [...roleFilter];
         tempList.push(val);
-        setOrderBy(null)
+        setOrderBy(null);
         setRoleFilter(tempList);
       }
     }
-  }
+  };
 
   useEffect(() => {
     if (roleFilter.length == roleList.length || roleFilter.length == 0) {
-      setAllRole(true)
+      setAllRole(true);
     } else {
-      setAllRole(false)
+      setAllRole(false);
     }
-  }, [roleFilter])
+  }, [roleFilter]);
   useEffect(() => {
     if (allRole) {
-        setRoleFilter([])
+      setRoleFilter([]);
     }
-
-   
-}, [allRole])
+  }, [allRole]);
 
   const handleEditBtn = (id) => {
-    navigate(`/manage-user/edit/${id}`)
-  }
+    navigate(`/manage-user/edit/${id}`);
+  };
 
   const handleDelBtn = async (id) => {
-    setUserId(id)
-    await UserService.checkDisable(id).then((res) => {
-      setOpenDel(true)
-      Loading.remove();
-    }, (err) => {
-      setOpenMess(true)
+    setUserId(id);
+    await UserService.checkDisable(id).then(
+      (res) => {
+        setOpenDel(true);
+        Loading.remove();
+      },
+      (err) => {
+        setOpenMess(true);
 
-      const resMessage =
-        (err.response &&
-          err.response.data &&
-          err.response.data.message) ||
-        err.message
-      setMessage(resMessage)
-      Loading.remove();
-    })
-  }
+        const resMessage =
+          (err.response && err.response.data && err.response.data.message) ||
+          err.message;
+        setMessage(resMessage);
+        Loading.remove();
+      }
+    );
+  };
 
   const handleDisableUser = async () => {
     Loading.standard("Loading...");
-    await UserService.disableUserById(userId).then((res) => {
-      console.log(res);
-      handleCloseModal()
-      setDel(isDel ? false : true)
+    await UserService.disableUserById(userId).then(
+      (res) => {
+        console.log(res);
+        handleCloseModal();
+        setDel(isDel ? false : true);
 
-      toast.success('Disable success !!!', {
-        position: toast.POSITION.TOP_CENTER
-      });
-      Loading.remove();
-    }, (err) => {
-
-      handleCloseModal()
-      console.log(err);
-      toast.error('Error !!!', {
-        position: toast.POSITION.TOP_CENTER
-      });
-      Loading.remove();
-    })
-  }
+        toast.success("Disable success !!!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        Loading.remove();
+      },
+      (err) => {
+        handleCloseModal();
+        console.log(err);
+        toast.error("Error !!!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        Loading.remove();
+      }
+    );
+  };
 
   const handleOpenModal = (id) => {
-    setUserId(id)
-    setOpen(true)
-  }
+    setUserId(id);
+    setOpen(true);
+  };
   const handleCloseModal = () => {
-    setOpen(false)
-    setOpenDel(false)
-    setOpenMess(false)
-  }
+    setOpen(false);
+    setOpenDel(false);
+    setOpenMess(false);
+  };
 
   useEffect(() => {
     fetchUsers();
-  }, [currentPage, roleFilter, searchFilter, orderBy, isDel])
+  }, [currentPage, roleFilter, searchFilter, orderBy, isDel]);
   useEffect(() => {
     fetchUsers();
     fetchRoles();
-  }, [])
-
+  }, []);
 
   const fetchUsers = async () => {
     Loading.standard("Loading...");
@@ -200,30 +194,36 @@ const ManageUserPage = () => {
       keyword: searchFilter,
       types: roleFilter.length === 0 ? undefined : roleFilter,
       locationId: locationID,
-      orderBy: orderBy
-    }
+      orderBy: orderBy,
+    };
     let predicates = queryString.stringify(filter);
     console.log(predicates);
-    await UserService.getAllUsers(predicates).then((res) => {
-      setUserList(res.data.listResponse)
-      if (res.data.listResponse != null) {
-        setTotalPage(res.data.totalPage)
+    await UserService.getAllUsers(predicates).then(
+      (res) => {
+        setUserList(res.data.listResponse);
+        if (res.data.listResponse != null) {
+          setTotalPage(res.data.totalPage);
+        }
+        Loading.remove();
+      },
+      (err) => {
+        console.log(err.toString());
+        Loading.remove();
       }
-      Loading.remove();
-    }, (err) => {
-      console.log(err.toString());
-      Loading.remove();
-    })
-  }
+    );
+  };
 
   const fetchRoles = async () => {
-    await RoleService.getRoles().then((res) => {
-      // console.log();
-      setRoleList([...res.data].map(x => x.name))
-    }, (err) => {
-      console.log(err.toString());
-    })
-  }
+    await RoleService.getRoles().then(
+      (res) => {
+        // console.log();
+        setRoleList([...res.data].map((x) => x.name));
+      },
+      (err) => {
+        console.log(err.toString());
+      }
+    );
+  };
 
   const sortByCol = (col) => {
     if (col === currentSortCol) {
@@ -237,25 +237,23 @@ const ManageUserPage = () => {
 
     switch (col) {
       case "Staff Code":
-        col === currentSortCol
-          ? setOrderBy('id_DESC')
-          : setOrderBy('id_ASC')
+        col === currentSortCol ? setOrderBy("id_DESC") : setOrderBy("id_ASC");
         break;
       case "Full Name":
         col === currentSortCol
-          ? setOrderBy('firstName_DESC')
-          : setOrderBy('firstName_ASC')
+          ? setOrderBy("firstName_DESC")
+          : setOrderBy("firstName_ASC");
         break;
       case "Joined Date":
         col === currentSortCol
-          ? setOrderBy('joinedDate_DESC')
-          : setOrderBy('joinedDate_ASC')
+          ? setOrderBy("joinedDate_DESC")
+          : setOrderBy("joinedDate_ASC");
         break;
 
       case "Type":
         col === currentSortCol
-          ? setOrderBy('role_DESC')
-          : setOrderBy('role_ASC')
+          ? setOrderBy("role_DESC")
+          : setOrderBy("role_ASC");
         break;
       default:
         break;
@@ -295,10 +293,9 @@ const ManageUserPage = () => {
                         className="form-check-input"
                         type="checkbox"
                         checked={allRole === true}
-                        onChange={() => handleRoleChange("All")} />
-                      <label className="form-check-label" >
-                        All
-                      </label>
+                        onChange={() => handleRoleChange("All")}
+                      />
+                      <label className="form-check-label">All</label>
                     </div>
                   </li>
                   {roleList.map((i, index) => (
@@ -308,7 +305,9 @@ const ManageUserPage = () => {
                           className="form-check-input"
                           type="checkbox"
                           value={i}
-                          checked={roleFilter.findIndex((item) => item === i) > -1}
+                          checked={
+                            roleFilter.findIndex((item) => item === i) > -1
+                          }
                           onChange={() => handleRoleChange(i)}
                         />
                         <label className="form-check-label" htmlFor={i}>
@@ -319,44 +318,74 @@ const ManageUserPage = () => {
                   ))}
                 </ul>
               </div>
-
             </div>
           </div>
           <div className="right-board">
             <SearchInput input={input} handleInputChange={handleInputChange} />
             <div className="button">
-              <button type="button" className="btn btn-danger" id="btnCreateAsset"
-                onClick={() => { navigate("/manage-user/create") }}>
+              <button
+                type="button"
+                className="btn btn-danger"
+                id="btnCreateAsset"
+                onClick={() => {
+                  navigate("/manage-user/create");
+                }}
+              >
                 Create new User
               </button>
             </div>
           </div>
         </div>
         {/* <Table cols={cols} data={userList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} onClickEditBtnFunc={handleEditBtn} onClickDelBtn={handleDelBtn} /> */}
-        <TableUser cols={cols} data={userList} actions={actions} sortFunc={sortByCol} onClickRecordFunc={handleOpenModal} onClickEditBtnFunc={handleEditBtn} onClickDelBtn={handleDelBtn} />
+        <TableUser
+          cols={cols}
+          data={userList}
+          actions={actions}
+          sortFunc={sortByCol}
+          onClickRecordFunc={handleOpenModal}
+          onClickEditBtnFunc={handleEditBtn}
+          onClickDelBtn={handleDelBtn}
+        />
         <ReactPaginate
-          breakLabel='...'
-          nextLabel='Next'
+          breakLabel="..."
+          nextLabel="Next"
           onPageChange={handlePageChange}
           pageRangeDisplayed={2}
+          forcePage={currentPage}
           pageCount={totalPage}
-          previousLabel='Previous'
+          previousLabel="Previous"
           renderOnZeroPageCount={null}
-          containerClassName='pagination'
-          disabledClassName='page-disable'
-          pageLinkClassName='page-num'
-          previousLinkClassName='page-pre'
-          nextLinkClassName='page-next'
-          activeLinkClassName='active'
+          containerClassName="pagination"
+          disabledClassName="page-disable"
+          pageLinkClassName="page-num"
+          previousLinkClassName="page-pre"
+          nextLinkClassName="page-next"
+          activeLinkClassName="active"
         />
 
-        <ModalUserInfo title="Detailed User Information" showModal={isOpen} closePopupFunc={handleCloseModal} objId={userId} />
-        <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDisableUser} title="Are you sure?" message="Do you want to disable this user?" yesBtnName="Disable" />
-        <PopUpMessage showModal={isOpenMess} closePopupFunc={handleCloseModal} title="Can not disable user" message={message} />
-
+        <ModalUserInfo
+          title="Detailed User Information"
+          showModal={isOpen}
+          closePopupFunc={handleCloseModal}
+          objId={userId}
+        />
+        <PopUpConfirm
+          showModal={isOpenDel}
+          closePopupFunc={handleCloseModal}
+          yesFunc={handleDisableUser}
+          title="Are you sure?"
+          message="Do you want to disable this user?"
+          yesBtnName="Disable"
+        />
+        <PopUpMessage
+          showModal={isOpenMess}
+          closePopupFunc={handleCloseModal}
+          title="Can not disable user"
+          message={message}
+        />
       </div>
     </>
   );
-}
+};
 
-export default ManageUserPage
+export default ManageUserPage;

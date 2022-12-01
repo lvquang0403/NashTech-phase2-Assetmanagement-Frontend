@@ -1,50 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Moment from "react-moment";
-import { FaCaretDown, FaPen, BsXCircle } from "../../components/icon";
+import {
+  FaCaretDown,
+  FaCheck,
+  BsXCircle,
+  FaUndoAlt,
+} from "../../components/icon";
 
-const TableUser = ({
+const MyAssignmentTable = ({
   cols,
   data,
   actions,
   sortFunc,
   onClickRecordFunc,
-  onClickEditBtnFunc,
-  onClickDelBtn,
+  onClickAccepFunc,
+  onClickDenyBtn,
 }) => {
-  const [userId, setUserId] = useState();
-
   const handleSort = (col) => {
     if (sortFunc) {
       sortFunc(col);
     }
   };
 
-  const handleOnClickRecord = (id) => {
-    if (onClickRecordFunc && id != undefined) {
-      onClickRecordFunc(id);
-      //console.log(id);
-    }
-  };
-  const handleOnEditBtn = (id) => {
-    if (onClickEditBtnFunc && id != undefined) {
-      onClickEditBtnFunc(id);
-      console.log(id);
-    }
-  };
-  const handleDelBtn = (id) => {
-    if (onClickDelBtn && id != undefined) {
-      onClickDelBtn(id);
-      console.log(id);
+  const handleOnClickRecord = (obj) => {
+    if (onClickRecordFunc && obj.id != undefined) {
+      console.log(obj.state);
+      if (obj.state === "Accepted") {
+        onClickRecordFunc(obj.id);
+        console.log(obj.id);
+      }
     }
   };
 
-  const getUserIdInSession = () => {};
+  const handleDeniedBtn = (id) => {};
 
-  useEffect(() => {
-    const userJson = window.sessionStorage.getItem("user");
-    setUserId(JSON.parse(userJson).id);
-    console.log(JSON.parse(userJson).id);
-  }, []);
+  const handleAcceptBtn = (id) => {};
 
   return (
     <div class="table-listing">
@@ -71,71 +61,78 @@ const TableUser = ({
             Object.values(data).map((obj, index) => (
               <tr key={index} style={{ cursor: "pointer" }}>
                 <td
-                  onClick={() => handleOnClickRecord(obj.id)}
+                  onClick={() => handleOnClickRecord(obj)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
-                  {obj.id}
+                  {obj.assetId}
                 </td>
                 <td
-                  onClick={() => handleOnClickRecord(obj.id)}
+                  onClick={() => handleOnClickRecord(obj)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
-                  {obj.fullName}
+                  {obj.assetName}
                 </td>
                 <td
-                  onClick={() => handleOnClickRecord(obj.id)}
+                  onClick={() => handleOnClickRecord(obj)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
-                  {obj.userName}
+                  {obj.category}
+                </td>
+
+                <td
+                  onClick={() => handleOnClickRecord(obj)}
+                  className="border-bottom"
+                  data-bs-toggle="modal"
+                >
+                  <Moment date={obj.assignedDate} format="DD/MM/YYYY" />
                 </td>
                 <td
-                  onClick={() => handleOnClickRecord(obj.id)}
+                  onClick={() => handleOnClickRecord(obj)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
-                  <Moment date={obj.joinedDate} format="DD/MM/YYYY" />
-                </td>
-                <td
-                  onClick={() => handleOnClickRecord(obj.id)}
-                  className="border-bottom"
-                  data-bs-toggle="modal"
-                >
-                  {obj.role}
+                  {obj.state}
                 </td>
                 {actions && (
                   <td>
-                    {actions["edit"] && (
-                      <FaPen
+                    {actions.accept && (
+                      <FaCheck
                         style={{
+                          color: "red",
                           cursor: "pointer",
                           marginLeft: 15,
                           opacity: obj.state === "Assigned" ? "0.3" : "1",
                         }}
-                        onClick={() =>
-                          obj.state === "Assigned"
-                            ? null
-                            : handleOnEditBtn(obj.id)
-                        }
+                        // onClick={() =>
+                        //   obj.state === "Assigned"
+                        //     ? null
+                        //     : handleOnEditBtn(obj.id)
+                        // }
                       />
                     )}
-                    {actions.remove && (
+                    {actions.deny && (
                       <BsXCircle
                         style={{
                           cursor: "pointer",
                           marginLeft: 15,
-                          color: "red",
-                          opacity: obj.id == userId ? "0.3" : "1",
+                          color: "black",
                         }}
-                        onClick={
-                          obj.id == userId ? null : () => handleDelBtn(obj.id)
-                        }
+                        // onClick={() => handleDelBtn(obj.id)}
                       />
                     )}
-
-                    {actions.return && <>ret</>}
+                    {actions.return && (
+                      <FaUndoAlt
+                        style={{
+                          cursor: "pointer",
+                          marginLeft: 15,
+                          color: "blue",
+                        }}
+                        // onClick={() => handleDelBtn(obj.id)}
+                      />
+                    )}
                   </td>
                 )}
               </tr>
@@ -146,4 +143,4 @@ const TableUser = ({
   );
 };
 
-export default TableUser;
+export default MyAssignmentTable;
