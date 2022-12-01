@@ -204,7 +204,6 @@ const CreateUserForm = ({ user }) => {
                             /> */}
                             <input
                                 style={{ width: "225px" }}
-                                data-date={watchAllFields.birth === '' ? "dd/mm/yyyy" : formatDate(watchAllFields.birth)}
                                 type="date"
                                 min="1900-01-01"
                                 max="3000-01-01"
@@ -255,7 +254,6 @@ const CreateUserForm = ({ user }) => {
                                 min="1900-01-01"
                                 max="3000-01-01"
                                 style={{ width: "222px" }}
-                                data-date={watchAllFields.joinedDate === '' ? "dd/mm/yyyy" : formatDate(watchAllFields.joinedDate)}
                                 type="date"
                                 {...register("joinedDate", { validate: { joinedDateConditionNotSatAndSun, joinedDateCondition }, required: true })}
                                 className="form-control __input-date" />
