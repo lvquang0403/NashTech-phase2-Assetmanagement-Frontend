@@ -67,11 +67,11 @@ const ModalAssignmentInfo = ({ title, objId, showModal, closePopupFunc }) => {
         </div>
         <div className="row" style={{ marginLeft: 20, marginTop: 10 }}>
           <p className="col-4">Assinged To</p>
-          <p className="col-7">{data.assignTo}</p>
+          <p className="col-7">{data.assignToUsername}</p>
         </div>
         <div className="row" style={{ marginLeft: 20, marginTop: 10 }}>
           <p className="col-4">Assinged By</p>
-          <p className="col-7">{data.assignBy}</p>
+          <p className="col-7">{data.assignByUsername}</p>
         </div>
         <div className="row" style={{ marginLeft: 20, marginTop: 10 }}>
           <p className="col-4">Assigned Date</p>

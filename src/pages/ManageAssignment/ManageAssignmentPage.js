@@ -200,6 +200,10 @@ const ManageAssignmentPage = () => {
     setOpen(true);
   };
 
+  const handleEditBtn = (id) => {
+    navigate("/edit-assignment/" + id);
+  };
+
   const handleInputChange = (newValue) => {
     var temp = newValue;
     setInput(temp);
@@ -357,7 +361,7 @@ const ManageAssignmentPage = () => {
           sortFunc={sortByCol}
           onClickRecordFunc={handleOpenModal}
           currentNo={currentNo}
-          // onClickEditBtnFunc={handleEditBtn}
+          onClickEditBtnFunc={handleEditBtn}
           // onClickDelBtn={handleDelBtn}
         />
         <ReactPaginate

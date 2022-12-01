@@ -17,19 +17,19 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import getLocationInSession from "../../utils/getLocationInSession";
 
-const cols = [
-  { name: "Asset Code", isDropdown: true },
-  { name: "Asset Name", isDropdown: true },
-  { name: "Category", isDropdown: true },
-  { name: "State", isDropdown: true },
-];
-const actions = {
-  edit: true,
-  remove: true,
-  return: false,
-};
-
 const ManageAsset = () => {
+  const cols = [
+    { name: "Asset Code", isDropdown: true },
+    { name: "Asset Name", isDropdown: true },
+    { name: "Category", isDropdown: true },
+    { name: "State", isDropdown: true },
+  ];
+  const actions = {
+    edit: true,
+    remove: true,
+    return: false,
+  };
+
   const typingTimeOutRef = useRef(null);
   const navigate = useNavigate();
   const [cateList, setCateList] = useState([]);
@@ -71,89 +71,83 @@ const ManageAsset = () => {
     var temp = newValue;
     setInput(temp);
 
-        if (typingTimeOutRef.current) {
-            clearTimeout(typingTimeOutRef.current);
-        }
-        typingTimeOutRef.current = setTimeout(() => {
-            setSearchFilter(temp.trim())
-        }, 500);
+    if (typingTimeOutRef.current) {
+      clearTimeout(typingTimeOutRef.current);
     }
+    typingTimeOutRef.current = setTimeout(() => {
+      setSearchFilter(temp.trim());
+    }, 500);
+  };
 
-    const handlePageChange = (e) => {
-        const { selected } = e;
-        setCurrentPage(selected)
-    }
-    const handleCatesChange = (val) => {
-        setCurrentPage(0)
+  const handlePageChange = (e) => {
+    const { selected } = e;
+    setCurrentPage(selected);
+  };
+  const handleCatesChange = (val) => {
+    setCurrentPage(0);
 
-        if (val === "All") {
-            setAllCate(true)
-            setCateFilter([])
-        } else {
-            let isExisted = cateFitler.findIndex((item) => item === val);
-            if (isExisted > -1) {
-                let tempList = [...cateFitler];
-                tempList.splice(isExisted, 1);
-                setCateFilter(tempList);
-
-            }
-            else {
-                let tempList = [...cateFitler];
-                tempList.push(val);
-                setCateFilter(tempList);
-            }
-        }
+    if (val === "All") {
+      setAllCate(true);
+      setCateFilter([]);
+    } else {
+      let isExisted = cateFitler.findIndex((item) => item === val);
+      if (isExisted > -1) {
+        let tempList = [...cateFitler];
+        tempList.splice(isExisted, 1);
+        setCateFilter(tempList);
+      } else {
+        let tempList = [...cateFitler];
+        tempList.push(val);
+        setCateFilter(tempList);
+      }
     }
   };
 
-    const handleStatesChange = (val) => {
-        setCurrentPage(0)
+  const handleStatesChange = (val) => {
+    setCurrentPage(0);
 
-        if (val === "All") {
-            setAllState(true)
-            setStateFilter([])
-        } else {
-            let isExisted = stateFilter.findIndex((item) => item === val);
-            if (isExisted > -1) {
-                let tempList = [...stateFilter];
-                tempList.splice(isExisted, 1);
-                setStateFilter(tempList);
-            }
-            else {
-                let tempList = [...stateFilter];
-                tempList.push(val);
-                setStateFilter(tempList);
-            }
-        }
+    if (val === "All") {
+      setAllState(true);
+      setStateFilter([]);
+    } else {
+      let isExisted = stateFilter.findIndex((item) => item === val);
+      if (isExisted > -1) {
+        let tempList = [...stateFilter];
+        tempList.splice(isExisted, 1);
+        setStateFilter(tempList);
+      } else {
+        let tempList = [...stateFilter];
+        tempList.push(val);
+        setStateFilter(tempList);
+      }
     }
-    useEffect(() => {
-        //catefilter
-        if (cateFitler.length === cateList.length || cateFitler.length === 0) {
-            setAllCate(true)
-        } else {
-            setAllCate(false)
-        }
+  };
+  useEffect(() => {
+    //catefilter
+    if (cateFitler.length === cateList.length || cateFitler.length === 0) {
+      setAllCate(true);
+    } else {
+      setAllCate(false);
+    }
 
-        //statefilter
-        if (stateFilter.length == stateList.length || stateFilter.length == 0) {
-            setAllState(true)
+    //statefilter
+    if (stateFilter.length == stateList.length || stateFilter.length == 0) {
+      setAllState(true);
+    } else {
+      setAllState(false);
+    }
+  }, [cateFitler, stateFilter]);
+  useEffect(() => {
+    //catefilter
+    if (allCate) {
+      setCateFilter([]);
+    }
 
-        } else {
-            setAllState(false)
-        }
-    }, [cateFitler, stateFilter])
-    useEffect(() => {
-        //catefilter
-        if (allCate) {
-            setCateFilter([])
-        }
-
-        //statefilter
-        if (allState) {
-            setStateFilter([])
-        } 
-    }, [allCate, allState])
-
+    //statefilter
+    if (allState) {
+      setStateFilter([]);
+    }
+  }, [allCate, allState]);
 
   const handleEditBtn = (id) => {
     navigate(`/edit-asset/${id}`);
@@ -222,37 +216,39 @@ const ManageAsset = () => {
     fetchStates();
   }, []);
 
-    const fetchAssets = async () => {
-        Loading.standard("Loading...");
-        // check location id
-        let locationID = getLocationInSession();
-        if (locationID === null) {
-            alert("The administrator's location could not be found");
-            Loading.remove();
-            return null;
-        }
-        const filter = {
-            page: currentPage,
-            keyword: searchFilter,
-            states: stateFilter.length === 0 ? undefined : stateFilter,
-            categories: cateFitler.length === 0 ? undefined : cateFitler,
-            locationId: locationID,
-            orderBy: orderBy
-        }
-        let predicates = queryString.stringify(filter);
-        // console.log(predicates);
-        await AssetService.getAllAssets(predicates).then((res) => {
-            setAssetList(res.data.listResponse)
-            if (res.data.listResponse != null) {
-                setTotalPage(res.data.totalPage)
-            }
-            Loading.remove();
-        }, (err) => {
-            console.log(err.toString());
-            Loading.remove();
-        }
-        )
+  const fetchAssets = async () => {
+    Loading.standard("Loading...");
+    // check location id
+    let locationID = getLocationInSession();
+    if (locationID === null) {
+      alert("The administrator's location could not be found");
+      Loading.remove();
+      return null;
     }
+    const filter = {
+      page: currentPage,
+      keyword: searchFilter,
+      states: stateFilter.length === 0 ? undefined : stateFilter,
+      categories: cateFitler.length === 0 ? undefined : cateFitler,
+      locationId: locationID,
+      orderBy: orderBy,
+    };
+    let predicates = queryString.stringify(filter);
+    // console.log(predicates);
+    await AssetService.getAllAssets(predicates).then(
+      (res) => {
+        setAssetList(res.data.listResponse);
+        if (res.data.listResponse != null) {
+          setTotalPage(res.data.totalPage);
+        }
+        Loading.remove();
+      },
+      (err) => {
+        console.log(err.toString());
+        Loading.remove();
+      }
+    );
+  };
 
   const fetchCategories = async () => {
     await CategoryService.getAllCategoriesName().then(
@@ -265,15 +261,16 @@ const ManageAsset = () => {
     );
   };
 
-    const fetchStates = async () => {
-        await AssetService.getAllStates().then((res) => {
-            setStateList(res.data.sort((a, b) => a.localeCompare(b)))
-        },
-            (err) => {
-                console.log(err.toString());
-            }
-        )
-    }
+  const fetchStates = async () => {
+    await AssetService.getAllStates().then(
+      (res) => {
+        setStateList(res.data.sort((a, b) => a.localeCompare(b)));
+      },
+      (err) => {
+        console.log(err.toString());
+      }
+    );
+  };
 
   const sortByCol = (col) => {
     if (col === currentSortCol) {
@@ -284,22 +281,20 @@ const ManageAsset = () => {
       setCurrentCol(col); // set currentCol
     }
 
-        switch (col) {
-            case "Asset Code":
-                col === currentSortCol
-                    ? setOrderBy('id_DESC')
-                    : setOrderBy('id_ASC')
-                break;
-            case "Asset Name":
-                col === currentSortCol
-                    ? setOrderBy('name_DESC')
-                    : setOrderBy('name_ASC')
-                break;
-            case "Category":
-                col === currentSortCol
-                    ? setOrderBy('category.name_DESC')
-                    : setOrderBy('category.name_ASC')
-                break;
+    switch (col) {
+      case "Asset Code":
+        col === currentSortCol ? setOrderBy("id_DESC") : setOrderBy("id_ASC");
+        break;
+      case "Asset Name":
+        col === currentSortCol
+          ? setOrderBy("name_DESC")
+          : setOrderBy("name_ASC");
+        break;
+      case "Category":
+        col === currentSortCol
+          ? setOrderBy("category.name_DESC")
+          : setOrderBy("category.name_ASC");
+        break;
 
       case "State":
         col === currentSortCol
@@ -462,13 +457,29 @@ const ManageAsset = () => {
           activeLinkClassName="active"
         />
 
-                <ModalInfoAsset title="Detailed Asset Information" showModal={isOpen} closePopupFunc={handleCloseModal} objId={assetId} />
-                <PopUpConfirm showModal={isOpenDel} closePopupFunc={handleCloseModal} yesFunc={handleDeleteAsset} title="Are you sure?" message="Do you want to delete this asset?" yesBtnName="Delete" />
-                <PopUpCantDel showModal={isOpenMess} closePopupFunc={handleCloseModal} title="Cannot delete asset" id={assetId} />
-
-            </div>
-        </>
-    );
-}
+        <ModalInfoAsset
+          title="Detailed Asset Information"
+          showModal={isOpen}
+          closePopupFunc={handleCloseModal}
+          objId={assetId}
+        />
+        <PopUpConfirm
+          showModal={isOpenDel}
+          closePopupFunc={handleCloseModal}
+          yesFunc={handleDeleteAsset}
+          title="Are you sure?"
+          message="Do you want to delete this asset?"
+          yesBtnName="Delete"
+        />
+        <PopUpCantDel
+          showModal={isOpenMess}
+          closePopupFunc={handleCloseModal}
+          title="Cannot delete asset"
+          id={assetId}
+        />
+      </div>
+    </>
+  );
+};
 
 export default ManageAsset;

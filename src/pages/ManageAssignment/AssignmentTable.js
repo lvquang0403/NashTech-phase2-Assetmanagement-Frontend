@@ -24,19 +24,20 @@ const AssingmentTable = ({
   };
 
   const handleOnClickRecord = (id) => {
-    if (onClickRecordFunc && id != undefined) {
+    if (onClickRecordFunc && id !== undefined) {
       onClickRecordFunc(id);
       console.log(id);
     }
   };
   const handleOnEditBtn = (id) => {
-    if (onClickEditBtnFunc && id != undefined) {
+    console.log(id);
+
+    if (onClickEditBtnFunc && id !== undefined) {
       onClickEditBtnFunc(id);
-      console.log(id);
     }
   };
   const handleDelBtn = (id) => {
-    if (onClickDelBtn && id != undefined) {
+    if (onClickDelBtn && id !== undefined) {
       onClickDelBtn(id);
       console.log(id);
     }
@@ -124,13 +125,16 @@ const AssingmentTable = ({
                         style={{
                           cursor: "pointer",
                           marginLeft: 15,
-                          opacity: obj.state === "Assigned" ? "0.3" : "1",
+                          opacity:
+                            obj.state !== "Waiting for acceptance"
+                              ? "0.3"
+                              : "1",
                         }}
-                        // onClick={() =>
-                        //   obj.state === "Assigned"
-                        //     ? null
-                        //     : handleOnEditBtn(obj.id)
-                        // }
+                        onClick={() =>
+                          obj.state === "Waiting for acceptance"
+                            ? handleOnEditBtn(obj.id)
+                            : null
+                        }
                       />
                     )}
                     {actions.remove && (
