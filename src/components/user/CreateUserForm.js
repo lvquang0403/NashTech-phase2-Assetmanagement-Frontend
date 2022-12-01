@@ -104,6 +104,12 @@ const CreateUserForm = ({ user }) => {
         return string.trim() !== '';
     }
 
+    const validDateConfidtion = (date) => {
+        const day = new Date(date);
+        const min = new Date('1900-01-01');
+        const max = new Date('3000-01-01');
+        return day.getTime() < max.getTime() && day.getTime() > min.getTime()
+    }
 
     const joinedDateCondition = (date) => {
         if (watchAllFields.birth) {
@@ -207,7 +213,7 @@ const CreateUserForm = ({ user }) => {
                                 type="date"
                                 min="1900-01-01"
                                 max="3000-01-01"
-                                {...register("birth", { validate: { ageCondition }, required: true })}
+                                {...register("birth", { validate: { ageCondition, validDateConfidtion }, required: true })}
                                 className="form-control pe-4 __input-date" />
                             {
                                 errors.birth && errors.birth.type === "ageCondition" && (
@@ -217,6 +223,11 @@ const CreateUserForm = ({ user }) => {
                             {
                                 errors.birth && errors.birth.type === "required" && (
                                     <div className="error text-danger">This is required field</div>
+                                )
+                            }
+                            {
+                                errors.birth && errors.birth.type === "validDateConfidtion" && (
+                                    <div className="error text-danger">Invalid date</div>
                                 )
                             }
                         </div>
@@ -255,7 +266,7 @@ const CreateUserForm = ({ user }) => {
                                 max="3000-01-01"
                                 style={{ width: "222px" }}
                                 type="date"
-                                {...register("joinedDate", { validate: { joinedDateConditionNotSatAndSun, joinedDateCondition }, required: true })}
+                                {...register("joinedDate", { validate: { joinedDateConditionNotSatAndSun, joinedDateCondition, validDateConfidtion }, required: true })}
                                 className="form-control __input-date" />
                         </div>
                         <div style={{ marginLeft: "122px" }}>  {
@@ -263,7 +274,7 @@ const CreateUserForm = ({ user }) => {
                                 <div className="error text-danger">Joined date is not later than Date of Birth. Please select a different date</div>
                             )
 
-                        }
+                            }
                             {
                                 errors.joinedDate && errors.joinedDate.type === "joinedDateConditionNotSatAndSun" && (
                                     <div className="error text-danger">Joined date is Saturday or Sunday. Please select a different date</div>
@@ -273,7 +284,14 @@ const CreateUserForm = ({ user }) => {
                                 errors.joinedDate && errors.joinedDate.type === "required" && (
                                     <div className="error text-danger">This is required field</div>
                                 )
-                            }</div>
+                            }
+                           {
+                                errors.joinedDate && errors.joinedDate.type === "validDateConfidtion" && (
+                                    <div className="error text-danger">Invalid date</div>
+                                )
+                            }
+                            
+                            </div>
                     </div>
                     <div className="row g-3 align-items-center mb-2">
                         <div className="col-auto pe-4">
