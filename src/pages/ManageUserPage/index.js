@@ -75,7 +75,7 @@ const ManageUserPage = () => {
       setSearchFilter(temp.trim())
       setOrderBy(null)
       setCurrentPage(0)
-     
+
     }, 500);
   }
 
@@ -85,14 +85,11 @@ const ManageUserPage = () => {
   }
   const handleRoleChange = (val) => {
     setCurrentPage(0)
+
     if (val === "All") {
-      var temp = allRole ? false : true
-      if (temp) {
-        setAllRole(temp)
+      if (allRole) {
+        setAllRole(true)
         setRoleFilter([...roleList])
-      } else {
-        setAllRole(temp)
-        setRoleFilter([])
       }
     } else {
       let isExisted = roleFilter.findIndex((item) => item === val);
@@ -110,6 +107,21 @@ const ManageUserPage = () => {
       }
     }
   }
+
+  useEffect(() => {
+    if (roleFilter.length == roleList.length || roleFilter.length == 0) {
+      setAllRole(true)
+    } else {
+      setAllRole(false)
+    }
+  }, [roleFilter])
+  useEffect(() => {
+    if (allRole) {
+        setRoleFilter([])
+    }
+
+   
+}, [allRole])
 
   const handleEditBtn = (id) => {
     navigate(`/manage-user/edit/${id}`)
@@ -206,7 +218,7 @@ const ManageUserPage = () => {
 
   const fetchRoles = async () => {
     await RoleService.getRoles().then((res) => {
-     // console.log();
+      // console.log();
       setRoleList([...res.data].map(x => x.name))
     }, (err) => {
       console.log(err.toString());

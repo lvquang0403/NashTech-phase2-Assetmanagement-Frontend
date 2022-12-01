@@ -82,15 +82,11 @@ const ManageAsset = () => {
         setCurrentPage(selected)
     }
     const handleCatesChange = (val) => {
+        setCurrentPage(0)
+
         if (val === "All") {
-            var temp = allCate ? false : true
-            if (temp) {
-                setAllCate(temp)
-                setCateFilter([...cateList])
-            } else {
-                setAllCate(temp)
-                setCateFilter([])
-            }
+            setAllCate(true)
+            setCateFilter([])
         } else {
             let isExisted = cateFitler.findIndex((item) => item === val);
             if (isExisted > -1) {
@@ -108,16 +104,11 @@ const ManageAsset = () => {
     }
 
     const handleStatesChange = (val) => {
-        if (val === "All") {
-            var temp = allState ? false : true
-            if (temp) {
-                setAllState(temp)
-                setStateFilter(['Available', 'Not available', 'Assigned', 'Recycled', 'Waiting for recycling'])
-            } else {
-                setAllState(temp)
-                setStateFilter([])
-            }
+        setCurrentPage(0)
 
+        if (val === "All") {
+            setAllState(true)
+            setStateFilter([])
         } else {
             let isExisted = stateFilter.findIndex((item) => item === val);
             if (isExisted > -1) {
@@ -132,6 +123,34 @@ const ManageAsset = () => {
             }
         }
     }
+    useEffect(() => {
+        //catefilter
+        if (cateFitler.length === cateList.length || cateFitler.length === 0) {
+            setAllCate(true)
+        } else {
+            setAllCate(false)
+        }
+
+        //statefilter
+        if (stateFilter.length == stateList.length || stateFilter.length == 0) {
+            setAllState(true)
+
+        } else {
+            setAllState(false)
+        }
+    }, [cateFitler, stateFilter])
+    useEffect(() => {
+        //catefilter
+        if (allCate) {
+            setCateFilter([])
+        }
+
+        //statefilter
+        if (allState) {
+            setStateFilter([])
+        } 
+    }, [allCate, allState])
+
 
     const handleEditBtn = (id) => {
         navigate(`/edit-asset/${id}`)
@@ -199,7 +218,7 @@ const ManageAsset = () => {
         Loading.standard("Loading...");
         // check location id
         let locationID = getLocationInSession();
-        if(locationID === null){
+        if (locationID === null) {
             alert("The administrator's location could not be found");
             Loading.remove();
             return null;
@@ -237,8 +256,7 @@ const ManageAsset = () => {
 
     const fetchStates = async () => {
         await AssetService.getAllStates().then((res) => {
-            setStateList(res.data.sort((a,b)=>a.localeCompare(b)))
-          
+            setStateList(res.data.sort((a, b) => a.localeCompare(b)))
         },
             (err) => {
                 console.log(err.toString());
