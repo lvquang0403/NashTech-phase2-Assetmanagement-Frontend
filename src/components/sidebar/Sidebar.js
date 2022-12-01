@@ -2,7 +2,7 @@ import React from "react";
 import "./sidebar.scss";
 import { NavLink } from "react-router-dom";
 
-const Sidebar = ({ tabs }) => {
+const Sidebar = ({ tabs, handleNavigate }) => {
   // const navigate = useNavigate();
 
   return (
@@ -28,6 +28,7 @@ const Sidebar = ({ tabs }) => {
                     className={({ isActive }) =>
                       isActive ? "menu__item--active menu-navlink" : "menu-navlink"
                     }
+                    onClick={() => handleNavigate(tab.name)}
                   >
                     {tab.name}
                   </NavLink>

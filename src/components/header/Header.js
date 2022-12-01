@@ -7,7 +7,7 @@ import "./header.scss";
 import { Modal } from 'react-bootstrap';
 import { set } from "react-hook-form";
 
-const Header = () => {
+const Header = ({ title }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
   const [username, setUsername] = useState("Username");
@@ -33,10 +33,11 @@ const Header = () => {
   useEffect(() => {
 
   }, []);
+  console.log("after",title)
   return (
     <>
       <div className="header">
-        <div className="header__title">Header Manager User</div>
+        <div className="header__title">{title}</div>
         <div className="header__username " id="user_header">
           <div className="btn-group">
             <button

@@ -6,7 +6,6 @@ import Header from "../header/Header";
 import Sidebar from "../sidebar/Sidebar";
 import { useNavigate } from "react-router-dom";
 
-//Page dùng chung cho các Route
 
 const tabList = [
   {
@@ -54,23 +53,36 @@ const tabList = [
 ];
 
 const Main = () => {
-  const navigate = useNavigate();
-  const [tabs, setTabs] = useState([]);
+  const navigate = useNavigate()
+  const[tabs, setTabs] = useState([])
+  const[header, setHeader] = useState(tabList[0].name)
+
+  const handleNavigate = (name) => {
+    setHeader(name)
+  }
   useEffect(() => {
-    if (window.sessionStorage.getItem("user")) {
-      const userJson = window.sessionStorage.getItem("user");
-      const role = JSON.parse(userJson).role;
-      setTabs(tabList.filter((tab) => tab.role === role));
-      navigate("/");
-    } else {
-      navigate("/login");
+    if(!header){
+      setHeader(tabList[0].name)
     }
-  }, []);
+  },[header])
+
+  useEffect(()=> {
+    if(window.sessionStorage.getItem('user')){
+      const userJson = window.sessionStorage.getItem('user')
+      const role = JSON.parse(userJson).role
+      setTabs(tabList.filter(tab => tab.role === role))
+      setHeader(tabs[0])
+      navigate("/")
+    }
+    else{
+      navigate("/login")
+    }
+  },[])
   return (
     <>
-      <Header></Header>
+      <Header title={header}></Header>
       <div style={{ display: "flex" }}>
-        <Sidebar tabs={tabs}></Sidebar>
+        <Sidebar tabs={tabs} handleNavigate={handleNavigate}></Sidebar>
 
         {/* Outlet dùng để nested những cái nằm trong Main (để muốn Route nào cũng có Header nên phải dùng Outlet như này) */}
         <Outlet></Outlet>
