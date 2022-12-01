@@ -216,8 +216,7 @@ const CreateAsset = () => {
                         type="date"
                         className='__input-date'
                         onChange={changInputInstalledDate}
-                        data-date={formatDate(installedDate)}
-                        defaultValue={installedDate}
+                        defaultValue={now}
                     />
                     {
                         (textError.installedDate !== 'success')?

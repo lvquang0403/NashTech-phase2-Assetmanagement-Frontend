@@ -1,0 +1,26 @@
+
+  .__modalSelectRadio {
+    width: 100%;
+    height: 100%;
+
+    .__body{
+      height: 25rem;
+    }
+    ._rowCreateAssignment{
+      color: red;
+      margin-left: 20px;
+    }
+
+    .__searchInput{
+      width: 40%;
+      position: relative;
+      top: 10px;
+    }
+
+    .__notValid{
+      opacity: 0.5;
+    }
+
+  }
+  
+  
