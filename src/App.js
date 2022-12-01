@@ -1,11 +1,19 @@
 import "./App.css";
 import { Fragment, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
+<<<<<<< HEAD
+import Main from './components/layout/Main';
+import ManageAssignmentPage from './pages/ManageAssignmentPage';
+import RequestPage from './pages/RequestPage';
+import LoginPage from './pages/Login';
+
+=======
 import Main from "./components/layout/Main";
 import ManageAssignmentPage from "./pages/ManageAssignment/ManageAssignmentPage";
 import RequestPage from "./pages/RequestPage";
 import ReportPage from "./pages/ReportPage";
 import LoginPage from "./pages/Login";
+>>>>>>> 56fa8399f1fb4b621b95002a40cd64288279f1bd
 
 import {
   EditAsset,
@@ -15,8 +23,14 @@ import {
   ManageUserPage,
   CreateAssignment,
 } from "./pages";
+<<<<<<< HEAD
+import EditUserPage from './pages/EditUserPage';
+import CreateUserPage from './pages/CreateUserPage';
+import ReportPage from './pages/ReportPage';
+=======
 import EditUserPage from "./pages/EditUserPage";
 import CreateUserPage from "./pages/CreateUserPage";
+>>>>>>> 56fa8399f1fb4b621b95002a40cd64288279f1bd
 
 function App() {
   return (
