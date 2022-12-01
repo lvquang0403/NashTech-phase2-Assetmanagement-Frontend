@@ -13,6 +13,7 @@ import {
   HomePage,
   ManageAsset,
   ManageUserPage,
+  CreateAssignment,
 } from "./pages";
 import EditUserPage from "./pages/EditUserPage";
 import CreateUserPage from "./pages/CreateUserPage";
@@ -49,6 +50,10 @@ function App() {
             <Route path="/report" element={<ReportPage></ReportPage>} />
             <Route path="/create-asset" element={<CreateAsset></CreateAsset>} />
             <Route path="/edit-asset/:id" element={<EditAsset></EditAsset>} />
+            <Route
+              path="/create-assignment"
+              element={<CreateAssignment></CreateAssignment>}
+            />
           </Route>
         </Routes>
       </Suspense>

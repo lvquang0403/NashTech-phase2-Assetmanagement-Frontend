@@ -68,9 +68,9 @@ const ManageUserPage = () => {
       clearTimeout(typingTimeOutRef.current);
     }
     typingTimeOutRef.current = setTimeout(() => {
+      setSearchFilter(temp.trim());
       setOrderBy(null);
       setCurrentPage(0);
-      setSearchFilter(temp);
     }, 500);
   };
 
@@ -81,14 +81,11 @@ const ManageUserPage = () => {
 
   const handleRoleChange = (val) => {
     setCurrentPage(0);
+
     if (val === "All") {
-      var temp = allRole ? false : true;
-      if (temp) {
-        setAllRole(temp);
+      if (allRole) {
+        setAllRole(true);
         setRoleFilter([...roleList]);
-      } else {
-        setAllRole(temp);
-        setRoleFilter([]);
       }
     } else {
       let isExisted = roleFilter.findIndex((item) => item === val);
@@ -104,6 +101,19 @@ const ManageUserPage = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (roleFilter.length == roleList.length || roleFilter.length == 0) {
+      setAllRole(true);
+    } else {
+      setAllRole(false);
+    }
+  }, [roleFilter]);
+  useEffect(() => {
+    if (allRole) {
+      setRoleFilter([]);
+    }
+  }, [allRole]);
 
   const handleEditBtn = (id) => {
     navigate(`/manage-user/edit/${id}`);
@@ -354,7 +364,7 @@ const ManageUserPage = () => {
         />
 
         <ModalUserInfo
-          title="Detailed User Infomation"
+          title="Detailed User Information"
           showModal={isOpen}
           closePopupFunc={handleCloseModal}
           objId={userId}

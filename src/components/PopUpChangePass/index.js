@@ -25,7 +25,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFun
         Loading.standard("Loading...");
         const oldPass = oldPassword
         const newPass = newPassword
-        if (newPass.length >= 8) {
+        if (newPass.length >= 6) {
             UserService.changePass(oldPass, newPass).then((res) => {
                 handleClose()
                 openModalSuccessFunc(true)
@@ -44,7 +44,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFun
                 Loading.remove();
             })
         } else {
-            setErrorNewPass("Length must be greater than 8")
+            setErrorNewPass("At least 6 characters")
             Loading.remove()
         }
 
@@ -60,7 +60,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFun
                     <div className="mx-0 mx-md-1 mx-lg-3 my-2">
                         <div className="old-password w-100 d-flex justify-content-between ">
                             <label htmlFor="old-pass" className="">
-                                Old Password
+                                Old password
                             </label>
                             <div className="d-flex flex-column" >
                                 <input
@@ -91,7 +91,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFun
 
                         <div className="new-password  w-100 d-flex justify-content-between mt-3">
                             <label htmlFor="new-pass" className="pe-3">
-                                New Password
+                                New password
                             </label>
                             <div className="d-flex flex-column">
 
@@ -102,6 +102,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFun
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
                                     required
+                                    maxLength={20}
                                     onFocus={() => setErrorNewPass("")}
                                 />
 

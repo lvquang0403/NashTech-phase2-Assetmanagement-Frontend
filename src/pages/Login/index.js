@@ -53,7 +53,7 @@ const LoginPage = () => {
         })
         .catch((res) => {
           Loading.remove();
-          toast.error("Username or Password Invalid", {
+          toast.error("Username or password is incorrect. Please try again", {
             position: toast.POSITION.TOP_CENTER,
             className: "border border-danger text-danger",
           });
@@ -141,7 +141,7 @@ const LoginPage = () => {
           className="px-4"
           style={{ fontWeight: "500" }}
         >
-          Login
+          Log In
         </Button>
       </div>
     </div>

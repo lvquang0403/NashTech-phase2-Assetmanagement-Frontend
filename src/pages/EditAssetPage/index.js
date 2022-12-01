@@ -10,6 +10,7 @@ import AssetService from '../../services/AssetService';
 import validateAssetInsert from '../../utils/validateAssetInsert';
 
 import "./index.scss";
+import formatDate from '../../utils/formatDate';
 
 
 
@@ -238,7 +239,9 @@ const EditAsset = () => {
                     <Form.Control
                         id="installedDate"
                         type="date"
+                        className='__input-date'
                         onChange={changInputInstalledDate}
+                        data-date={formatDate(installedDate)}
                         defaultValue={asset.installedDate}
                     />
                     {

@@ -9,6 +9,7 @@ import { Loading } from "notiflix/build/notiflix-loading-aio";
 
 import "./index.scss";
 import getLocationInSession from '../../utils/getLocationInSession';
+import formatDate from '../../utils/formatDate';
 
 const now = new Date();
 const defaultDate = now.getFullYear() + '-' + (now.getMonth()+1) + '-' +now.getDate();
@@ -213,8 +214,9 @@ const CreateAsset = () => {
                     <Form.Control
                         id="installedDate"
                         type="date"
+                        className='__input-date'
                         onChange={changInputInstalledDate}
-                        defaultValue={defaultDate}
+                        defaultValue={now}
                     />
                     {
                         (textError.installedDate !== 'success')?

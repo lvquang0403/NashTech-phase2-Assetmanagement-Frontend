@@ -1,15 +1,7 @@
-function formatDate(strDate, format = 'dd-mm-yy'){
+function formatDate(strDate){
     let date = new Date(strDate);
-    switch (format) {
-        case 'dd-mm-yy':
-            return   date.getDate() + '-' + (date.getMonth()+1) +  '-' +date.getFullYear();    
-        case 'mm-dd-yy':
-            return  (date.getMonth()+1) + '-' + date.getDate() +  '-' +date.getFullYear();      
-        case 'yy-mm-dd':
-            return  date.getFullYear() + '-' + (date.getMonth()+1) +  '-' +date.getDate();    
-        default:
-            console.log('incorrect date format');
-            break;
-    }
+    let day = (date.getDate()<10)?'0'+date.getDate():date.getDate();
+    let month = ((date.getMonth()+1)<10)?'0'+(date.getMonth()+1):(date.getMonth()+1);
+    return   day + '-' + month +  '-' +date.getFullYear();
 }
 export default formatDate;
