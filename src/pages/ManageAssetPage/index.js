@@ -284,8 +284,8 @@ const ManageAsset = () => {
         break;
       case "Category":
         col === currentSortCol
-          ? setOrderBy("category_DESC")
-          : setOrderBy("category_ASC");
+          ? setOrderBy("category.name_DESC")
+          : setOrderBy("category.name_ASC");
         break;
 
       case "State":

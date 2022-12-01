@@ -2,7 +2,6 @@ import axiosClient from "./AxiosCilent";
 const API_BASE_URL = `api/assignments`;
 
 class AssignmentService {
-  s;
   getAllAssignments(query) {
     return axiosClient.get(`${API_BASE_URL}?${query}`);
   }
@@ -11,8 +10,8 @@ class AssignmentService {
     return axiosClient.get(`${API_BASE_URL}/${id}`);
   }
 
-  getAllStates() {
-    return axiosClient.get(`${API_BASE_URL}/states`);
+  getUserAssignments(query, userID) {
+    return axiosClient.get(`${API_BASE_URL}/user/${userID}?${query}`);
   }
 }
 

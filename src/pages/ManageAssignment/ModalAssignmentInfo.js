@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import Moment from "react-moment";
-import UserService from "../../services/UserService";
 import { Loading } from "notiflix/build/notiflix-loading-aio";
 import AssignmentService from "../../services/AssignmentService";
 
@@ -15,18 +14,23 @@ const ModalAssignmentInfo = ({ title, objId, showModal, closePopupFunc }) => {
   };
 
   useEffect(() => {
-    fetchUserInfo();
+    if (objId) {
+      fetchUserInfo();
+    }
   }, [objId]);
 
   const fetchUserInfo = async () => {
+    console.log("modal test 1");
     Loading.standard("Loading...");
     await AssignmentService.getAssetById(objId).then(
       (res) => {
+        console.log("getID success start");
         setData(res.data);
         console.log(res);
         Loading.remove();
       },
       (err) => {
+        console.log("getID success start");
         console.log(err.toString());
         Loading.remove();
       }
@@ -51,7 +55,7 @@ const ModalAssignmentInfo = ({ title, objId, showModal, closePopupFunc }) => {
       <Modal.Body>
         <div className="row" style={{ marginLeft: 20, marginTop: 10 }}>
           <p className="col-4">Asset Code</p>
-          <p className="col-7">{data.assetCode}</p>
+          <p className="col-7">{data.assetId}</p>
         </div>
         <div className="row" style={{ marginLeft: 20, marginTop: 10 }}>
           <p className="col-4">Asset Name</p>
@@ -63,11 +67,11 @@ const ModalAssignmentInfo = ({ title, objId, showModal, closePopupFunc }) => {
         </div>
         <div className="row" style={{ marginLeft: 20, marginTop: 10 }}>
           <p className="col-4">Assinged To</p>
-          <p className="col-7">{data.assignedTo}</p>
+          <p className="col-7">{data.assignTo}</p>
         </div>
         <div className="row" style={{ marginLeft: 20, marginTop: 10 }}>
           <p className="col-4">Assinged By</p>
-          <p className="col-7">{data.assignedBy}</p>
+          <p className="col-7">{data.assignBy}</p>
         </div>
         <div className="row" style={{ marginLeft: 20, marginTop: 10 }}>
           <p className="col-4">Assigned Date</p>

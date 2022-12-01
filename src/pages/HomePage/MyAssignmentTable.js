@@ -2,20 +2,19 @@ import React from "react";
 import Moment from "react-moment";
 import {
   FaCaretDown,
-  FaPen,
+  FaCheck,
   BsXCircle,
   FaUndoAlt,
 } from "../../components/icon";
 
-const AssingmentTable = ({
+const MyAssignmentTable = ({
   cols,
   data,
   actions,
   sortFunc,
   onClickRecordFunc,
-  onClickEditBtnFunc,
-  onClickDelBtn,
-  currentNo,
+  onClickAccepFunc,
+  onClickDenyBtn,
 }) => {
   const handleSort = (col) => {
     if (sortFunc) {
@@ -23,25 +22,19 @@ const AssingmentTable = ({
     }
   };
 
-  const handleOnClickRecord = (id) => {
-    if (onClickRecordFunc && id != undefined) {
-      onClickRecordFunc(id);
-      console.log(id);
+  const handleOnClickRecord = (obj) => {
+    if (onClickRecordFunc && obj.id != undefined) {
+      console.log(obj.state);
+      if (obj.state === "Accepted") {
+        onClickRecordFunc(obj.id);
+        console.log(obj.id);
+      }
     }
   };
-  const handleOnEditBtn = (id) => {
-    if (onClickEditBtnFunc && id != undefined) {
-      onClickEditBtnFunc(id);
-      console.log(id);
-    }
-  };
-  const handleDelBtn = (id) => {
-    if (onClickDelBtn && id != undefined) {
-      onClickDelBtn(id);
-      console.log(id);
-    }
-  };
-  console.log(currentNo);
+
+  const handleDeniedBtn = (id) => {};
+
+  const handleAcceptBtn = (id) => {};
 
   return (
     <div class="table-listing">
@@ -68,50 +61,36 @@ const AssingmentTable = ({
             Object.values(data).map((obj, index) => (
               <tr key={index} style={{ cursor: "pointer" }}>
                 <td
-                  onClick={() => handleOnClickRecord(obj.id)}
-                  className="border-bottom"
-                  data-bs-toggle="modal"
-                >
-                  {index + 1 + currentNo}
-                </td>
-                <td
-                  onClick={() => handleOnClickRecord(obj.id)}
+                  onClick={() => handleOnClickRecord(obj)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
                   {obj.assetId}
                 </td>
                 <td
-                  onClick={() => handleOnClickRecord(obj.id)}
+                  onClick={() => handleOnClickRecord(obj)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
                   {obj.assetName}
                 </td>
+                <td
+                  onClick={() => handleOnClickRecord(obj)}
+                  className="border-bottom"
+                  data-bs-toggle="modal"
+                >
+                  {obj.category}
+                </td>
 
                 <td
-                  onClick={() => handleOnClickRecord(obj.id)}
-                  className="border-bottom"
-                  data-bs-toggle="modal"
-                >
-                  {obj.assignTo}
-                </td>
-                <td
-                  onClick={() => handleOnClickRecord(obj.id)}
-                  className="border-bottom"
-                  data-bs-toggle="modal"
-                >
-                  {obj.assignBy}
-                </td>
-                <td
-                  onClick={() => handleOnClickRecord(obj.id)}
+                  onClick={() => handleOnClickRecord(obj)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
                   <Moment date={obj.assignedDate} format="DD/MM/YYYY" />
                 </td>
                 <td
-                  onClick={() => handleOnClickRecord(obj.id)}
+                  onClick={() => handleOnClickRecord(obj)}
                   className="border-bottom"
                   data-bs-toggle="modal"
                 >
@@ -119,9 +98,10 @@ const AssingmentTable = ({
                 </td>
                 {actions && (
                   <td>
-                    {actions["edit"] && (
-                      <FaPen
+                    {actions.accept && (
+                      <FaCheck
                         style={{
+                          color: "red",
                           cursor: "pointer",
                           marginLeft: 15,
                           opacity: obj.state === "Assigned" ? "0.3" : "1",
@@ -133,17 +113,17 @@ const AssingmentTable = ({
                         // }
                       />
                     )}
-                    {actions.remove && (
+                    {actions.deny && (
                       <BsXCircle
                         style={{
                           cursor: "pointer",
                           marginLeft: 15,
-                          color: "red",
+                          color: "black",
                         }}
                         // onClick={() => handleDelBtn(obj.id)}
                       />
                     )}
-                    {actions.remove && (
+                    {actions.return && (
                       <FaUndoAlt
                         style={{
                           cursor: "pointer",
@@ -163,4 +143,4 @@ const AssingmentTable = ({
   );
 };
 
-export default AssingmentTable;
+export default MyAssignmentTable;

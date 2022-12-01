@@ -1,8 +1,5 @@
 import React from "react";
-import Table from "../../components/Table";
-import TableUser from "../ManageUserPage/TableUser";
 import ReactPaginate from "react-paginate";
-import ModalUserInfo from "../ManageUserPage/ModalUserInfo";
 import AssignmentTable from "./AssignmentTable";
 import queryString from "query-string";
 import SearchInput from "../../components/SearchInput/index";
@@ -44,7 +41,10 @@ const ManageAssignmentPage = () => {
   const [input, setInput] = useState("");
   //filter
   const [searchFilter, setSearchFilter] = useState("");
-  const [stateFilter, setStateFilter] = useState([]);
+  const [stateFilter, setStateFilter] = useState([
+    "Accepted",
+    "Waiting for acceptance",
+  ]);
   const [orderBy, setOrderBy] = useState();
 
   //header table
@@ -55,36 +55,36 @@ const ManageAssignmentPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   //id asset to show detail asset
-  const [userId, setUserId] = useState();
+  const [assignmentId, setAssignmentId] = useState();
 
   const [isOpen, setOpen] = useState(false);
   const [isOpenDel, setOpenDel] = useState(false);
   const [isOpenMess, setOpenMess] = useState(false);
   const [message, setMessage] = useState("");
-  const [assignedDate, setAssignedDate] = useState("");
+  const [assignedDate, setAssignedDate] = useState(undefined);
 
   const [isDel, setDel] = useState(false);
   const fetchAssignment = async () => {
     Loading.standard("Loading...");
     // check location id
-    let locationID = getLocationInSession();
-    if (locationID === null) {
-      alert("The administrator's location could not be found");
-      Loading.remove();
-      return null;
+    var assignedDateString = undefined;
+    if (assignedDate !== undefined) {
+      assignedDateString = moment(assignedDate).format("YYYY-MM-DD");
+      console.log(assignedDateString);
+      console.log(assignedDate);
     }
-
-    var assignedDateString = moment(assignedDate).format("DD/MM/YYYY");
-    console.log(assignedDateString);
+    console.log(assignedDate);
 
     const filter = {
       page: currentPage,
       keyword: searchFilter,
       states: stateFilter.length === 0 ? undefined : stateFilter,
-      locationId: locationID,
       orderBy: orderBy,
-      assignedDate: assignedDateString,
+      assignDate: assignedDateString,
     };
+    console.log(assignedDateString);
+    console.log(assignedDate);
+
     let predicates = queryString.stringify(filter);
     console.log(predicates);
     await AssingementService.getAllAssignments(predicates).then(
@@ -100,17 +100,11 @@ const ManageAssignmentPage = () => {
         Loading.remove();
       }
     );
+    //Loading.remove();
   };
 
   const fetchStates = async () => {
-    await AssingementService.getAllStates().then(
-      (res) => {
-        setStateList(res.data.sort((a, b) => a.localeCompare(b)));
-      },
-      (err) => {
-        console.log(err.toString());
-      }
-    );
+    setStateList(["Accepted", "Waiting for acceptance", "Declined"]);
   };
 
   const sortByCol = (col) => {
@@ -126,25 +120,25 @@ const ManageAssignmentPage = () => {
     switch (col) {
       case "Asset Code":
         col === currentSortCol
-          ? setOrderBy("assetCode_DESC")
-          : setOrderBy("assetCode_ASC");
+          ? setOrderBy("asset.id_DESC")
+          : setOrderBy("asset.id_ASC");
         break;
       case "Asset Name":
         col === currentSortCol
-          ? setOrderBy("assetName_DESC")
-          : setOrderBy("assetName_ASC");
+          ? setOrderBy("asset.name_DESC")
+          : setOrderBy("asset.name_ASC");
         break;
 
       case "Assigned To":
         col === currentSortCol
-          ? setOrderBy("assignedTo_DESC")
-          : setOrderBy("assignedTo_ASC");
+          ? setOrderBy("assignedTo.username_DESC")
+          : setOrderBy("assignedTo.username_ASC");
         break;
 
       case "Assigned By":
         col === currentSortCol
-          ? setOrderBy("assignedBy_DESC")
-          : setOrderBy("assignedBy_ASC");
+          ? setOrderBy("assignedBy.username_DESC")
+          : setOrderBy("assignedBy.username_ASC");
         break;
 
       case "Assigned Date":
@@ -167,7 +161,7 @@ const ManageAssignmentPage = () => {
   const actions = {
     edit: true,
     remove: true,
-    return: false,
+    return: true,
   };
 
   const handleAssignedDateChange = (date) => {
@@ -175,6 +169,9 @@ const ManageAssignmentPage = () => {
       clearTimeout(typingTimeOutRef.current);
     }
     typingTimeOutRef.current = setTimeout(() => {
+      if (date === null) {
+        setAssignedDate(undefined);
+      }
       setAssignedDate(date);
     }, 1000);
   };
@@ -199,7 +196,7 @@ const ManageAssignmentPage = () => {
   }, [currentPage]);
 
   const handleOpenModal = (id) => {
-    setUserId(id);
+    setAssignmentId(id);
     setOpen(true);
   };
 
@@ -211,9 +208,9 @@ const ManageAssignmentPage = () => {
       clearTimeout(typingTimeOutRef.current);
     }
     typingTimeOutRef.current = setTimeout(() => {
+      setSearchFilter(temp);
       setOrderBy(null);
       setCurrentPage(0);
-      setSearchFilter(temp);
     }, 500);
   };
 
@@ -242,12 +239,19 @@ const ManageAssignmentPage = () => {
   };
 
   useEffect(() => {
-    fetchAssignment();
-  }, [currentPage, stateFilter, searchFilter, orderBy, isDel, assignedDate]);
-  useEffect(() => {
+    //Loading.standard("Loading...");
     fetchAssignment();
     fetchStates();
-  }, []);
+  }, [currentPage, stateFilter, searchFilter, orderBy, isDel, assignedDate]);
+
+  // useEffect(() => {
+  //   typingTimeOutRef.current = setTimeout(() => {
+
+  //     fetchAssignment();
+  //     fetchStates();
+
+  //   }, 5000);
+  // }, []);
 
   return (
     <>
@@ -312,6 +316,7 @@ const ManageAssignmentPage = () => {
                 <div>
                   <DatePicker
                     className="btn btn-outline-secondary dropdown-toggle"
+                    dateFormat="dd/MM/yyyy"
                     selected={assignedDate}
                     onChange={(date) => handleAssignedDateChange(date)}
                     placeholderText="Assigned Date    🗓️"
@@ -376,7 +381,7 @@ const ManageAssignmentPage = () => {
           title="Detailed Assignmnet Infomation"
           showModal={isOpen}
           closePopupFunc={handleCloseModal}
-          objId={userId}
+          objId={assignmentId}
         />
         {/* <PopUpConfirm
           showModal={isOpenDel}
