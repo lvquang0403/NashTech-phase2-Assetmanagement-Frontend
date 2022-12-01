@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import getLocationInSession from '../../utils/getLocationInSession';
 import formatDate from '../../utils/formatDate';
 const CreateUserForm = ({ user }) => {
-    const { register, watch, handleSubmit, trigger, setValue, control,  formState: { errors } } = useForm({ mode: "onChange" });
+    const { register, watch, handleSubmit, trigger, setValue, control, formState: { errors } } = useForm({ mode: "onChange" });
     const [isDisable, setDisable] = useState(true)
     const [roles, setRoles] = useState([])
     const navigate = useNavigate();
@@ -204,8 +204,10 @@ const CreateUserForm = ({ user }) => {
                             /> */}
                             <input
                                 style={{ width: "225px" }}
-                                data-date={watchAllFields.birth ==='' ? "dd/mm/yyyy" : formatDate(watchAllFields.birth)}
+                                data-date={watchAllFields.birth === '' ? "dd/mm/yyyy" : formatDate(watchAllFields.birth)}
                                 type="date"
+                                min="1900-01-01"
+                                max="3000-01-01"
                                 {...register("birth", { validate: { ageCondition }, required: true })}
                                 className="form-control pe-4 __input-date" />
                             {
@@ -250,8 +252,10 @@ const CreateUserForm = ({ user }) => {
                         </div>
                         <div className="col-auto">
                             <input
+                                min="1900-01-01"
+                                max="3000-01-01"
                                 style={{ width: "222px" }}
-                                data-date={watchAllFields.joinedDate ==='' ? "dd/mm/yyyy" : formatDate(watchAllFields.joinedDate)}
+                                data-date={watchAllFields.joinedDate === '' ? "dd/mm/yyyy" : formatDate(watchAllFields.joinedDate)}
                                 type="date"
                                 {...register("joinedDate", { validate: { joinedDateConditionNotSatAndSun, joinedDateCondition }, required: true })}
                                 className="form-control __input-date" />
