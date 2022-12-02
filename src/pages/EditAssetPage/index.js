@@ -240,6 +240,7 @@ const EditAsset = () => {
                         id="installedDate"
                         type="date"
                         className='__input-date'
+                        max="9999-01-01"
                         onChange={changInputInstalledDate}
                         data-date={formatDate(installedDate)}
                         defaultValue={asset.installedDate}

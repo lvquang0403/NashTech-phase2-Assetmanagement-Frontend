@@ -254,6 +254,7 @@ const EditAssignmentPage = () => {
                         ?<Form.Control
                             id="assignedDate"
                             type="date"
+                            max="9999-01-01"
                             onChange={changeInputAssignedDate}
                             defaultValue={assignedDate}
                         />

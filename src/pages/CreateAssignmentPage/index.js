@@ -11,7 +11,6 @@ import validateAssignmentCreateUpdate from '../../utils/validateAssignmentCreate
 import AssignmentService from '../../services/AssignmentService';
 import getUserLoged from '../../utils/getUserLoged';
 
-const now = new Date();
 
 const CreateAssignment = () => {
     const navigate = useNavigate();
@@ -23,7 +22,7 @@ const CreateAssignment = () => {
     const [selectedAsset, setSelectedAsset] = useState(undefined);
     //  data
     const [note, setNote] = useState('');
-    const [assignedDate, setAssignedDate] = useState(setDefaultInputDate(now));
+    const [assignedDate, setAssignedDate] = useState(setDefaultInputDate());
     //  show button save
     const [buttonSave, setButtonSave] = useState(false);
     //  text validate
@@ -171,7 +170,7 @@ const CreateAssignment = () => {
 
     return (
         <Container className='_createAssignment'>
-            <h5 className='_title'>Create Assignment</h5>
+            <h5 className='_title'>Create New Assignment</h5>
             <form onSubmit={handleSubmit} >
                 <ModalSelectRadio title='Select User' select='user'
                     show={modalSelectUserShow} onHide={() => setModalSelectUserShow(false)}
@@ -186,7 +185,7 @@ const CreateAssignment = () => {
                     </Col>
                     <Col xs={9}>
                         <InputGroup className="mb-3">
-                            <Form.Control className='__input-search' maxLength={0} value={(selectedUser) ? selectedUser.fullName : ''} />
+                            <Form.Control className='__input-search' readOnly maxLength={0} value={(selectedUser) ? selectedUser.fullName : ''} />
                             <div className='__button-search' onClick={() => setModalSelectUserShow(true)}>
                                 <BsSearch className='__icon-search' />
                             </div>
@@ -205,7 +204,7 @@ const CreateAssignment = () => {
                     </Col>
                     <Col xs={9}>
                         <InputGroup className="mb-3">
-                            <Form.Control className='__input-search' maxLength={0} value={(selectedAsset) ? selectedAsset.name : ''} />
+                            <Form.Control readOnly className='__input-search' maxLength={0} value={(selectedAsset) ? selectedAsset.name : ''} />
                             <div className='__button-search' onClick={() => setModalSelectAssetShow(true)}>
                                 <BsSearch className='__icon-search' />
                             </div>
@@ -226,6 +225,7 @@ const CreateAssignment = () => {
                         <Form.Control
                             id="assignedDate"
                             type="date"
+                            max="9999-01-01"
                             onChange={changeInputAssignedDate}
                             defaultValue={setDefaultInputDate()}
                         />

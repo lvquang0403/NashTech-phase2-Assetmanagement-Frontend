@@ -147,7 +147,7 @@ const RadioListUsers = (props) => {
                     loadUsers(false)
                 }}>
                     <Col xs={12} className='__col-content __more'>
-                        <ListGroup.Item action><u>more</u></ListGroup.Item>
+                        <ListGroup.Item action><u>see more</u></ListGroup.Item>
                     </Col>
                 </Row>
             }

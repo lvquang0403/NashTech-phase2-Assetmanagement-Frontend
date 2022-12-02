@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { useRef } from 'react'
-import { Button, Col, Container, Form, InputGroup, Modal, Row } from 'react-bootstrap'
+import { Button, Form, InputGroup, Modal, Row } from 'react-bootstrap'
 import { BsSearch } from 'react-icons/bs'
-import ReactPaginate from 'react-paginate'
 import RadioListAssets from '../radioListData/RadioListAssets.js'
 import RadioListUsers from '../radioListData/RadioListUsers.js'
 
@@ -12,22 +11,21 @@ import "./style.scss";
 const ModalSelectRadio = (props) => {
   const typingTimeOutRef = useRef(null);
 
-  const [currentPage, setCurrentPage] = useState(0);
   const [searchFilter, setSearchFilter] = useState('');
   const [selectedData, setSelectedData] = useState(undefined);
 
-  const handlePageChange = (e) => {
-    const { selected } = e;
-    console.log(selected);
-    setCurrentPage(selected)
-  }
   const handleInputSearchChange = (e) => {
     let value = document.getElementById('search_select_'+props.select).value;
     if (typingTimeOutRef.current) {
         clearTimeout(typingTimeOutRef.current);
     }
     typingTimeOutRef.current = setTimeout(() => {
-        setSearchFilter(value)
+        let regex = /[!@#$%&*()_+=|<>?{}[\]~]/g;
+        if (regex.test(value)) {
+          setSearchFilter('@')
+        }else{
+          setSearchFilter(value)
+        }
     }, 500);
   }
 
@@ -63,8 +61,8 @@ const ModalSelectRadio = (props) => {
       <Modal.Body className='__body'>
         {
           (props.select ==='user')
-          ?<RadioListUsers     currentPage={currentPage} search={searchFilter} setSelectedData={setSelectedData}/>
-          :<RadioListAssets    currentPage={currentPage} search={searchFilter} setSelectedData={setSelectedData}/>
+          ?<RadioListUsers   search={searchFilter} setSelectedData={setSelectedData}/>
+          :<RadioListAssets  search={searchFilter} setSelectedData={setSelectedData}/>
         }
         
       </Modal.Body>
