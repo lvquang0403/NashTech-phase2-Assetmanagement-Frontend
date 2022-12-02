@@ -54,8 +54,7 @@ const CreateAssignment = () => {
         error.asset = validateAssignmentCreateUpdate.asset(selectedAsset);
         error.note = validateAssignmentCreateUpdate.note(inpNote);
         error.assignedDate = validateAssignmentCreateUpdate.assignedDate(assignedDate);
-
-        if (error.assignedDate === 'success' && error.note === 'success' && error.user && error.asset) {
+        if (error.assignedDate === 'success' && error.note === 'success' && error.user === 'success' && error.asset=== 'success' ) {
             setButtonSave(true)
         } else {
             setButtonSave(false)
@@ -67,11 +66,7 @@ const CreateAssignment = () => {
         let date = e.target.value;
         let error = {};
 
-        error.user = validateAssignmentCreateUpdate.user(selectedUser);
-        error.asset = validateAssignmentCreateUpdate.asset(selectedAsset);
-        error.assignedDate = validateAssignmentCreateUpdate.assignedDate(date);
-        error.note = validateAssignmentCreateUpdate.note(note);
-        if (error.assignedDate === 'success' && error.note === 'success' && error.user && error.asset) {
+        if (error.assignedDate === 'success' && error.note === 'success' && error.user === 'success'   && error.asset === 'success' ) {
             setButtonSave(true)
         } else {
             setButtonSave(false)
@@ -86,7 +81,7 @@ const CreateAssignment = () => {
         error.asset = validateAssignmentCreateUpdate.asset(selectedAsset);
         error.assignedDate = validateAssignmentCreateUpdate.assignedDate(assignedDate);
         error.note = validateAssignmentCreateUpdate.note(note);
-        if (error.assignedDate === 'success' && error.note === 'success' && error.user && error.asset) {
+        if (error.assignedDate === 'success' && error.note === 'success' && error.user === 'success'  && error.asset === 'success' ) {
             setButtonSave(true)
         } else {
             setButtonSave(false)
@@ -102,7 +97,7 @@ const CreateAssignment = () => {
         error.asset = validateAssignmentCreateUpdate.asset(data);
         error.assignedDate = validateAssignmentCreateUpdate.assignedDate(assignedDate);
         error.note = validateAssignmentCreateUpdate.note(note);
-        if (error.assignedDate === 'success' && error.note === 'success' && error.user && error.asset) {
+        if (error.assignedDate === 'success' && error.note === 'success' && error.user === 'success'  && error.asset === 'success' ) {
             setButtonSave(true)
         } else {
             setButtonSave(false)
