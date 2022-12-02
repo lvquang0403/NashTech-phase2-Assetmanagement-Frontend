@@ -2,7 +2,7 @@ import axiosClient from "./AxiosCilent";
 const API_BASE_URL = `api/assignments`;
 
 class AssignmentService {
-  insert({ assignBy, assignTo, assetId, assignedDate, note }) {
+  create({ assignBy, assignTo, assetId, assignedDate, note }) {
     return axiosClient.post(`${API_BASE_URL}`, {
       assignBy: assignBy,
       assignTo: assignTo,
@@ -12,11 +12,21 @@ class AssignmentService {
     });
   }
 
+  
+  update({assignmentId, assignTo, assetId, assignedDate, note}){
+    return axiosClient.put(`${API_BASE_URL}/${assignmentId}`,{
+        assignTo: assignTo,
+        assetId : assetId,
+        assignedDate : assignedDate,
+        note : note
+    });
+}
+
   getAllAssignments(query) {
     return axiosClient.get(`${API_BASE_URL}?${query}`);
   }
 
-  getAssetById(id) {
+  getAssignmentById(id) {
     return axiosClient.get(`${API_BASE_URL}/${id}`);
   }
 

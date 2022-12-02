@@ -13,6 +13,7 @@ import {
   HomePage,
   ManageAsset,
   ManageUserPage,
+  EditAssignmentPage,
   CreateAssignment,
 } from "./pages";
 import EditUserPage from "./pages/EditUserPage";
@@ -54,6 +55,7 @@ function App() {
               path="/create-assignment"
               element={<CreateAssignment></CreateAssignment>}
             />
+            <Route path="/edit-assignment/:id" element={<EditAssignmentPage></EditAssignmentPage>} />
           </Route>
         </Routes>
       </Suspense>

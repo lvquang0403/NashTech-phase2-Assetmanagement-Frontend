@@ -6,13 +6,12 @@ import { BsSearch } from "react-icons/bs";
 import { Loading } from "notiflix/build/notiflix-loading-aio";
 
 import "./index.scss";
-import formatDate from '../../utils/formatDate';
 import ModalSelectRadio from '../../components/modalSelectRadio/ModalSelectRadio';
 import validateAssignmentCreateUpdate from '../../utils/validateAssignmentCreateUpdate';
 import AssignmentService from '../../services/AssignmentService';
 import getUserLoged from '../../utils/getUserLoged';
 
-const now = '12/01/2022';
+const now = new Date();
 
 const CreateAssignment = () => {
     const navigate = useNavigate();
@@ -24,7 +23,7 @@ const CreateAssignment = () => {
     const [selectedAsset, setSelectedAsset] = useState(undefined);
     //  data
     const [note, setNote] = useState('');
-    const [assignedDate, setAssignedDate] = useState(now);
+    const [assignedDate, setAssignedDate] = useState(setDefaultInputDate(now));
     //  show button save
     const [buttonSave, setButtonSave] = useState(false);
     //  text validate
@@ -146,7 +145,7 @@ const CreateAssignment = () => {
                 note: note
             }
             console.log(data);
-            AssignmentService.insert(data)
+            AssignmentService.create(data)
                 .then((response) => {
                     console.log(response.data);
                     navigate('/manage-assignment');

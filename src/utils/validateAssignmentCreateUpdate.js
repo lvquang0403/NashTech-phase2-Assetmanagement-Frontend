@@ -31,6 +31,9 @@ const validateAssignmentCreateUpdate = {
         if(Number.isNaN(newAssignedDate.getDay())){
             return "this day does not exist"
         }
+        if((newAssignedDate.getFullYear() - now.getFullYear()) > 100){
+            return "Invalid date"
+        }
         if(formatDate(now)===formatDate(newAssignedDate)){
             return "success";
         }

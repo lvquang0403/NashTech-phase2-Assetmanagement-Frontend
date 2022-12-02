@@ -5,6 +5,7 @@ import ManageUserPage from "./ManageUserPage";
 import CreateAsset from "./CreateAssetPage";
 import EditAsset from "./EditAssetPage";
 import CreateAssignment from "./CreateAssignmentPage";
+import EditAssignmentPage from "./EditAssignmentPage";
 
 export {
     HomePage,
@@ -12,5 +13,6 @@ export {
     ManageUserPage,
     CreateAsset,
     EditAsset,
-    CreateAssignment
+    CreateAssignment,
+    EditAssignmentPage
 };

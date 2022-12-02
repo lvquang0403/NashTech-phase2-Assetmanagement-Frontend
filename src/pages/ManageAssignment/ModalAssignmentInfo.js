@@ -20,17 +20,14 @@ const ModalAssignmentInfo = ({ title, objId, showModal, closePopupFunc }) => {
   }, [objId]);
 
   const fetchUserInfo = async () => {
-    console.log("modal test 1");
     Loading.standard("Loading...");
-    await AssignmentService.getAssetById(objId).then(
+    await AssignmentService.getAssignmentById(objId).then(
       (res) => {
-        console.log("getID success start");
         setData(res.data);
         console.log(res);
         Loading.remove();
       },
       (err) => {
-        console.log("getID success start");
         console.log(err.toString());
         Loading.remove();
       }

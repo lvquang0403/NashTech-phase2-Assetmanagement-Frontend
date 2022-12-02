@@ -40,6 +40,9 @@ const validateAssetInsert = {
         if(installedDate === null || installedDate === undefined){
             return "This is a required field"
         }
+        if((now.getFullYear() - newInstalledDate.getFullYear()) > 100){
+            return "Invalid date"
+        }
         if(now.getTime() <  newInstalledDate.getTime()){
             return "Select a date in the past or present"
         }
