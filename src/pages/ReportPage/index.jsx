@@ -3,14 +3,29 @@ import TableReport from './TableReport'
 import styles from "./index.module.css";
 import ReportService from '../../services/ReportService';
 
+import * as XLSX from "xlsx";
+import { Loading } from "notiflix/build/notiflix-loading-aio";
+
 export default function ReportPage() {
     const [data,setData]=useState([]);
     useEffect(() => {
-        ReportService.getReports().then((response)=>setData(response.data));
+        Loading.standard("Loading...");
+        ReportService.getReports()
+            .then((response)=>{
+                setData(response.data)
+                Loading.remove();
+            })
+            .catch((error)=>{
+                console.log(error);
+                Loading.remove();
+            });
     }, []);
     const exportData=()=>{
-        // const xls=new XlsExport(data,"title");
-        // xls.exportToXLS("export.xlsx",true);
+        var data = document.getElementById("tbl");
+        var excelFile = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+        XLSX.write(excelFile, { bookType: 'xlsx', bookSST: true, type: 'base64' });
+        XLSX.writeFile(excelFile, 'report.xlsx');
+
     }
 
     return (

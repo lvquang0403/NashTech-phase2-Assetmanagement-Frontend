@@ -38,7 +38,8 @@ export default function TableReport({data}) {
     }, [col,data]);
 
     return (
-        <table className="table table-hover" style={{borderCollapse:"separate"}}>
+
+        <table id="tbl" className="table table-hover" style={{borderCollapse:"separate"}}>
             <thead>
                 <tr>
                     <th scope="col" className='border-dark' onClick={()=>handeSort(0)}>Category</th>
