@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Main from "./components/layout/Main";
 import ManageAssignmentPage from "./pages/ManageAssignment/ManageAssignmentPage";
 import RequestPage from "./pages/RequestPage";
-import ReportPage from "./pages/ReportPage";
+
 import LoginPage from "./pages/Login";
 
 import {
@@ -18,6 +18,7 @@ import {
 } from "./pages";
 import EditUserPage from "./pages/EditUserPage";
 import CreateUserPage from "./pages/CreateUserPage";
+import ReportPage from "./pages/ReportPage";
 
 function App() {
   return (
