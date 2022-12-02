@@ -249,18 +249,14 @@ const EditAssignmentPage = () => {
                     <label for="assignedDate" className='_label'>Assigned Date</label>
                 </Col>
                 <Col xs={9}>
-                    {
-                        (assignedDate)
-                        ?<Form.Control
-                            id="assignedDate"
-                            type="date"
-                            max="9999-01-01"
-                            onChange={changeInputAssignedDate}
-                            defaultValue={assignedDate}
-                        />
-                        :null
-                        
-                    }
+                    <Form.Control
+                        id="assignedDate"
+                        type="date"
+                        max="9999-01-01"
+                        onChange={changeInputAssignedDate}
+                        defaultValue={assignedDate}
+                    /> 
+                    
                     {
                         (textError.assignedDate !== 'success')?
                         <Form.Text className="_text-error">
