@@ -150,7 +150,7 @@ const ManageAsset = () => {
   }, [allCate, allState]);
 
   const handleEditBtn = (id) => {
-    navigate(`/edit-asset/${id}`);
+    navigate(`/manage-asset/edit-asset/${id}`);
   };
 
   const handleDelBtn = async (id) => {
@@ -422,7 +422,7 @@ const ManageAsset = () => {
                 className="btn btn-danger"
                 id="btnCreateAsset"
                 onClick={() => {
-                  navigate("/create-asset");
+                  navigate("/manage-asset/create-asset");
                 }}
               >
                 Create new asset

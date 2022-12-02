@@ -356,7 +356,7 @@ const ManageAssignmentPage = () => {
                 className="btn btn-danger"
                 id="btnCreateAsset"
                 onClick={() => {
-                  navigate("/create-assignment");
+                  navigate("/manage-assignment/create-assignment");
                 }}
               >
                 Create new assignment

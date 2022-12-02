@@ -83,7 +83,7 @@ const EditAssignmentPage = () => {
         error.note = validateAssignmentCreateUpdate.note(inpNote);
         error.assignedDate = validateAssignmentCreateUpdate.assignedDate(assignedDate);
         
-        if(error.assignedDate ==='success' && error.note ==='success' && error.user && error.asset){
+        if(error.assignedDate ==='success' && error.note ==='success' && error.user === 'success' && error.asset === 'success' ){
             setButtonSave(true)
         }else{
             setButtonSave(false)
@@ -99,7 +99,7 @@ const EditAssignmentPage = () => {
         error.asset = validateAssignmentCreateUpdate.asset(selectedAsset);
         error.assignedDate = validateAssignmentCreateUpdate.assignedDate(date);
         error.note = validateAssignmentCreateUpdate.note(note);
-        if(error.assignedDate ==='success' && error.note ==='success' && error.user && error.asset){
+        if(error.assignedDate ==='success' && error.note ==='success' && error.user === 'success'  && error.asset === 'success' ){
             setButtonSave(true)
         }else{
             setButtonSave(false)
@@ -114,7 +114,7 @@ const EditAssignmentPage = () => {
         error.asset = validateAssignmentCreateUpdate.asset(selectedAsset);
         error.assignedDate = validateAssignmentCreateUpdate.assignedDate(assignedDate);
         error.note = validateAssignmentCreateUpdate.note(note);
-        if(error.assignedDate ==='success' && error.note ==='success' && error.user && error.asset){
+        if(error.assignedDate ==='success' && error.note ==='success' && error.user  === 'success' && error.asset === 'success' ){
             setButtonSave(true)
         }else{
             setButtonSave(false)
@@ -130,7 +130,7 @@ const EditAssignmentPage = () => {
         error.asset = validateAssignmentCreateUpdate.asset(data);
         error.assignedDate = validateAssignmentCreateUpdate.assignedDate(assignedDate);
         error.note = validateAssignmentCreateUpdate.note(note);
-        if(error.assignedDate ==='success' && error.note ==='success' && error.user && error.asset){
+        if(error.assignedDate ==='success' && error.note ==='success' && error.user  === 'success' && error.asset === 'success' ){
             setButtonSave(true)
         }else{
             setButtonSave(false)
@@ -254,6 +254,7 @@ const EditAssignmentPage = () => {
                         ?<Form.Control
                             id="assignedDate"
                             type="date"
+                            max="9999-01-01"
                             onChange={changeInputAssignedDate}
                             defaultValue={assignedDate}
                         />
