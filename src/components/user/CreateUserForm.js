@@ -209,12 +209,12 @@ const CreateUserForm = ({ user }) => {
                                 )}
                             /> */}
                             <input
-                                style={{ width: "225px" }}
+                                style={{ width: "228px" }}
                                 type="date"
                                 min="1900-01-01"
                                 max="3000-01-01"
                                 {...register("birth", { validate: { ageCondition, validDateConfidtion }, required: true })}
-                                className="form-control pe-4 __input-date" />
+                                className="form-control pe-3 __input-date" />
                             {
                                 errors.birth && errors.birth.type === "ageCondition" && (
                                     <div className="error text-danger">User is under 18. Please select a different date</div>
