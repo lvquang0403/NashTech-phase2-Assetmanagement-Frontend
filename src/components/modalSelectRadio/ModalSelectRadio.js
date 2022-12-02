@@ -9,11 +9,13 @@ import "./style.scss";
 
 
 const ModalSelectRadio = (props) => {
+  // Time Out
   const typingTimeOutRef = useRef(null);
-
+  // save value when change input search
   const [searchFilter, setSearchFilter] = useState('');
+  // save data selected
   const [selectedData, setSelectedData] = useState(undefined);
-
+  // When change value of input search
   const handleInputSearchChange = (e) => {
     let value = document.getElementById('search_select_'+props.select).value;
     if (typingTimeOutRef.current) {
@@ -27,12 +29,17 @@ const ModalSelectRadio = (props) => {
           setSearchFilter(value)
         }
     }, 500);
-  }
-
-  
-
+  } 
+  // When click button 'Save'
   const handleSaveButton = (e)=>{
     props.setSelectedData(selectedData);
+    setSearchFilter('')
+    props.onHide();
+  }
+  // When click button 'Cancel'
+  const handleCancelButton = (e)=>{
+    props.onHide()
+    setSearchFilter('')
     props.onHide();
   }
 
@@ -61,8 +68,8 @@ const ModalSelectRadio = (props) => {
       <Modal.Body className='__body'>
         {
           (props.select ==='user')
-          ?<RadioListUsers   search={searchFilter} setSelectedData={setSelectedData}/>
-          :<RadioListAssets  search={searchFilter} setSelectedData={setSelectedData}/>
+          ?<RadioListUsers idData={props.idData}   search={searchFilter} setSelectedData={setSelectedData}/>
+          :<RadioListAssets idData={props.idData} search={searchFilter} setSelectedData={setSelectedData}/>
         }
         
       </Modal.Body>
@@ -72,7 +79,7 @@ const ModalSelectRadio = (props) => {
           ?<Button variant="danger" onClick={handleSaveButton}>Save</Button>
           :<Button variant="danger __notValid">Save</Button>
         }
-        <Button variant="secondary" onClick={props.onHide}>Close</Button>
+        <Button variant="secondary" onClick={handleCancelButton}>Close</Button>
       </Modal.Footer>
     </Modal>
   )

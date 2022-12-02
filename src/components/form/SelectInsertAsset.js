@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import { BsCheckLg, BsFillCaretDownFill,  BsXLg } from "react-icons/bs";
 import CategoryService from "../../services/CategoryService";
@@ -8,14 +8,21 @@ import "./SelectInsertAsset.scss";
 
 
 const SelectInsertAsset = () => {
+    // show input to  create category
     const [openInput, setOpenInput] = useState(false);
+    // show button 'save'
     const [buttonSave, setButtonSave] = useState(false);
+    // save list category 
     const [categories, setCategories] = useState(undefined);
+    // save selected category 
     const [categorySelected, setCategorySelected] = useState('');
+    // error message text
     const [textError, setTextError] = useState({
         name:'success',
         prefix:'success'
     });
+
+    // Load list categories to API
     const loadCategories = useCallback(()=>{
         CategoryService.getAllCategories()
             .then((response)=>{
@@ -33,11 +40,13 @@ const SelectInsertAsset = () => {
                     alert(error.message)
                 }
             });
-      },[])
+    },[])
+    // When click 'Add new category'
     const openInputNewCategory = ()=>{
         setOpenInput(true)
     }
-    const changInput = (e)=>{
+    // When click choose category
+    const handleChangeInput = (e)=>{
         let name = document.getElementById('categoryName').value;
         let prefix = document.getElementById('categoryPrefix').value;
         let error = {
@@ -53,7 +62,8 @@ const SelectInsertAsset = () => {
         }
         setTextError(error)
     }
-    const hamDropdown =  ()=> {
+    // dropdown
+    const dropdown =  ()=> {
         document.querySelector(".content_dropdown").classList.toggle("hiddenContent");
         let radio = document.getElementsByName("category");
         for (const input of radio) {
@@ -61,9 +71,9 @@ const SelectInsertAsset = () => {
                 setCategorySelected(input.getAttribute('data-name'))
             }
         }
-        cleanSetup();
+        clearSetup();
     }
-
+    // When click save category
     const handleAddCategory = (e)=>{
         let name = document.getElementById('categoryName').value;
         let prefix = document.getElementById('categoryPrefix').value;
@@ -80,7 +90,7 @@ const SelectInsertAsset = () => {
             CategoryService.insert(prefix, name)
             .then((response)=>{
                 loadCategories();
-                cleanSetup();
+                clearSetup();
             })
             .catch((error)=>{
                 console.log(error);
@@ -92,7 +102,8 @@ const SelectInsertAsset = () => {
             });
         }
     }
-    const cleanSetup = ()=>{
+    // delete value in input new category
+    const clearSetup = ()=>{
         if(document.getElementById('categoryName')){
             document.getElementById('categoryName').value='';
         }
@@ -114,7 +125,7 @@ const SelectInsertAsset = () => {
     }, []);
   return (
     <div class="_select__dropdown" >
-        <div className="_select" onClick={hamDropdown}>
+        <div className="_select" onClick={dropdown}>
             <span className="_chooseCategory">{categorySelected}</span>
             <span className="_iconSelect"><BsFillCaretDownFill/></span> 
         </div>
@@ -123,9 +134,9 @@ const SelectInsertAsset = () => {
                 (categories)? categories.map((item,  index)=>(
                     <div key={index} className="__content" onClick={(e)=>{
                         document.getElementById('_select_'+item.id).checked = true;
-                        hamDropdown()
+                        dropdown()
                     }} >
-                        <label for={'_select_'+item.id}  onClick={hamDropdown}>{item.name}</label>
+                        <label for={'_select_'+item.id}  onClick={dropdown}>{item.name}</label>
                         {
                             (index===0)?
                             <input 
@@ -157,7 +168,7 @@ const SelectInsertAsset = () => {
                     <Row >
                         <Col xs={5}>
                             <input type={"text"} 
-                                onChange={changInput}
+                                onChange={handleChangeInput}
                                 id='categoryName'  
                                 className='_textSelectCategory' 
                                 placeholder="Category name"
@@ -166,7 +177,7 @@ const SelectInsertAsset = () => {
                         </Col>
                         <Col xs={2}>
                             <input type={"text"} 
-                                onChange={changInput}
+                                onChange={handleChangeInput}
                                 id='categoryPrefix' 
                                 maxLength={2}
                                 className='_textSelectPrefix' 
@@ -180,7 +191,7 @@ const SelectInsertAsset = () => {
                                 :<span className="_iconTrick _notValidate"  ><BsCheckLg/></span>
                             }
                             
-                            <span className="_iconX" onClick={cleanSetup}><BsXLg/></span>
+                            <span className="_iconX" onClick={clearSetup}><BsXLg/></span>
                         </Col>
                     </Row>
                     <Row>

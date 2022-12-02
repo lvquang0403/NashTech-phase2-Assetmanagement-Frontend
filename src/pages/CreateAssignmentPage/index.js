@@ -2,25 +2,25 @@ import React, { useState } from 'react'
 import { Button, Col, Container, Form, InputGroup, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 import { BsSearch } from "react-icons/bs";
-
 import { Loading } from "notiflix/build/notiflix-loading-aio";
 
 import "./index.scss";
+import AssignmentService from '../../services/AssignmentService';
 import ModalSelectRadio from '../../components/modalSelectRadio/ModalSelectRadio';
 import validateAssignmentCreateUpdate from '../../utils/validateAssignmentCreateUpdate';
-import AssignmentService from '../../services/AssignmentService';
 import getUserLoged from '../../utils/getUserLoged';
 
 
 const CreateAssignment = () => {
     const navigate = useNavigate();
-    // show modal
+    // show modal select
     const [modalSelectUserShow, setModalSelectUserShow] = useState(false);
     const [modalSelectAssetShow, setModalSelectAssetShow] = useState(false);
+
+    // save data for create assignments
     // user and asset selected
     const [selectedUser, setSelectedUser] = useState(undefined);
     const [selectedAsset, setSelectedAsset] = useState(undefined);
-    //  data
     const [note, setNote] = useState('');
     const [assignedDate, setAssignedDate] = useState(setDefaultInputDate());
     //  show button save
@@ -32,7 +32,7 @@ const CreateAssignment = () => {
         note: 'success',
         assignedDate: 'success'
     })
-
+    
     const formatDate = (date) => {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -46,8 +46,8 @@ const CreateAssignment = () => {
 
         return [year, month, day].join('-');
     }
-    // change data in input
-    const changeInputNote = (e) => {
+    // When change value of input Note
+    const handleChangeInputNote = (e) => {
         let inpNote = e.target.value;
         let error = {};
         error.user = validateAssignmentCreateUpdate.user(selectedUser);
@@ -62,7 +62,8 @@ const CreateAssignment = () => {
         setTextError(error)
         setNote(inpNote)
     }
-    const changeInputAssignedDate = (e) => {
+    // When change value of input Assigned Date
+    const handleChangeInputAssignedDate = (e) => {
         let date = e.target.value;
         let error = {};
 
@@ -78,6 +79,7 @@ const CreateAssignment = () => {
         setTextError(error)
         setAssignedDate(date)
     }
+    // When you have selected User
     const handleChangeUserSelected = (data) => {
         setSelectedUser(data)
         let error = {};
@@ -94,6 +96,7 @@ const CreateAssignment = () => {
 
 
     }
+    // When you have selected Asset
     const handleChangeAssetSelected = (data) => {
         setSelectedAsset(data)
         let error = {};
@@ -110,7 +113,7 @@ const CreateAssignment = () => {
 
 
     }
-
+    // When click Button 'Save'
     const handleSubmit = (e) => {
         e.preventDefault();
         Loading.standard("Loading...");
@@ -160,11 +163,10 @@ const CreateAssignment = () => {
                 });
         }
     }
+    // When click Button 'Cancel'
     const handleClickCanelButton = (e) => {
         e.preventDefault();
-
         navigate('/manage-assignment');
-
     }
 
     return (
@@ -172,9 +174,12 @@ const CreateAssignment = () => {
             <h5 className='_title'>Create New Assignment</h5>
             <form onSubmit={handleSubmit} >
                 <ModalSelectRadio title='Select User' select='user'
+                    idData={(selectedUser)?selectedUser.id:undefined}
                     show={modalSelectUserShow} onHide={() => setModalSelectUserShow(false)}
                     setSelectedData={handleChangeUserSelected} />
-                <ModalSelectRadio title='Select Asset' select='asset' show={modalSelectAssetShow}
+                <ModalSelectRadio title='Select Asset' select='asset' 
+                    idData={(selectedAsset)?selectedAsset.id:undefined}
+                    show={modalSelectAssetShow}
                     onHide={() => setModalSelectAssetShow(false)}
                     setSelectedData={handleChangeAssetSelected} />
 
@@ -185,7 +190,10 @@ const CreateAssignment = () => {
                     <Col xs={9}>
                         <InputGroup className="mb-3">
                             <Form.Control className='__input-search' readOnly maxLength={0} value={(selectedUser) ? selectedUser.fullName : ''} />
-                            <div className='__button-search' onClick={() => setModalSelectUserShow(true)}>
+                            <div className='__button-search' onClick={() => {
+                                setModalSelectUserShow(true)
+
+                            }}>
                                 <BsSearch className='__icon-search' />
                             </div>
                         </InputGroup>
@@ -225,7 +233,7 @@ const CreateAssignment = () => {
                             id="assignedDate"
                             type="date"
                             max="9999-01-01"
-                            onChange={changeInputAssignedDate}
+                            onChange={handleChangeInputAssignedDate}
                             defaultValue={setDefaultInputDate()}
                         />
                         {
@@ -245,7 +253,7 @@ const CreateAssignment = () => {
                             className={`_textarea `}
                             id="note"
                             as="textarea"
-                            onChange={changeInputNote}
+                            onChange={handleChangeInputNote}
                             maxLength={500}
                             style={{ height: '100px' }}
                         />

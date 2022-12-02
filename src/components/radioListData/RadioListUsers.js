@@ -15,6 +15,7 @@ const RadioListUsers = (props) => {
     const [users, setUsers] = useState([])
     const [currentPage, setCurrentPage] = useState(0)
     const [totalPages, setTotalPages] = useState(1)
+    const [selected, SetSelected] = useState(false)
     
     const loadUsers = async (reload=false)=>{
         Loading.standard("Loading...");
@@ -53,6 +54,11 @@ const RadioListUsers = (props) => {
             
             setCurrentPage(page+1)
             if (res.data.listResponse != null) {
+                for (const i of res.data.listResponse) {
+                    if (i.id === props.idData) {
+                        SetSelected(true)
+                    }
+                }
                 setTotalPages(res.data.totalPage)
             }
            
@@ -81,7 +87,6 @@ const RadioListUsers = (props) => {
             }
         }
     }
-
 
     useEffect(() => {
         resetRadioChecked('selectUser');
@@ -114,13 +119,24 @@ const RadioListUsers = (props) => {
                         }}
                     >
                         <Col xs={1} className='__col-content'>
-                            <input className='__radio-select' 
-                                id={`selectAsset_${item.id}`}
-                                type="radio" 
-                                name='selectUser'  
-                                value={item.id}
-                                onClick={handleClickRadio}
-                            />
+                            {
+                                (props.idData === item.id  && selected===true)
+                                ?<input className='__radio-select' 
+                                    id={`selectAsset_${item.id}`}
+                                    type="radio" 
+                                    name='selectUser'  
+                                    defaultChecked
+                                    value={item.id}
+                                    onClick={handleClickRadio}
+                                />
+                                :<input className='__radio-select' 
+                                    id={`selectAsset_${item.id}`}
+                                    type="radio" 
+                                    name='selectUser'  
+                                    value={item.id}
+                                    onClick={handleClickRadio}
+                                />
+                            }
                         </Col>
                         <Col xs={3} className='__col-content'>
                             <ListGroup.Item>

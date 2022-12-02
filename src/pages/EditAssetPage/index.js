@@ -17,18 +17,22 @@ import formatDate from '../../utils/formatDate';
 const EditAsset = () => {
     const params = useParams();
     const navigate = useNavigate();
+    // save data of asset need editing
     const [asset, setAsset] = useState(undefined);
+    // show button 'save'
     const [buttonSave, setButtonSave] = useState(true);
-    
+    // save data for editing asset
     const [nameAsset, setNameAsset] = useState('');
     const [specification, setSpecification] = useState('');
     const [installedDate, setInstalledDate] = useState('');
+    // error message text
     const [textError, setTextError] = useState({
         name:'success',
         specification:'success',
         installedDate:'success'
     })
 
+    // Load data from Database using API 
     const loadAsset = useCallback(()=>{
         Loading.standard("Loading...");
         AssetService.getAssetById(params.id)
@@ -59,8 +63,8 @@ const EditAsset = () => {
             });
       },[])
 
-    // change data in input
-    const changInputName = (e)=>{
+    // When change value of Input Name
+    const handleChangeInputName = (e)=>{
         let name = e.target.value;
         let error = {};
         error.name = validateAssetInsert.name(name);
@@ -74,7 +78,8 @@ const EditAsset = () => {
         setTextError(error)
         setNameAsset(name)
     }
-    const changInputSpecification = (e)=>{
+    // When change value of Input Specification
+    const handleChangeInputSpecification = (e)=>{
         let inpSpecification = e.target.value;
         let error = {};
         console.log(nameAsset);
@@ -90,7 +95,8 @@ const EditAsset = () => {
         setTextError(error)
         setSpecification(inpSpecification)
     }
-    const changInputInstalledDate = (e)=>{
+    // When change value of Input Installed Date
+    const handleChangeInputInstalledDate = (e)=>{
         let date = e.target.value;
         let error = {};
         error.installedDate = validateAssetInsert.installedDate(date);
@@ -105,7 +111,7 @@ const EditAsset = () => {
         setTextError(error)
         setInstalledDate(date)
     }
-
+    // When Click button 'Save'
     const handleSubmit = (e)=>{
         e.preventDefault();
         Loading.standard("Loading...");
@@ -159,13 +165,13 @@ const EditAsset = () => {
         }
        
     }
+    // When click Button cancel
     const handleClickCanelButton = (e)=>{
         e.preventDefault();
-        
         navigate('/manage-asset');
-        
     }
 
+    // load data at start
     useEffect(() => {
         loadAsset();
     }, []);
@@ -180,13 +186,14 @@ const EditAsset = () => {
                 </Col>
                 <Col xs={9}>
                     <Form.Control 
-                        onChange={changInputName}
+                        onChange={handleChangeInputName}
                         defaultValue={asset.name}
                         id='nameAsset'
                         type="text" 
                         placeholder="Enter Name Asset"
                         maxLength={50} />
                     {
+                        // text validate
                         (textError.name !== 'success')?
                         <Form.Text className="_text-error">
                             {textError.name}
@@ -218,12 +225,13 @@ const EditAsset = () => {
                         id="specification"
                         as="textarea"
                         defaultValue={asset.specification}
-                        onChange={changInputSpecification}
+                        onChange={handleChangeInputSpecification}
                         placeholder="Specification"
                         maxLength={500}
                         style={{ height: '100px' }}
                     />
                     {
+                        // text validate
                         (textError.specification !== 'success')?
                         <Form.Text className="_text-error">
                             {textError.specification}
@@ -241,11 +249,12 @@ const EditAsset = () => {
                         type="date"
                         className='__input-date'
                         max="9999-01-01"
-                        onChange={changInputInstalledDate}
+                        onChange={handleChangeInputInstalledDate}
                         data-date={formatDate(installedDate)}
                         defaultValue={asset.installedDate}
                     />
                     {
+                        // text validate
                         (textError.installedDate !== 'success')?
                         <Form.Text className="_text-error">
                             {textError.installedDate}

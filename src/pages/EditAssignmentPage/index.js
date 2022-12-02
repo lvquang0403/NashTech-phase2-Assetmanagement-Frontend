@@ -16,21 +16,21 @@ import { useEffect } from 'react';
 const EditAssignmentPage = () => {
     const navigate = useNavigate();
     const params = useParams();
-//  assignnment
+    // save assignnment need editing
     const [assignment, setAssignment] = useState(undefined);
-
-// show modal
+    // show modal
     const [modalSelectUserShow, setModalSelectUserShow] = useState(false);
     const [modalSelectAssetShow, setModalSelectAssetShow] = useState(false);
-// user and asset selected
+    
+    // save data of asset need editing
+    // user and asset selected
     const [selectedUser, setSelectedUser] = useState(undefined);
     const [selectedAsset, setSelectedAsset] = useState(undefined);
-//  data
     const [note, setNote] = useState('');
     const [assignedDate, setAssignedDate] = useState(undefined);
-//  show button save
+    //  show button save
     const [buttonSave, setButtonSave] = useState(false);
-//  text validate
+    // error message text
     const [textError, setTextError] = useState({
         user:'success',
         asset:'success',
@@ -38,6 +38,7 @@ const EditAssignmentPage = () => {
         assignedDate:'success'
     })
     
+    // load data to API
     const loadAssignment = ()=>{
         Loading.standard("Loading...");
         AssignmentService.getAssignmentById(params.id)
@@ -73,8 +74,7 @@ const EditAssignmentPage = () => {
                 Loading.remove();
             });
     }
-
-    // change data in input
+    // When change value of Input Note
     const changeInputNote = (e)=>{
         let inpNote = e.target.value;
         let error = {};
@@ -91,6 +91,7 @@ const EditAssignmentPage = () => {
         setTextError(error)
         setNote(inpNote)
     }
+    // When change value of Input Assigned Date
     const changeInputAssignedDate = (e)=>{
         let date = e.target.value;
         let error = {};
@@ -107,6 +108,7 @@ const EditAssignmentPage = () => {
         setTextError(error)
         setAssignedDate(date)
     }
+    // When you have selected User
     const handleChangeUserSelected = (data)=>{
         setSelectedUser(data)
         let error = {};
@@ -123,6 +125,7 @@ const EditAssignmentPage = () => {
         
         
     }
+    // When you have selected Asset
     const handleChangeAssetSelected = (data)=>{
         setSelectedAsset(data)
         let error = {};
@@ -139,7 +142,7 @@ const EditAssignmentPage = () => {
         
         
     }
-
+    // When click button 'SAVE'
     const handleSubmit = (e)=>{
         e.preventDefault();
         Loading.standard("Loading...");
@@ -187,22 +190,27 @@ const EditAssignmentPage = () => {
             });
         }
     }
+    // When click button 'Cancel'
     const handleClickCanelButton = (e)=>{
         e.preventDefault();
         navigate('/manage-assignment');
     }
 
+    // load data at start
     useEffect(() => {
-        loadAssignment()
+        loadAssignment();
     }, []);
   return (
     <Container className='_createAssignment'>
         <h5 className='_title'>Edit Assignment</h5>
         <form onSubmit={handleSubmit} >
             <ModalSelectRadio title='Select User' select='user' 
+                idData={(selectedUser)?selectedUser.id:undefined}
                 show={modalSelectUserShow} onHide={() => setModalSelectUserShow(false)}
                 setSelectedData={handleChangeUserSelected} />
-            <ModalSelectRadio title='Select Asset' select='asset' show={modalSelectAssetShow} 
+            <ModalSelectRadio title='Select Asset' select='asset'
+                idData={(selectedAsset)?selectedAsset.id:undefined}
+                show={modalSelectAssetShow} 
                 onHide={() => setModalSelectAssetShow(false)}
                 setSelectedData={handleChangeAssetSelected} />
 

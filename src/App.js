@@ -55,7 +55,7 @@ function App() {
               path="/manage-assignment/create-assignment"
               element={<CreateAssignment></CreateAssignment>}
             />
-            <Route path="/edit-assignment/:id" element={<EditAssignmentPage></EditAssignmentPage>} />
+            <Route path="/manage-assignment/edit-assignment/:id" element={<EditAssignmentPage></EditAssignmentPage>} />
           </Route>
         </Routes>
       </Suspense>

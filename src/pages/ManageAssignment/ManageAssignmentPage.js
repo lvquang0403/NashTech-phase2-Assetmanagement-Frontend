@@ -207,7 +207,7 @@ const ManageAssignmentPage = () => {
   };
 
   const handleEditBtn = (id) => {
-    navigate("/edit-assignment/" + id);
+    navigate("/manage-assignment/edit-assignment/" + id);
   };
 
   const handleInputChange = (newValue) => {

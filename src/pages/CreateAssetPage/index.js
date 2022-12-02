@@ -9,25 +9,26 @@ import { Loading } from "notiflix/build/notiflix-loading-aio";
 
 import "./index.scss";
 import getLocationInSession from '../../utils/getLocationInSession';
-
+// initialization new  date() to do installedDate default 
 const now = new Date();
 const defaultDate = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate();
 const CreateAsset = () => {
     const navigate = useNavigate();
+    // show button 'save'
     const [buttonSave, setButtonSave] = useState(false);
+    // save data to create assets
     const [nameAsset, setNameAsset] = useState('');
     const [specification, setSpecification] = useState('');
     const [installedDate, setInstalledDate] = useState(defaultDate);
-
+    // error message text
     const [textError, setTextError] = useState({
         name: 'success',
         specification: 'success',
         installedDate: 'success'
     })
 
-
-    // change data in input
-    const changInputName = (e) => {
+    // when change value in input name
+    const handleChangeInputName = (e) => {
         let name = e.target.value;
         let error = {};
         error.name = validateAssetInsert.name(name);
@@ -41,7 +42,8 @@ const CreateAsset = () => {
         setTextError(error)
         setNameAsset(name)
     }
-    const changInputSpecification = (e) => {
+    // when change value in input Specification
+    const handleChangeInputSpecification = (e) => {
         let inpSpecification = e.target.value;
         let error = {};
         error.specification = validateAssetInsert.specification(inpSpecification);
@@ -56,7 +58,8 @@ const CreateAsset = () => {
         setTextError(error)
         setSpecification(inpSpecification)
     }
-    const changInputInstalledDate = (e) => {
+    // when change value in input Installed Date
+    const handleChangeInputInstalledDate = (e) => {
         let date = e.target.value;
         let error = {};
         error.installedDate = validateAssetInsert.installedDate(date);
@@ -71,10 +74,11 @@ const CreateAsset = () => {
         setTextError(error)
         setInstalledDate(date)
     }
-
+    // When click button save 
     const handleSubmit = (e) => {
         e.preventDefault();
         Loading.standard("Loading...");
+        // initialization variable
         let error = {};
         let state = '';
         let categoryID = '';
@@ -91,7 +95,7 @@ const CreateAsset = () => {
         error.specification = validateAssetInsert.specification(specification);
         error.installedDate = validateAssetInsert.installedDate(installedDate);
 
-        // setState
+        // set State
         let radio = document.getElementsByName('stateAsset')
         for (const i in radio) {
             if (radio[i].checked) {
@@ -104,21 +108,20 @@ const CreateAsset = () => {
             return null;
         }
 
-        // setcategoryID
+        // set categoryID
         let select = document.getElementsByName('category')
         for (const i in select) {
             if (select[i].checked) {
                 categoryID = select[i].value;
             }
         }
-
-
-
+//      if there is invalid data then out
         if (error.name !== 'success' || error.specification !== 'success' || error.installedDate !== 'success') {
             setButtonSave(false)
             setTextError(error)
             Loading.remove();
         } else {
+            // set data for API  Create Asset
             const data = {
                 name: nameAsset,
                 specification: specification,
@@ -127,7 +130,7 @@ const CreateAsset = () => {
                 locationId: locationID,
                 installedDate: installedDate
             }
-            console.log(data);
+            // call API Create Asset
             AssetService.insert(data)
                 .then((response) => {
                     navigate('/manage-asset');
@@ -144,6 +147,7 @@ const CreateAsset = () => {
                 });
         }
     }
+    // When click Cancel button then redired to manage asset page 
     const handleClickCanelButton = (e) => {
         e.preventDefault();
 
@@ -161,12 +165,13 @@ const CreateAsset = () => {
                     </Col>
                     <Col xs={9}>
                         <Form.Control
-                            onChange={changInputName}
+                            onChange={handleChangeInputName}
                             id='nameAsset'
                             type="text"
                             placeholder="Enter Name Asset"
                             maxLength={50} />
                         {
+                            // Validate
                             (textError.name !== 'success') ?
                                 <Form.Text className="_text-error">
                                     {textError.name}
@@ -192,12 +197,13 @@ const CreateAsset = () => {
                             className={`_textarea `}
                             id="specification"
                             as="textarea"
-                            onChange={changInputSpecification}
+                            onChange={handleChangeInputSpecification}
                             placeholder="Specification"
                             maxLength={500}
                             style={{ height: '100px' }}
                         />
                         {
+                            // Validate
                             (textError.specification !== 'success') ?
                                 <Form.Text className="_text-error">
                                     {textError.specification}
@@ -216,10 +222,11 @@ const CreateAsset = () => {
                             type="date"
                             max="9999-01-01"
                             className='__input-date'
-                            onChange={changInputInstalledDate}
+                            onChange={handleChangeInputInstalledDate}
                             defaultValue={now}
                         />
                         {
+                            // Validate
                             (textError.installedDate !== 'success') ?
                                 <Form.Text className="_text-error">
                                     {textError.installedDate}
@@ -260,10 +267,8 @@ const CreateAsset = () => {
                         <Button variant="outline-secondary" onClick={handleClickCanelButton}>Cancel</Button>
                     </Col>
                 </Row>
-
             </form>
         </Container>
-
     )
 }
 
