@@ -72,7 +72,7 @@ const Main = () => {
       const role = JSON.parse(userJson).role
       setTabs(tabList.filter(tab => tab.role === role))
       setHeader(tabs[0])
-      navigate("/")
+      // navigate("/")
     }
     else{
       navigate("/login")

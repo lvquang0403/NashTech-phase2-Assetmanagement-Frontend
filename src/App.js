@@ -40,6 +40,7 @@ function App() {
               element={<CreateUserPage></CreateUserPage>}
             />
             <Route path="/manage-asset" element={<ManageAsset></ManageAsset>} />
+            <Route path="/manage-asset/create-asset" element={<CreateAsset></CreateAsset>} />
             <Route
               path="/manage-assignment"
               element={<ManageAssignmentPage></ManageAssignmentPage>}
@@ -49,10 +50,9 @@ function App() {
               element={<RequestPage></RequestPage>}
             />
             <Route path="/report" element={<ReportPage></ReportPage>} />
-            <Route path="/create-asset" element={<CreateAsset></CreateAsset>} />
-            <Route path="/edit-asset/:id" element={<EditAsset></EditAsset>} />
+            <Route path="/manage-asset/edit-asset/:id" element={<EditAsset></EditAsset>} />
             <Route
-              path="/create-assignment"
+              path="/manage-assignment/create-assignment"
               element={<CreateAssignment></CreateAssignment>}
             />
             <Route path="/edit-assignment/:id" element={<EditAssignmentPage></EditAssignmentPage>} />
