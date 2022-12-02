@@ -17,7 +17,6 @@ import { FaCalendar, FaFilter } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import ModalAssignmentInfo from "./ModalAssignmentInfo";
-import getLocationInSession from "../../utils/getLocationInSession";
 
 const ManageAssignmentPage = () => {
   const cols = [
@@ -219,15 +218,11 @@ const ManageAssignmentPage = () => {
   };
 
   const handleStatesChange = (val) => {
+    setCurrentPage(0);
+
     if (val === "All") {
-      var temp = allState ? false : true;
-      if (temp) {
-        setAllState(temp);
-        setStateFilter(stateList);
-      } else {
-        setAllState(temp);
-        setStateFilter([]);
-      }
+      setAllState(true);
+      setStateFilter([]);
     } else {
       let isExisted = stateFilter.findIndex((item) => item === val);
       if (isExisted > -1) {
@@ -241,6 +236,19 @@ const ManageAssignmentPage = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (stateFilter.length === stateList.length || stateFilter.length === 0) {
+      setAllState(true);
+    } else {
+      setAllState(false);
+    }
+  }, [stateFilter]);
+  useEffect(() => {
+    if (allState) {
+      setStateFilter([]);
+    }
+  }, [allState]);
 
   useEffect(() => {
     //Loading.standard("Loading...");
