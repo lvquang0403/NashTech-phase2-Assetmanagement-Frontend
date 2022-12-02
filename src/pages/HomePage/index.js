@@ -208,7 +208,7 @@ const HomePage = () => {
           />
 
           <ModalAssignmentInfo
-            title="Detailed Assignmnet Infomation"
+            title="Detailed Assignment Information"
             showModal={isOpen}
             closePopupFunc={handleCloseModal}
             objId={assignmentId}

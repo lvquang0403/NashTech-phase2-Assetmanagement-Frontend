@@ -41,7 +41,7 @@ const ModalAssignmentInfo = ({ title, objId, showModal, closePopupFunc }) => {
       size="lg"
       backdrop="static"
       keyboard={false}
-      style={{ width: "100%" }}
+      style={{ width: "100%", wordWrap: "break-word" }}
     >
       <Modal.Header
         closeButton

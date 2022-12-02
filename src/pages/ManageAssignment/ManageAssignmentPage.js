@@ -17,7 +17,8 @@ import { FaCalendar, FaFilter } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import ModalAssignmentInfo from "./ModalAssignmentInfo";
-import getLocationInSession from "../../utils/getLocationInSession";
+
+import "./ManageAssignmentPage.css";
 
 const ManageAssignmentPage = () => {
   const cols = [
@@ -68,12 +69,12 @@ const ManageAssignmentPage = () => {
     Loading.standard("Loading...");
     // check location id
     var assignedDateString = undefined;
+
     if (assignedDate !== undefined) {
       assignedDateString = moment(assignedDate).format("YYYY-MM-DD");
-      console.log(assignedDateString);
-      console.log(assignedDate);
+      console.log("date" + assignedDate);
     }
-    console.log(assignedDate);
+    console.log("date String" + assignedDateString);
 
     const filter = {
       page: currentPage,
@@ -82,8 +83,6 @@ const ManageAssignmentPage = () => {
       orderBy: orderBy,
       assignDate: assignedDateString,
     };
-    console.log(assignedDateString);
-    console.log(assignedDate);
 
     let predicates = queryString.stringify(filter);
     console.log(predicates);
@@ -164,15 +163,18 @@ const ManageAssignmentPage = () => {
     return: true,
   };
 
-  const handleAssignedDateChange = (date) => {
+  const handleAssignedDateChange = (e) => {
     if (typingTimeOutRef.current) {
       clearTimeout(typingTimeOutRef.current);
     }
+
+    console.log(e.target.value);
     typingTimeOutRef.current = setTimeout(() => {
-      if (date === null) {
+      if (e.target.value === null || e.target.value === "") {
         setAssignedDate(undefined);
+      } else {
+        setAssignedDate(e.target.value);
       }
-      setAssignedDate(date);
     }, 1000);
   };
 
@@ -219,15 +221,11 @@ const ManageAssignmentPage = () => {
   };
 
   const handleStatesChange = (val) => {
+    setCurrentPage(0);
+
     if (val === "All") {
-      var temp = allState ? false : true;
-      if (temp) {
-        setAllState(temp);
-        setStateFilter(stateList);
-      } else {
-        setAllState(temp);
-        setStateFilter([]);
-      }
+      setAllState(true);
+      setStateFilter([]);
     } else {
       let isExisted = stateFilter.findIndex((item) => item === val);
       if (isExisted > -1) {
@@ -241,6 +239,19 @@ const ManageAssignmentPage = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (stateFilter.length === stateList.length || stateFilter.length === 0) {
+      setAllState(true);
+    } else {
+      setAllState(false);
+    }
+  }, [stateFilter]);
+  useEffect(() => {
+    if (allState) {
+      setStateFilter([]);
+    }
+  }, [allState]);
 
   useEffect(() => {
     //Loading.standard("Loading...");
@@ -318,13 +329,21 @@ const ManageAssignmentPage = () => {
               {/* AssignedDate */}
               <div>
                 <div>
-                  <DatePicker
+                  <input
+                    className="btn btn-outline-secondary dropdown-toggle"
+                    min="1900-01-01"
+                    max="3000-01-01"
+                    type="date"
+                    onChange={(e) => handleAssignedDateChange(e)}
+                  />
+
+                  {/* <DatePicker
                     className="btn btn-outline-secondary dropdown-toggle"
                     dateFormat="dd/MM/yyyy"
                     selected={assignedDate}
                     onChange={(date) => handleAssignedDateChange(date)}
                     placeholderText="Assigned Date    🗓️"
-                  />
+                  /> */}
                 </div>
               </div>
             </div>
@@ -382,7 +401,7 @@ const ManageAssignmentPage = () => {
         />
 
         <ModalAssignmentInfo
-          title="Detailed Assignmnet Infomation"
+          title="Detailed Assignment Information"
           showModal={isOpen}
           closePopupFunc={handleCloseModal}
           objId={assignmentId}
