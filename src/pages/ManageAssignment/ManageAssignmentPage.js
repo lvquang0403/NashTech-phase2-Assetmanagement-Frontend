@@ -18,6 +18,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import ModalAssignmentInfo from "./ModalAssignmentInfo";
 
+import "./ManageAssignmentPage.css";
+
 const ManageAssignmentPage = () => {
   const cols = [
     { name: "No.", isDropdown: false },
@@ -67,12 +69,12 @@ const ManageAssignmentPage = () => {
     Loading.standard("Loading...");
     // check location id
     var assignedDateString = undefined;
+
     if (assignedDate !== undefined) {
       assignedDateString = moment(assignedDate).format("YYYY-MM-DD");
-      console.log(assignedDateString);
-      console.log(assignedDate);
+      console.log("date" + assignedDate);
     }
-    console.log(assignedDate);
+    console.log("date String" + assignedDateString);
 
     const filter = {
       page: currentPage,
@@ -81,8 +83,6 @@ const ManageAssignmentPage = () => {
       orderBy: orderBy,
       assignDate: assignedDateString,
     };
-    console.log(assignedDateString);
-    console.log(assignedDate);
 
     let predicates = queryString.stringify(filter);
     console.log(predicates);
@@ -163,15 +163,18 @@ const ManageAssignmentPage = () => {
     return: true,
   };
 
-  const handleAssignedDateChange = (date) => {
+  const handleAssignedDateChange = (e) => {
     if (typingTimeOutRef.current) {
       clearTimeout(typingTimeOutRef.current);
     }
+
+    console.log(e.target.value);
     typingTimeOutRef.current = setTimeout(() => {
-      if (date === null) {
+      if (e.target.value === null || e.target.value === "") {
         setAssignedDate(undefined);
+      } else {
+        setAssignedDate(e.target.value);
       }
-      setAssignedDate(date);
     }, 1000);
   };
 
@@ -326,13 +329,21 @@ const ManageAssignmentPage = () => {
               {/* AssignedDate */}
               <div>
                 <div>
-                  <DatePicker
+                  <input
+                    className="btn btn-outline-secondary dropdown-toggle"
+                    min="1900-01-01"
+                    max="3000-01-01"
+                    type="date"
+                    onChange={(e) => handleAssignedDateChange(e)}
+                  />
+
+                  {/* <DatePicker
                     className="btn btn-outline-secondary dropdown-toggle"
                     dateFormat="dd/MM/yyyy"
                     selected={assignedDate}
                     onChange={(date) => handleAssignedDateChange(date)}
                     placeholderText="Assigned Date    🗓️"
-                  />
+                  /> */}
                 </div>
               </div>
             </div>
@@ -390,7 +401,7 @@ const ManageAssignmentPage = () => {
         />
 
         <ModalAssignmentInfo
-          title="Detailed Assignmnet Infomation"
+          title="Detailed Assignment Information"
           showModal={isOpen}
           closePopupFunc={handleCloseModal}
           objId={assignmentId}
