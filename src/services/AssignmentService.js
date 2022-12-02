@@ -20,7 +20,11 @@ class AssignmentService {
         assignedDate : assignedDate,
         note : note
     });
-}
+  } 
+
+  delete(id){
+    return axiosClient.delete(`${API_BASE_URL}/${id}`);
+  }
 
   getAllAssignments(query) {
     return axiosClient.get(`${API_BASE_URL}?${query}`);

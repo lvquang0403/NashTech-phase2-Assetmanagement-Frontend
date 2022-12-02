@@ -3,7 +3,7 @@ import ReactPaginate from "react-paginate";
 import AssignmentTable from "./AssignmentTable";
 import queryString from "query-string";
 import SearchInput from "../../components/SearchInput/index";
-import AssingementService from "../../services/AssignmentService";
+import AssignmentService from "../../services/AssignmentService";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 
@@ -19,6 +19,7 @@ import { useEffect } from "react";
 import ModalAssignmentInfo from "./ModalAssignmentInfo";
 
 import "./ManageAssignmentPage.css";
+import PopUpConfirm from "../../components/PopUpConfim";
 
 const ManageAssignmentPage = () => {
   const cols = [
@@ -65,7 +66,7 @@ const ManageAssignmentPage = () => {
   const [assignedDate, setAssignedDate] = useState(undefined);
 
   const [isDel, setDel] = useState(false);
-  const fetchAssignment = async () => {
+  const fetchAssignment = async (stateReload) => {
     Loading.standard("Loading...");
     // check location id
     var assignedDateString = undefined;
@@ -86,11 +87,14 @@ const ManageAssignmentPage = () => {
 
     let predicates = queryString.stringify(filter);
     console.log(predicates);
-    await AssingementService.getAllAssignments(predicates).then(
+    await AssignmentService.getAllAssignments(predicates).then(
       (res) => {
         setAssignmentList(res.data.listResponse);
         if (res.data.listResponse != null) {
           setTotalPage(res.data.totalPage);
+        }
+        if(stateReload==='delete'){
+          alert('successfully deleted')
         }
         Loading.remove();
       },
@@ -240,6 +244,27 @@ const ManageAssignmentPage = () => {
     }
   };
 
+  const handleDeleteAssignment = (id)=>{
+    Loading.standard("Loading...");
+    AssignmentService.delete(id)
+            .then((response)=>{
+                console.log(response.data);
+                fetchAssignment('delete');
+            })
+            .catch((error)=>{
+                console.log(error);
+                if(error.response.data && error.response.data !==''){
+                    alert(error.response.data.message)
+                }else{
+                    alert(error.message)
+                }
+                Loading.remove();
+            });
+  }
+
+
+  
+
   useEffect(() => {
     if (stateFilter.length === stateList.length || stateFilter.length === 0) {
       setAllState(true);
@@ -255,18 +280,20 @@ const ManageAssignmentPage = () => {
 
   useEffect(() => {
     //Loading.standard("Loading...");
-    fetchAssignment();
+    fetchAssignment('load');
     fetchStates();
   }, [currentPage, stateFilter, searchFilter, orderBy, isDel, assignedDate]);
 
   // useEffect(() => {
   //   typingTimeOutRef.current = setTimeout(() => {
 
-  //     fetchAssignment();
+  //     fetchAssignment('load');
   //     fetchStates();
 
   //   }, 5000);
   // }, []);
+
+
 
   return (
     <>
@@ -385,7 +412,7 @@ const ManageAssignmentPage = () => {
           onClickRecordFunc={handleOpenModal}
           currentNo={currentNo}
           onClickEditBtnFunc={handleEditBtn}
-          // onClickDelBtn={handleDelBtn}
+          onClickDeleteBtn={handleDeleteAssignment}
         />
         <ReactPaginate
           breakLabel="..."
@@ -410,14 +437,7 @@ const ManageAssignmentPage = () => {
           closePopupFunc={handleCloseModal}
           objId={assignmentId}
         />
-        {/* <PopUpConfirm
-          showModal={isOpenDel}
-          closePopupFunc={handleCloseModal}
-          yesFunc={handleDisableUser}
-          title="Are you sure?"
-          message="Do you want to disable this user?"
-          yesBtnName="Disable"
-        /> */}
+        
         {/* <PopUpMessage
           showModal={isOpenMess}
           closePopupFunc={handleCloseModal}

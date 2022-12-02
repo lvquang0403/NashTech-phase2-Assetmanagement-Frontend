@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Col, Container, Form, InputGroup, Row } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom';
 import { BsSearch } from "react-icons/bs";
@@ -38,7 +38,7 @@ const EditAssignmentPage = () => {
         assignedDate:'success'
     })
     
-    const loadAssignment = useCallback(()=>{
+    const loadAssignment = ()=>{
         Loading.standard("Loading...");
         AssignmentService.getAssignmentById(params.id)
             .then((response)=>{
@@ -72,7 +72,7 @@ const EditAssignmentPage = () => {
                 }
                 Loading.remove();
             });
-      },[])
+    }
 
     // change data in input
     const changeInputNote = (e)=>{
@@ -212,7 +212,7 @@ const EditAssignmentPage = () => {
                 </Col>
                 <Col xs={9}>
                     <InputGroup className="mb-3">
-                        <Form.Control className='__input-search' maxLength={0} value={(selectedUser)?selectedUser.fullName:''}/>
+                        <Form.Control readOnly className='__input-search' maxLength={0} value={(selectedUser)?selectedUser.fullName:''}/>
                         <div  className='__button-search'  onClick={() => setModalSelectUserShow(true)}>
                             <BsSearch className='__icon-search'/>
                         </div>
@@ -231,7 +231,7 @@ const EditAssignmentPage = () => {
                 </Col>
                 <Col xs={9}>
                     <InputGroup className="mb-3">
-                        <Form.Control className='__input-search' maxLength={0} value={(selectedAsset)?selectedAsset.name:''}/>
+                        <Form.Control readOnly  className='__input-search' maxLength={0} value={(selectedAsset)?selectedAsset.name:''}/>
                         <div  className='__button-search' onClick={() => setModalSelectAssetShow(true)}>
                             <BsSearch className='__icon-search'/>
                         </div>
