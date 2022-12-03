@@ -14,6 +14,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   useEffect(() => {
+    Loading.remove();
     if (sessionStorage.getItem("user")) {
       navigate("/");
     }
@@ -60,6 +61,7 @@ const LoginPage = () => {
           return null;
         });
     } else {
+      Loading.remove();
       toast.warning("All fields are required", {
         position: toast.POSITION.TOP_CENTER,
       });
