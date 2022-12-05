@@ -9,8 +9,12 @@ const validateCategoryInsert = {
         if (name.length > 50 ) {
             return 'max 50 characters';
         }
-        let regex = /[!@#$%&*()_+=|<>?{}~\][]/g;
+        let regex = /[`;:^'"\\,./!@#$%&*()_+=|<>?{}~\][]/g;
         let regex2 = /[áàảạãăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ]/
+        let character= /^[-0-9a-zA-Z\s]+$/;
+        if(!character.test(name)){
+            return 'Cannot special characters';
+        }
         if (regex.test(name)) {
             return 'Cannot special characters';
         }
@@ -30,8 +34,12 @@ const validateCategoryInsert = {
         if (prefix.trim().length  !== 2 ) {
             return 'prefix only 2 characters';
         }
-        let regex = /[!@#$%&*()_+=|<>?{}~\][]/g;
+        let regex = /[`^;:'"\\,./!@#$%&*()_+=|<>?{}~\][]/g;
         let regex2 = /[áàảạãăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ]/
+        let character= /^[0-9a-zA-Z\s]+$/;
+        if(!character.test(prefix)){
+            return 'Cannot special characters';
+        }
         if (regex.test(prefix)) {
             return 'Cannot special characters';
         }

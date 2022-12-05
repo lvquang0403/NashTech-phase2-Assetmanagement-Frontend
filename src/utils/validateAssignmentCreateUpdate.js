@@ -18,6 +18,10 @@ const validateAssignmentCreateUpdate = {
         if (note.length > 500 ) {
             return 'name is too long, max 500 characters';
         }
+        let character= /^[-0-9a-zA-Z\sáàảạãăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ`^'"\\,.;:/!@#$%&*()_+=|<>?{}[\]~]+$/;
+        if(!character.test(note)){
+            return 'Cannot special characters';
+        }
         return "success";
     },
 
