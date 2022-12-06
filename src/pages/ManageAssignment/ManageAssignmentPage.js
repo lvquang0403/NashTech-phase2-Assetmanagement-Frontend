@@ -93,9 +93,15 @@ const ManageAssignmentPage = () => {
         if (res.data.listResponse != null) {
           setTotalPage(res.data.totalPage);
         }
+<<<<<<< HEAD
         if (stateReload === "delete") {
           alert("successfully deleted");
+=======
+        if('load'!==stateReload){
+          alert(stateReload)
+>>>>>>> 3524c6c3cd6b15f46672b40f651675c22048a616
         }
+        
         Loading.remove();
       },
       (err) => {
@@ -247,6 +253,7 @@ const ManageAssignmentPage = () => {
   const handleDeleteAssignment = (id) => {
     Loading.standard("Loading...");
     AssignmentService.delete(id)
+<<<<<<< HEAD
       .then((response) => {
         console.log(response.data);
         fetchAssignment("delete");
@@ -261,6 +268,24 @@ const ManageAssignmentPage = () => {
         Loading.remove();
       });
   };
+=======
+            .then((response)=>{
+                console.log(response.data);
+                fetchAssignment('successfully deleted');
+            })
+            .catch((error)=>{
+                console.log(error);
+                if(error.response.data && error.response.data !==''){
+                    fetchAssignment(error.response.data.message);
+                }else{
+                    fetchAssignment(error.message);
+                }
+            });
+  }
+
+
+  
+>>>>>>> 3524c6c3cd6b15f46672b40f651675c22048a616
 
   useEffect(() => {
     if (stateFilter.length === stateList.length || stateFilter.length === 0) {

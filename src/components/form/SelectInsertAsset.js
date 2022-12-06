@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import { BsCheckLg, BsFillCaretDownFill,  BsXLg } from "react-icons/bs";
+import { Loading } from "notiflix/build/notiflix-loading-aio";
+
 import CategoryService from "../../services/CategoryService";
 import validateCategoryInsert from "../../utils/validateCategoryInsert";
 import "./SelectInsertAsset.scss";
@@ -75,6 +77,7 @@ const SelectInsertAsset = () => {
     }
     // When click save category
     const handleAddCategory = (e)=>{
+        Loading.standard("Loading...");
         let name = document.getElementById('categoryName').value;
         let prefix = document.getElementById('categoryPrefix').value;
         let error = {
@@ -91,9 +94,11 @@ const SelectInsertAsset = () => {
             .then((response)=>{
                 loadCategories();
                 clearSetup();
+                Loading.remove();
             })
             .catch((error)=>{
                 console.log(error);
+                Loading.remove();
                 if(error.response.data){
                     alert(error.response.data.message)
                 }else{
@@ -129,7 +134,8 @@ const SelectInsertAsset = () => {
             <span className="_chooseCategory">{categorySelected}</span>
             <span className="_iconSelect"><BsFillCaretDownFill/></span> 
         </div>
-        <div class="content_dropdown">
+        <div class="content_dropdown" >
+            <div style={{overflow:'auto', height:'300px'}}>
             {
                 (categories)? categories.map((item,  index)=>(
                     <div key={index} className="__content" onClick={(e)=>{
@@ -161,6 +167,7 @@ const SelectInsertAsset = () => {
                 )):null
                 
             }
+            </div>
             {
                 openInput
                 ?

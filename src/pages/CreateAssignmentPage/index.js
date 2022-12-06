@@ -9,6 +9,7 @@ import AssignmentService from '../../services/AssignmentService';
 import ModalSelectRadio from '../../components/modalSelectRadio/ModalSelectRadio';
 import validateAssignmentCreateUpdate from '../../utils/validateAssignmentCreateUpdate';
 import getUserLoged from '../../utils/getUserLoged';
+import shortenSentences from '../../utils/shortenSentences.js';
 
 
 const CreateAssignment = () => {
@@ -189,7 +190,7 @@ const CreateAssignment = () => {
                     </Col>
                     <Col xs={9}>
                         <InputGroup className="mb-3">
-                            <Form.Control className='__input-search' readOnly maxLength={0} value={(selectedUser) ? selectedUser.fullName : ''} />
+                            <Form.Control className='__input-search' readOnly maxLength={0} value={(selectedUser) ? selectedUser.fullName : ''}/>
                             <div className='__button-search' onClick={() => {
                                 setModalSelectUserShow(true)
 
@@ -211,7 +212,11 @@ const CreateAssignment = () => {
                     </Col>
                     <Col xs={9}>
                         <InputGroup className="mb-3">
-                            <Form.Control readOnly className='__input-search' maxLength={0} value={(selectedAsset) ? selectedAsset.name : ''} />
+                            <Form.Control readOnly className='__input-search' 
+                                maxLength={0} 
+                                title={(selectedAsset) ? selectedAsset.name: ''}
+                                value={(selectedAsset) ? shortenSentences(selectedAsset.name, 35): ''} 
+                                />
                             <div className='__button-search' onClick={() => setModalSelectAssetShow(true)}>
                                 <BsSearch className='__icon-search' />
                             </div>
