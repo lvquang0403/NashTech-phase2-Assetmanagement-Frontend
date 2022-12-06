@@ -15,6 +15,9 @@ const validateAssignmentCreateUpdate = {
     },
 
     note(note){
+        if(note.trim()===''){
+            return 'success';
+        }
         if (note.length > 500 ) {
             return 'name is too long, max 500 characters';
         }
