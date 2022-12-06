@@ -10,6 +10,7 @@ import getLocationInSession from '../../utils/getLocationInSession';
 import "./style.scss";
 import AssetService from '../../services/AssetService';
 import resetRadioChecked from '../../utils/resetRadioChecked';
+import shortenSentences from '../../utils/shortenSentences.js';
 
 const RadioListAssets = (props) => {
     const [assets, setAssets] = useState([])
@@ -125,6 +126,7 @@ const RadioListAssets = (props) => {
                             document.getElementById(`selectAsset_${item.id}`).checked =true;
                             handleClickRadio()
                         }}
+                        title={item.name}
                     >
                         <Col xs={1} className='__col-content'>
                             {
@@ -152,13 +154,13 @@ const RadioListAssets = (props) => {
                             </ListGroup.Item>
                         </Col>
                         <Col xs={5} className='__col-content'>
-                            <ListGroup.Item>
-                            {item.name}
+                            <ListGroup.Item style={{overflow:"auto", width:'100%'}}>
+                                {shortenSentences(item.name, 30)}
                             </ListGroup.Item>
                         </Col>
                         <Col xs={3} className='__col-content'>
                             <ListGroup.Item>
-                            {item.category}
+                            {shortenSentences(item.category, 30)}
                             </ListGroup.Item>
                         </Col>
                     </Row>

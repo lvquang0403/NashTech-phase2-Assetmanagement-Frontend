@@ -93,9 +93,10 @@ const ManageAssignmentPage = () => {
         if (res.data.listResponse != null) {
           setTotalPage(res.data.totalPage);
         }
-        if(stateReload==='delete'){
-          alert('successfully deleted')
+        if('load'!==stateReload){
+          alert(stateReload)
         }
+        
         Loading.remove();
       },
       (err) => {
@@ -249,16 +250,15 @@ const ManageAssignmentPage = () => {
     AssignmentService.delete(id)
             .then((response)=>{
                 console.log(response.data);
-                fetchAssignment('delete');
+                fetchAssignment('successfully deleted');
             })
             .catch((error)=>{
                 console.log(error);
                 if(error.response.data && error.response.data !==''){
-                    alert(error.response.data.message)
+                    fetchAssignment(error.response.data.message);
                 }else{
-                    alert(error.message)
+                    fetchAssignment(error.message);
                 }
-                Loading.remove();
             });
   }
 

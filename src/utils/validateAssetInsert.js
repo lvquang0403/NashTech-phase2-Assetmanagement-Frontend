@@ -1,3 +1,5 @@
+import formatDate from "./formatDate";
+
 const validateAssetInsert = {
     name(name){
         if(name === null || name === undefined){
@@ -49,16 +51,18 @@ const validateAssetInsert = {
         if(installedDate === null || installedDate === undefined){
             return "This is a required field"
         }
+        if(Number.isNaN(newInstalledDate.getDay())){
+            return "this day does not exist"
+        }
         if((now.getFullYear() - newInstalledDate.getFullYear()) > 100){
             return "Invalid date"
+        }
+        if(formatDate(now)===formatDate(installedDate)){
+            return "success";
         }
         if(now.getTime() <  newInstalledDate.getTime()){
             return "Select a date in the past or present"
         }
-        if(Number.isNaN(newInstalledDate.getDay())){
-            return "this day does not exist"
-        }
-        
         return "success";
     }
 }
