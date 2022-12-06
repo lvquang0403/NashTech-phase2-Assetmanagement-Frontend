@@ -74,7 +74,8 @@ const AssignmentTable = ({
                 class="border-bottom border-3"
                 key={index}
                 onClick={() => handleSort(item.name)}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", whiteSpace: 'nowrap'}}
+              
               >
                 {item.name}
                 {item.isDropdown && (
@@ -106,6 +107,7 @@ const AssignmentTable = ({
                   onClick={() => handleOnClickRecord(obj.id)}
                   className="border-bottom"
                   data-bs-toggle="modal"
+                
                 >
                   {obj.assetName}
                 </td>
@@ -135,11 +137,12 @@ const AssignmentTable = ({
                   onClick={() => handleOnClickRecord(obj.id)}
                   className="border-bottom"
                   data-bs-toggle="modal"
+                  style={{whiteSpace: 'nowrap'}}
                 >
                   {obj.state}
                 </td>
                 {actions && (
-                  <td>
+                  <td   style={{whiteSpace: 'nowrap'}}>
                     {actions["edit"] && (
                       <FaPen
                         style={{
