@@ -1,11 +1,11 @@
 import React from "react";
+import { FaFilter } from "react-icons/fa";
+import SearchInput from "../../components/SearchInput";
+import RequestTable from "./RequestTable";
 import ReactPaginate from "react-paginate";
-import AssignmentTable from "./AssignmentTable";
 import queryString from "query-string";
-import SearchInput from "../../components/SearchInput/index";
 import AssignmentService from "../../services/AssignmentService";
 import moment from "moment";
-import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.min.css";
@@ -13,22 +13,21 @@ import "react-datepicker/dist/react-datepicker-cssmodules.min.css";
 import { Loading } from "notiflix/build/notiflix-loading-aio";
 import { useRef } from "react";
 import { useState } from "react";
-import { FaCalendar, FaFilter } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import ModalAssignmentInfo from "./ModalAssignmentInfo";
 
-import "./ManageAssignmentPage.css";
 import PopUpConfirm from "../../components/PopUpConfim";
+import ReturningService from "../../services/ReturningService";
 
-const ManageAssignmentPage = () => {
+const RequestPage = () => {
   const cols = [
     { name: "No.", isDropdown: false },
     { name: "Asset Code", isDropdown: true },
     { name: "Asset Name", isDropdown: true },
-    { name: "Assigned To", isDropdown: true },
-    { name: "Assigned By", isDropdown: true },
+    { name: "Requested By", isDropdown: true },
     { name: "Assigned Date", isDropdown: true },
+    { name: "Accepted By", isDropdown: true },
+    { name: "Returned Date", isDropdown: true },
     { name: "State", isDropdown: true },
   ];
 
@@ -36,16 +35,15 @@ const ManageAssignmentPage = () => {
   const typingTimeOutRef = useRef(null);
   const [allState, setAllState] = useState(false);
   const [currentNo, setCurrentNo] = useState(0);
-  const calendarIcon = <FaCalendar />;
 
-  const [assignmentList, setAssignmentList] = useState([]);
+  const [returningList, setReturningList] = useState([]);
   const [stateList, setStateList] = useState([]);
   const [input, setInput] = useState("");
   //filter
   const [searchFilter, setSearchFilter] = useState("");
   const [stateFilter, setStateFilter] = useState([
-    "Accepted",
-    "Waiting for acceptance",
+    "Completed",
+    "Waiting for returning",
   ]);
   const [orderBy, setOrderBy] = useState();
 
@@ -56,40 +54,37 @@ const ManageAssignmentPage = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
 
-  //id asset to show detail asset
-  const [assignmentId, setAssignmentId] = useState();
-
   const [isOpen, setOpen] = useState(false);
   const [isOpenDel, setOpenDel] = useState(false);
   const [isOpenMess, setOpenMess] = useState(false);
   const [message, setMessage] = useState("");
-  const [assignedDate, setAssignedDate] = useState(undefined);
+  const [returnedDate, setReturnedDate] = useState(undefined);
 
   const [isDel, setDel] = useState(false);
-  const fetchAssignment = async (stateReload) => {
+  const fetchReturning = async (stateReload) => {
     Loading.standard("Loading...");
     // check location id
-    var assignedDateString = undefined;
+    var returnedDateString = undefined;
 
-    if (assignedDate !== undefined) {
-      assignedDateString = moment(assignedDate).format("YYYY-MM-DD");
-      console.log("date" + assignedDate);
+    if (returnedDate !== undefined) {
+      returnedDateString = moment(returnedDate).format("YYYY-MM-DD");
+      console.log("date" + returnedDate);
     }
-    console.log("date String" + assignedDateString);
+    console.log("date String" + returnedDateString);
 
     const filter = {
       page: currentPage,
       keyword: searchFilter,
       states: stateFilter.length === 0 ? undefined : stateFilter,
       orderBy: orderBy,
-      assignDate: assignedDateString,
+      returnedDate: returnedDateString,
     };
 
     let predicates = queryString.stringify(filter);
     console.log(predicates);
-    await AssignmentService.getAllAssignments(predicates).then(
+    await ReturningService.getAllReturningRequests(predicates).then(
       (res) => {
-        setAssignmentList(res.data.listResponse);
+        setReturningList(res.data.listResponse);
         if (res.data.listResponse != null) {
           setTotalPage(res.data.totalPage);
         }
@@ -107,7 +102,7 @@ const ManageAssignmentPage = () => {
   };
 
   const fetchStates = async () => {
-    setStateList(["Accepted", "Waiting for acceptance", "Declined"]);
+    setStateList(["Waiting for returning", "Completed"]);
   };
 
   const sortByCol = (col) => {
@@ -118,7 +113,7 @@ const ManageAssignmentPage = () => {
       // if click new column
       setCurrentCol(col); // set currentCol
     }
-    const data = [...assignmentList];
+    const data = [...returningList];
 
     switch (col) {
       case "Asset Code":
@@ -132,15 +127,15 @@ const ManageAssignmentPage = () => {
           : setOrderBy("asset.name_ASC");
         break;
 
-      case "Assigned To":
+      case "Requested By":
         col === currentSortCol
           ? setOrderBy("assignedTo.username_DESC")
           : setOrderBy("assignedTo.username_ASC");
         break;
 
-      case "Assigned By":
+      case "Accepted By":
         col === currentSortCol
-          ? setOrderBy("assignedBy.username_DESC")
+          ? setOrderBy("acceptedBy.username_DESC")
           : setOrderBy("assignedBy.username_ASC");
         break;
 
@@ -156,18 +151,23 @@ const ManageAssignmentPage = () => {
           : setOrderBy("state_ASC");
         break;
 
+      case "Returned Date":
+        col === currentSortCol
+          ? setOrderBy("returnedDate_DESC")
+          : setOrderBy("returnedDate_ASC");
+        break;
+
       default:
         break;
     }
   };
 
   const actions = {
-    edit: true,
-    remove: true,
-    return: true,
+    complete: true,
+    cancel: true,
   };
 
-  const handleAssignedDateChange = (e) => {
+  const handleReturnedDateChange = (e) => {
     if (typingTimeOutRef.current) {
       clearTimeout(typingTimeOutRef.current);
     }
@@ -175,17 +175,11 @@ const ManageAssignmentPage = () => {
     console.log(e.target.value);
     typingTimeOutRef.current = setTimeout(() => {
       if (e.target.value === null || e.target.value === "") {
-        setAssignedDate(undefined);
+        setReturnedDate(undefined);
       } else {
-        setAssignedDate(e.target.value);
+        setReturnedDate(e.target.value);
       }
     }, 1000);
-  };
-
-  const handleCloseModal = () => {
-    setOpen(false);
-    setOpenDel(false);
-    setOpenMess(false);
   };
 
   const handlePageChange = (e) => {
@@ -201,14 +195,7 @@ const ManageAssignmentPage = () => {
     }
   }, [currentPage]);
 
-  const handleOpenModal = (id) => {
-    setAssignmentId(id);
-    setOpen(true);
-  };
-
-  const handleEditBtn = (id) => {
-    navigate("/manage-assignment/edit-assignment/" + id);
-  };
+  const handleCompleteRequest = (id) => {};
 
   const handleInputChange = (newValue) => {
     var temp = newValue;
@@ -244,12 +231,12 @@ const ManageAssignmentPage = () => {
     }
   };
 
-  const handleDeleteAssignment = (id) => {
+  const handleCancelRequest = (id) => {
     Loading.standard("Loading...");
     AssignmentService.delete(id)
       .then((response) => {
         console.log(response.data);
-        fetchAssignment("delete");
+        fetchReturning("delete");
       })
       .catch((error) => {
         console.log(error);
@@ -277,27 +264,18 @@ const ManageAssignmentPage = () => {
 
   useEffect(() => {
     //Loading.standard("Loading...");
-    fetchAssignment("load");
+    fetchReturning("load");
     fetchStates();
-  }, [currentPage, stateFilter, searchFilter, orderBy, isDel, assignedDate]);
-
-  // useEffect(() => {
-  //   typingTimeOutRef.current = setTimeout(() => {
-
-  //     fetchAssignment('load');
-  //     fetchStates();
-
-  //   }, 5000);
-  // }, []);
+  }, [currentPage, stateFilter, searchFilter, orderBy, isDel, returnedDate]);
 
   return (
     <>
       <div className="board-container">
         <div className="title">
-          <h3>Assignment List</h3>
+          <h3>Request List</h3>
         </div>
         <label style={{ marginLeft: "260px", marginBottom: "5px" }}>
-          Assigned Date
+          Returned Date
         </label>
 
         <div class="table-board">
@@ -360,55 +338,27 @@ const ManageAssignmentPage = () => {
                     min="1900-01-01"
                     max="3000-01-01"
                     type="date"
-                    onChange={(e) => handleAssignedDateChange(e)}
+                    onChange={(e) => handleReturnedDateChange(e)}
                   />
-
-                  {/* <DatePicker
-                    className="btn btn-outline-secondary dropdown-toggle"
-                    dateFormat="dd/MM/yyyy"
-                    selected={assignedDate}
-                    onChange={(date) => handleAssignedDateChange(date)}
-                    placeholderText="Assigned Date    🗓️"
-                  /> */}
                 </div>
               </div>
             </div>
           </div>
           <div className="right-board">
             <SearchInput input={input} handleInputChange={handleInputChange} />
-            <div className="button">
-              <button
-                type="button"
-                className="btn btn-danger"
-                id="btnCreateAsset"
-                onClick={() => {
-                  navigate("/manage-assignment/create-assignment");
-                }}
-              >
-                Create new assignment
-              </button>
-            </div>
           </div>
         </div>
-        {/* <Table
+
+        <RequestTable
           cols={cols}
-          data={assignmentList}
+          data={returningList}
           actions={actions}
           sortFunc={sortByCol}
-          onClickRecordFunc={handleOpenModal}
-          // onClickEditBtnFunc={handleEditBtn}
-          // onClickDelBtn={handleDelBtn}
-        /> */}
-        <AssignmentTable
-          cols={cols}
-          data={assignmentList}
-          actions={actions}
-          sortFunc={sortByCol}
-          onClickRecordFunc={handleOpenModal}
           currentNo={currentNo}
-          onClickEditBtnFunc={handleEditBtn}
-          onClickDeleteBtn={handleDeleteAssignment}
+          onClickCompleteFunc={handleCompleteRequest}
+          onClickCancelBtn={handleCancelRequest}
         />
+
         <ReactPaginate
           breakLabel="..."
           nextLabel="Next"
@@ -425,23 +375,9 @@ const ManageAssignmentPage = () => {
           nextLinkClassName="page-next"
           activeLinkClassName="active"
         />
-
-        <ModalAssignmentInfo
-          title="Detailed Assignment Information"
-          showModal={isOpen}
-          closePopupFunc={handleCloseModal}
-          objId={assignmentId}
-        />
-
-        {/* <PopUpMessage
-          showModal={isOpenMess}
-          closePopupFunc={handleCloseModal}
-          title="Can not disable user"
-          message={message}
-        /> */}
       </div>{" "}
     </>
   );
 };
 
-export default ManageAssignmentPage;
+export default RequestPage;
