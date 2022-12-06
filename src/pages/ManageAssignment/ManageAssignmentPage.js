@@ -93,15 +93,9 @@ const ManageAssignmentPage = () => {
         if (res.data.listResponse != null) {
           setTotalPage(res.data.totalPage);
         }
-<<<<<<< HEAD
-        if (stateReload === "delete") {
-          alert("successfully deleted");
-=======
         if('load'!==stateReload){
           alert(stateReload)
->>>>>>> 3524c6c3cd6b15f46672b40f651675c22048a616
         }
-        
         Loading.remove();
       },
       (err) => {
