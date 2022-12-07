@@ -78,7 +78,11 @@ const RequestTable = ({
                   {obj.acceptedBy}
                 </td>
                 <td className="border-bottom" data-bs-toggle="modal">
-                  <Moment date={obj.returnedDate} format="DD/MM/YYYY" />
+                  {obj.returnedDate === null ? (
+                    ""
+                  ) : (
+                    <Moment date={obj.returnedDate} format="DD/MM/YYYY" />
+                  )}
                 </td>
                 <td
                   style={{ whiteSpace: "nowrap" }}
