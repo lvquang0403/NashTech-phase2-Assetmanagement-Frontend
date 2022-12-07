@@ -74,7 +74,7 @@ const MyAssignmentTable = ({
                 class="border-bottom border-3"
                 key={index}
                 onClick={() => handleSort(item.name)}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", whiteSpace: "nowrap" }}
               >
                 {item.name}
                 {item.isDropdown && (
@@ -121,11 +121,12 @@ const MyAssignmentTable = ({
                   onClick={() => handleOnClickRecord(obj)}
                   className="border-bottom"
                   data-bs-toggle="modal"
+                  style={{ whiteSpace: "nowrap" }}
                 >
                   {obj.state}
                 </td>
                 {actions && (
-                  <td>
+                  <td style={{ whiteSpace: "nowrap" }}>
                     {actions.accept && (
                       <FaCheck
                         style={{
