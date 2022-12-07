@@ -66,7 +66,7 @@ const RequestTable = ({
                 </td>
 
                 <td className="border-bottom" data-bs-toggle="modal">
-                  {obj.assignTo}
+                  {obj.requestedBy}
                 </td>
                 <td className="border-bottom" data-bs-toggle="modal">
                   <Moment
