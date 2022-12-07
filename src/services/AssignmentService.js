@@ -37,6 +37,14 @@ class AssignmentService {
   getUserAssignments(query, userID) {
     return axiosClient.get(`${API_BASE_URL}/user/${userID}?${query}`);
   }
+
+  changeStateAssignment(assignmentId, state){
+    console.log(state);
+    return axiosClient.put(`${API_BASE_URL}/${assignmentId}/state`,{
+        id: assignmentId,
+        state : state,
+    });
+  } 
 }
 
 export default new AssignmentService();

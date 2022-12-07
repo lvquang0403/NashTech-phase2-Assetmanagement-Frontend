@@ -97,7 +97,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFun
 
                                 <input
                                     type={showNewPass ? "text" : "password"}
-                                    id="old-pass"
+                                    id="new-pass"
                                     className="border rounded"
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}

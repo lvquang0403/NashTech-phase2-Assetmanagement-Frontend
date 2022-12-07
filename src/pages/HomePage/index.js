@@ -13,6 +13,7 @@ import moment from "moment";
 import { Loading } from "notiflix/build/notiflix-loading-aio";
 import getUserIDInSession from "../../utils/getUserIDInSession";
 import ModalAssignmentInfo from "../ManageAssignment/ModalAssignmentInfo";
+import AssignmentService from "../../services/AssignmentService";
 
 const HomePage = () => {
   //First login change password!
@@ -52,10 +53,8 @@ const HomePage = () => {
   const [assignmentId, setAssignmentId] = useState();
 
   const [isOpen, setOpen] = useState(false);
-  const [isOpenDel, setOpenDel] = useState(false);
-  const [isOpenMess, setOpenMess] = useState(false);
-  const [message, setMessage] = useState("");
   const [assignedDate, setAssignedDate] = useState("");
+  const [isUpdate, setUpdate] = useState(false);
 
   const cols = [
     { name: "Asset Code", isDropdown: true },
@@ -95,6 +94,20 @@ const HomePage = () => {
     );
   };
 
+  const handleStateAssignmentChange =  async (assId ,state) => {
+    Loading.standard("Loading...");
+    await AssignmentService.changeStateAssignment(assId,state).then(
+      (res) => {
+        handleCloseModal()
+        setUpdate(isUpdate ? false : true)
+      },
+      (err) => {
+        handleCloseModal()
+        Loading.remove();
+      }
+    );
+  }
+
   const [assignmentList, setAssignmentList] = useState([]);
   const actions = {
     accept: true,
@@ -109,8 +122,6 @@ const HomePage = () => {
 
   const handleCloseModal = () => {
     setOpen(false);
-    setOpenDel(false);
-    setOpenMess(false);
   };
 
   const handlePageChange = (e) => {
@@ -165,7 +176,7 @@ const HomePage = () => {
 
   useEffect(() => {
     fetchAssignment();
-  }, [currentPage, orderBy]);
+  }, [currentPage, orderBy, isUpdate]);
 
   useEffect(() => {
     fetchAssignment();
@@ -187,7 +198,7 @@ const HomePage = () => {
             actions={actions}
             sortFunc={sortByCol}
             onClickRecordFunc={handleOpenModal}
-            // onClickEditBtnFunc={handleEditBtn}
+            onClickAccepFunc={handleStateAssignmentChange}
             // onClickDelBtn={handleDelBtn}
           />
           <ReactPaginate
