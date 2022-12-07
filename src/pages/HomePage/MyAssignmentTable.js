@@ -18,14 +18,13 @@ const MyAssignmentTable = ({
   onClickAccepFunc,
   onClickDenyBtn,
 }) => {
-// show popup
-  const [isOpenReturn, setOpenReturn]= useState(false);
-  const [isOpenTickIcon, setOpenTickIcon]= useState(false);
-  const [isOpenXIcon, setOpenXIcon]= useState(false);
+  // show popup
+  const [isOpenReturn, setOpenReturn] = useState(false);
+  const [isOpenTickIcon, setOpenTickIcon] = useState(false);
+  const [isOpenXIcon, setOpenXIcon] = useState(false);
 
   // save id for create request for returning asset
-  const [idReturnRequest, setIdReturnRequest]= useState(undefined);
-
+  const [idReturnRequest, setIdReturnRequest] = useState(undefined);
 
   const handleSort = (col) => {
     if (sortFunc) {
@@ -43,25 +42,24 @@ const MyAssignmentTable = ({
     }
   };
   const handleCloseModal = () => {
-    setOpenReturn(false)
-    setOpenTickIcon(false)
-    setOpenXIcon(false)
+    setOpenReturn(false);
+    setOpenTickIcon(false);
+    setOpenXIcon(false);
   };
 
   const handleDeniedBtn = (id) => {};
 
   const handleAcceptBtn = (id) => {};
 
-  // When click return incon 
-  const handleCreateRequest  = (id) => {
-    setOpenReturn(true)
-    setIdReturnRequest(id)
+  // When click return incon
+  const handleCreateRequest = (id) => {
+    setOpenReturn(true);
+    setIdReturnRequest(id);
   };
-  
+
   // When click button 'yes' in  popup for creating returning request
-  const handleCreateReturningRequest  = () => {
+  const handleCreateReturningRequest = () => {
     console.log(idReturnRequest);
-    
   };
 
   return (
@@ -74,7 +72,7 @@ const MyAssignmentTable = ({
                 class="border-bottom border-3"
                 key={index}
                 onClick={() => handleSort(item.name)}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", whiteSpace: "nowrap" }}
               >
                 {item.name}
                 {item.isDropdown && (
@@ -121,11 +119,12 @@ const MyAssignmentTable = ({
                   onClick={() => handleOnClickRecord(obj)}
                   className="border-bottom"
                   data-bs-toggle="modal"
+                  style={{ whiteSpace: "nowrap" }}
                 >
                   {obj.state}
                 </td>
                 {actions && (
-                  <td>
+                  <td style={{ whiteSpace: "nowrap" }}>
                     {actions.accept && (
                       <FaCheck
                         style={{
@@ -169,32 +168,32 @@ const MyAssignmentTable = ({
       </table>
       {/* US-1649 popup for creating returning request */}
       <PopUpConfirm
-          showModal={isOpenReturn}
-          closePopupFunc={handleCloseModal}
-          yesFunc={handleCreateReturningRequest}
-          title="Are you sure?"
-          message="Do you want to create a returning request for this asset?"
-          yesBtnName="Delete"
-        />
-        
+        showModal={isOpenReturn}
+        closePopupFunc={handleCloseModal}
+        yesFunc={handleCreateReturningRequest}
+        title="Are you sure?"
+        message="Do you want to create a returning request for this asset?"
+        yesBtnName="Delete"
+      />
+
       {/*US-1651 [Tick Icon] popup for respond to his/her own assignments */}
       <PopUpConfirm
-          showModal={isOpenTickIcon}
-          closePopupFunc={handleCloseModal}
-          // yesFunc={handle}
-          title="Are you sure?"
-          message="Do you want to accept this assignment?"
-          yesBtnName="Delete"
-        />
+        showModal={isOpenTickIcon}
+        closePopupFunc={handleCloseModal}
+        // yesFunc={handle}
+        title="Are you sure?"
+        message="Do you want to accept this assignment?"
+        yesBtnName="Delete"
+      />
       {/*US-1651 [X Icon] popup for respond to his/her own assignments */}
       <PopUpConfirm
-          showModal={isOpenXIcon}
-          closePopupFunc={handleCloseModal}
-          // yesFunc={handle}
-          title="Are you sure?"
-          message="Do you want to decline this assignment?"
-          yesBtnName="Delete"
-        />
+        showModal={isOpenXIcon}
+        closePopupFunc={handleCloseModal}
+        // yesFunc={handle}
+        title="Are you sure?"
+        message="Do you want to decline this assignment?"
+        yesBtnName="Delete"
+      />
     </div>
   );
 };
