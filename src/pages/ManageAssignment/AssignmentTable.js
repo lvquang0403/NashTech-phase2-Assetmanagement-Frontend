@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import Moment from "react-moment";
 import {
   FaCaretDown,
@@ -7,23 +6,18 @@ import {
   BsXCircle,
   FaUndoAlt,
 } from "../../components/icon";
-import PopUpConfirm from "../../components/PopUpConfim";
 
-const AssignmentTable = ({
+const AssingmentTable = ({
   cols,
   data,
   actions,
   sortFunc,
   onClickRecordFunc,
   onClickEditBtnFunc,
-  onClickDeleteBtn,
+  onClickDelBtn,
   currentNo,
 }) => {
-  const [isOpenDel, setOpenDel]= useState(false);
-  const [selectAssignmentIdDelete, setSelectAssignmentIdDelete]= useState(undefined);
-    
   const handleSort = (col) => {
-    
     if (sortFunc) {
       sortFunc(col);
     }
@@ -42,26 +36,12 @@ const AssignmentTable = ({
       onClickEditBtnFunc(id);
     }
   };
-  
-
-  // when cancel in modal
-  const handleCloseModal = () => {
-    setOpenDel(false);
-    setSelectAssignmentIdDelete(undefined)
-  };
-// when click Btn delete
-  const handleOnClickDeleteButton = (id) => {
-    setOpenDel(true)
-    setSelectAssignmentIdDelete(id)
-  };
-  // when admin confirm is delete 
-  const handleDeleteAssignment = async () => {
-    if(selectAssignmentIdDelete){
-      onClickDeleteBtn(selectAssignmentIdDelete)
+  const handleDelBtn = (id) => {
+    if (onClickDelBtn && id !== undefined) {
+      onClickDelBtn(id);
+      console.log(id);
     }
-    setOpenDel(false)
   };
-
   console.log(currentNo);
 
   return (
@@ -74,8 +54,7 @@ const AssignmentTable = ({
                 class="border-bottom border-3"
                 key={index}
                 onClick={() => handleSort(item.name)}
-                style={{ cursor: "pointer", whiteSpace: 'nowrap'}}
-              
+                style={{ cursor: "pointer", whiteSpace: "nowrap" }}
               >
                 {item.name}
                 {item.isDropdown && (
@@ -107,7 +86,6 @@ const AssignmentTable = ({
                   onClick={() => handleOnClickRecord(obj.id)}
                   className="border-bottom"
                   data-bs-toggle="modal"
-                
                 >
                   {obj.assetName}
                 </td>
@@ -137,12 +115,12 @@ const AssignmentTable = ({
                   onClick={() => handleOnClickRecord(obj.id)}
                   className="border-bottom"
                   data-bs-toggle="modal"
-                  style={{whiteSpace: 'nowrap'}}
+                  style={{ whiteSpace: "nowrap" }}
                 >
                   {obj.state}
                 </td>
                 {actions && (
-                  <td   style={{whiteSpace: 'nowrap'}}>
+                  <td style={{ whiteSpace: "nowrap" }}>
                     {actions["edit"] && (
                       <FaPen
                         style={{
@@ -166,17 +144,8 @@ const AssignmentTable = ({
                           cursor: "pointer",
                           marginLeft: 15,
                           color: "red",
-                          opacity:
-                            obj.state !== "Waiting for acceptance"
-                              ? "0.3"
-                              : "1",
                         }}
-                        onClick={() =>
-                          obj.state === "Waiting for acceptance"
-                            ? handleOnClickDeleteButton(obj.id)
-                            : null
-                        }
-                        
+                        // onClick={() => handleDelBtn(obj.id)}
                       />
                     )}
                     {actions.remove && (
@@ -195,16 +164,8 @@ const AssignmentTable = ({
             ))}
         </tbody>
       </table>
-      <PopUpConfirm
-          showModal={isOpenDel}
-          closePopupFunc={handleCloseModal}
-          yesFunc={handleDeleteAssignment}
-          title="Are you sure?"
-          message="Do you want to delete this assignment?"
-          yesBtnName="Delete"
-        />
     </div>
   );
 };
 
-export default AssignmentTable;
+export default AssingmentTable;

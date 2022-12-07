@@ -3,7 +3,7 @@ import { Fragment, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import Main from "./components/layout/Main";
 import ManageAssignmentPage from "./pages/ManageAssignment/ManageAssignmentPage";
-import RequestPage from "./pages/RequestPage";
+import RequestPage from "./pages/RequestForReturningPage/RequestPage";
 
 import LoginPage from "./pages/Login";
 
@@ -41,7 +41,10 @@ function App() {
               element={<CreateUserPage></CreateUserPage>}
             />
             <Route path="/manage-asset" element={<ManageAsset></ManageAsset>} />
-            <Route path="/manage-asset/create-asset" element={<CreateAsset></CreateAsset>} />
+            <Route
+              path="/manage-asset/create-asset"
+              element={<CreateAsset></CreateAsset>}
+            />
             <Route
               path="/manage-assignment"
               element={<ManageAssignmentPage></ManageAssignmentPage>}
@@ -51,12 +54,18 @@ function App() {
               element={<RequestPage></RequestPage>}
             />
             <Route path="/report" element={<ReportPage></ReportPage>} />
-            <Route path="/manage-asset/edit-asset/:id" element={<EditAsset></EditAsset>} />
+            <Route
+              path="/manage-asset/edit-asset/:id"
+              element={<EditAsset></EditAsset>}
+            />
             <Route
               path="/manage-assignment/create-assignment"
               element={<CreateAssignment></CreateAssignment>}
             />
-            <Route path="/manage-assignment/edit-assignment/:id" element={<EditAssignmentPage></EditAssignmentPage>} />
+            <Route
+              path="/manage-assignment/edit-assignment/:id"
+              element={<EditAssignmentPage></EditAssignmentPage>}
+            />
           </Route>
         </Routes>
       </Suspense>
