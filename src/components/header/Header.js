@@ -79,8 +79,8 @@ const Header = ({ title }) => {
               <Modal.Title>Change Password</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <div style={{ marginTop: 10 }}>
-                <pre>Your password has been changed successfully!</pre>
+              <div style={{ marginTop: 10, fontFamily: 'Segoe UI'}}>
+                <p>Your password has been changed successfully!</p>
                 <div className="btn-group-footer d-flex justify-content-end" >
 
                   <button

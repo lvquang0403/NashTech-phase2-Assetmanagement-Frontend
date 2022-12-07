@@ -39,7 +39,7 @@ const Table = ({ cols, data, actions, sortFunc, onClickRecordFunc, onClickEditBt
                 <thead>
                     <tr>
                         {cols.map((item, index) =>
-                            <th class="border-bottom border-3" key={index} onClick={() => handleSort(item.name)} style={{ cursor: 'pointer' }}>{item.name}
+                            <th class="border-bottom border-3" key={index} onClick={() => handleSort(item.name)} style={{ cursor: 'pointer',  whiteSpace: 'nowrap' }}>{item.name}
                                 {item.isDropdown && <FaCaretDown style={{ cursor: 'pointer', marginLeft: 5 }} />}
                             </th>
                         )}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../ManageAssetPage/index.scss";
 import SearchInput from "../../components/SearchInput";
-import Table from "../../components/Table";
+import { Modal } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import { FaFilter } from "../../components/icon";
 import { Loading } from "notiflix/build/notiflix-loading-aio";
@@ -377,12 +377,18 @@ const ManageUserPage = () => {
           message="Do you want to disable this user?"
           yesBtnName="Disable"
         />
-        <PopUpMessage
-          showModal={isOpenMess}
-          closePopupFunc={handleCloseModal}
-          title="Can not disable user"
-          message={message}
-        />
+         <Modal show={isOpenMess} onHide={handleCloseModal} size="lg" backdrop='static' keyboard={false} size="md">
+            <Modal.Header closeButton style={{ color: '#cf2338', backgroundColor: 'lightgrey' }}>
+                <Modal.Title>Can not disable user</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <div style={{ marginTop: 20,  display: 'inline-block' }}>
+                    <p >There are valid assignments belonging to this user.</p>
+                    <p style={{ marginTop: -15}}>Please close all assignments before disabling user.</p>
+                
+                </div>
+            </Modal.Body>
+        </Modal >
       </div>
     </>
   );
