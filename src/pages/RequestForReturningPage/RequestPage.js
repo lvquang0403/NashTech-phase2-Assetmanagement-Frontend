@@ -129,20 +129,20 @@ const RequestPage = () => {
 
       case "Requested By":
         col === currentSortCol
-          ? setOrderBy("assignedTo.username_DESC")
-          : setOrderBy("assignedTo.username_ASC");
+          ? setOrderBy("requestedBy.username_DESC")
+          : setOrderBy("requestedBy.username_ASC");
         break;
 
       case "Accepted By":
         col === currentSortCol
-          ? setOrderBy("acceptedBy.username_DESC")
-          : setOrderBy("assignedBy.username_ASC");
+          ? setOrderBy("u.username_DESC")
+          : setOrderBy("u.username_ASC");
         break;
 
       case "Assigned Date":
         col === currentSortCol
-          ? setOrderBy("assignedDate_DESC")
-          : setOrderBy("assignedDate_ASC");
+          ? setOrderBy("assignment.assignedDate_DESC")
+          : setOrderBy("assignment.assignedDate_ASC");
         break;
 
       case "State":
