@@ -42,9 +42,9 @@ const MyAssignmentTable = ({
     }
   };
   const handleCloseModal = () => {
-    setOpenReturn(false)
-    setOpenTickIcon(false)
-    setOpenXIcon(false)
+    setOpenReturn(false);
+    setOpenTickIcon(false);
+    setOpenXIcon(false);
   };
 
   const handleOpenModalDecline = (id) => {
@@ -57,13 +57,14 @@ const MyAssignmentTable = ({
     setAssignmentId(id)
   };
 
-  const handleStateAssignmentChange =  async (state) => {
-    if(onClickAccepFunc){
-      onClickAccepFunc(assignmentId,state);
+  const handleStateAssignmentChange = async (state) => {
+    if (onClickAccepFunc) {
+      onClickAccepFunc(assignmentId, state);
       handleCloseModal()
-     
+
     }
   }
+
 
   // When click return incon 
   const handleCreateRequest = (id) => {
@@ -74,7 +75,6 @@ const MyAssignmentTable = ({
   // When click button 'yes' in  popup for creating returning request
   const handleCreateReturningRequest = () => {
     console.log(idReturnRequest);
-
   };
 
   return (
@@ -168,7 +168,7 @@ const MyAssignmentTable = ({
                             ? null
                             : handleOpenModalDecline(obj.id)
                         }
-                       
+
                       />
                     )}
                     {actions.return && (
@@ -201,19 +201,21 @@ const MyAssignmentTable = ({
       <PopUpConfirm
         showModal={isOpenTickIcon}
         closePopupFunc={handleCloseModal}
-        yesFunc={()=>handleStateAssignmentChange("ACCEPTED")}
+        yesFunc={() => handleStateAssignmentChange("ACCEPTED")}
         title="Are you sure?"
         message="Do you want to accept this assignment?"
         yesBtnName="Accept"
+
       />
       {/*US-1651 [X Icon] popup for respond to his/her own assignments */}
       <PopUpConfirm
         showModal={isOpenXIcon}
         closePopupFunc={handleCloseModal}
-         yesFunc={()=>handleStateAssignmentChange("DECLINED")}
+        yesFunc={() => handleStateAssignmentChange("DECLINED")}
         title="Are you sure?"
         message="Do you want to decline this assignment?"
         yesBtnName="Decline"
+
       />
     </div>
   );
