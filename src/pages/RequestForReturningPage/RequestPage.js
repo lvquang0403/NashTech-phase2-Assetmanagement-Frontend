@@ -18,6 +18,7 @@ import { useEffect } from "react";
 
 import PopUpConfirm from "../../components/PopUpConfim";
 import ReturningService from "../../services/ReturningService";
+import getLocationInSession from "../../utils/getLocationInSession";
 
 const RequestPage = () => {
   const cols = [
@@ -64,6 +65,13 @@ const RequestPage = () => {
   const fetchReturning = async (stateReload) => {
     Loading.standard("Loading...");
     // check location id
+    let locationID = getLocationInSession();
+    if (locationID === null) {
+      alert("The administrator's location could not be found");
+      Loading.remove();
+      return null;
+    }
+
     var returnedDateString = undefined;
 
     if (returnedDate !== undefined) {
@@ -77,6 +85,7 @@ const RequestPage = () => {
       keyword: searchFilter,
       states: stateFilter.length === 0 ? undefined : stateFilter,
       orderBy: orderBy,
+      locationId: locationID,
       returnedDate: returnedDateString,
     };
 
