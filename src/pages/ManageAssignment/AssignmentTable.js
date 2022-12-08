@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Moment from "react-moment";
 import {
   FaCaretDown,
@@ -6,6 +6,7 @@ import {
   BsXCircle,
   FaUndoAlt,
 } from "../../components/icon";
+import PopUpConfirm from "../../components/PopUpConfim";
 
 const AssingmentTable = ({
   cols,
@@ -14,9 +15,16 @@ const AssingmentTable = ({
   sortFunc,
   onClickRecordFunc,
   onClickEditBtnFunc,
-  onClickDelBtn,
+  onClickReturnBtn,
   currentNo,
 }) => {
+
+   // show popup
+   const [isOpenReturn, setOpenReturn] = useState(false);
+
+   // save id for create request for returning asset
+   const [assignmentId, setAssignmentId] = useState(undefined);
+
   const handleSort = (col) => {
     if (sortFunc) {
       sortFunc(col);
@@ -36,13 +44,27 @@ const AssingmentTable = ({
       onClickEditBtnFunc(id);
     }
   };
-  const handleDelBtn = (id) => {
-    if (onClickDelBtn && id !== undefined) {
-      onClickDelBtn(id);
-      console.log(id);
-    }
-  };
+
   console.log(currentNo);
+
+  const handleCloseModal = () => {
+    setOpenReturn(false)
+  };
+
+  // When click return incon 
+  const handleClickIconReturn = (id) => {
+    setOpenReturn(true)
+    setAssignmentId(id)
+  };
+
+  // When click button 'yes' in  popup for creating returning request
+  const handleCreateReturningRequest = () => {
+    handleCloseModal();
+    if (onClickReturnBtn && assignmentId !== undefined) {
+      onClickReturnBtn(assignmentId)
+    }
+    
+  };
 
   return (
     <div class="table-listing">
@@ -150,13 +172,18 @@ const AssingmentTable = ({
                     )}
                     {actions.remove && (
                       <FaUndoAlt
-                        style={{
-                          cursor: "pointer",
-                          marginLeft: 15,
-                          color: "blue",
-                        }}
-                        // onClick={() => handleDelBtn(obj.id)}
-                      />
+                      style={{
+                        cursor: (obj.requestForReturn || obj.state !== 'Accepted')?"default":"pointer",
+                        marginLeft: 15,
+                        color: "blue",
+                        opacity: (obj.requestForReturn || obj.state !== 'Accepted')?0.3:1
+                      }}
+                      onClick={() => {
+                        if(!obj.requestForReturn && obj.state === 'Accepted'){
+                          handleClickIconReturn(obj.id)
+                        }
+                      }}
+                    />
                     )}
                   </td>
                 )}
@@ -164,6 +191,14 @@ const AssingmentTable = ({
             ))}
         </tbody>
       </table>
+      <PopUpConfirm
+        showModal={isOpenReturn}
+        closePopupFunc={handleCloseModal}
+        yesFunc={handleCreateReturningRequest}
+        title="Are you sure?"
+        message="Do you want to create a returning request for this asset?"
+        yesBtnName="Yes"
+      />
     </div>
   );
 };

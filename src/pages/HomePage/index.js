@@ -14,6 +14,8 @@ import { Loading } from "notiflix/build/notiflix-loading-aio";
 import getUserIDInSession from "../../utils/getUserIDInSession";
 import ModalAssignmentInfo from "../ManageAssignment/ModalAssignmentInfo";
 import AssignmentService from "../../services/AssignmentService";
+import ReturningService from "../../services/ReturningService";
+import validateReturningCreate from "../../utils/validateReturningCreate";
 
 const HomePage = () => {
   //First login change password!
@@ -64,7 +66,7 @@ const HomePage = () => {
     { name: "State", isDropdown: true },
   ];
 
-  const fetchAssignment = async () => {
+  const fetchAssignment = async (stateReload) => {
     Loading.standard("Loading...");
     // check user id
     let userID = getUserIDInSession();
@@ -84,6 +86,12 @@ const HomePage = () => {
         setAssignmentList(res.data.listResponse);
         if (res.data.listResponse != null) {
           setTotalPage(res.data.totalPage);
+        }
+        // alert content load
+        if(stateReload){
+          if ("load" !== stateReload) {
+            alert(stateReload);
+          }
         }
         Loading.remove();
       },
@@ -174,12 +182,47 @@ const HomePage = () => {
     }
   };
 
+  
+  // When click button 'yes' in popup  create request for returning
+  const handleCreateReturnning = (assignmentId) => {
+    Loading.standard("Loading...");
+    // set user id
+    const userId = getUserIDInSession();
+    // Validate
+    const validate1 = validateReturningCreate.assignmentId(assignmentId);
+    const validate2 = validateReturningCreate.requestById(userId);
+    if (!validate1 || !validate2) {
+      Loading.remove();
+      return null;
+    }
+    let data = {
+      requestById: userId,
+      assignmentId: assignmentId
+    }
+    console.log(data);
+    ReturningService.create(data)
+    .then((response) => {
+        fetchAssignment('request has been sent');
+    })
+    .catch((error) => {
+        console.log(error);
+        if (error.response.data) {
+            alert(error.response.data.message)
+        } else {
+            alert(error.message)
+        }
+        fetchAssignment('load');
+    });
+    
+  };
+
+
   useEffect(() => {
-    fetchAssignment();
+    fetchAssignment('load');
   }, [currentPage, orderBy, isUpdate]);
 
   useEffect(() => {
-    fetchAssignment();
+    fetchAssignment('load');
   }, []);
 
   return (
@@ -199,7 +242,7 @@ const HomePage = () => {
             sortFunc={sortByCol}
             onClickRecordFunc={handleOpenModal}
             onClickAccepFunc={handleStateAssignmentChange}
-            // onClickDelBtn={handleDelBtn}
+            onClickDelBtn={handleCreateReturnning}
           />
           <ReactPaginate
             breakLabel="..."

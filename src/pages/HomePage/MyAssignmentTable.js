@@ -16,6 +16,7 @@ const MyAssignmentTable = ({
   sortFunc,
   onClickRecordFunc,
   onClickAccepFunc,
+  onClickDelBtn
 }) => {
   // show popup
   const [isOpenReturn, setOpenReturn] = useState(false);
@@ -23,7 +24,6 @@ const MyAssignmentTable = ({
   const [isOpenXIcon, setOpenXIcon] = useState(false);
 
   // save id for create request for returning asset
-  const [idReturnRequest, setIdReturnRequest] = useState(undefined);
   const [assignmentId, setAssignmentId] = useState(undefined);
 
   const handleSort = (col) => {
@@ -67,14 +67,17 @@ const MyAssignmentTable = ({
 
 
   // When click return incon 
-  const handleCreateRequest = (id) => {
+  const handleClickIconReturn = (id) => {
     setOpenReturn(true)
-    setIdReturnRequest(id)
+    setAssignmentId(id)
   };
 
   // When click button 'yes' in  popup for creating returning request
   const handleCreateReturningRequest = () => {
-    console.log(idReturnRequest);
+    handleCloseModal();
+    if (onClickDelBtn && assignmentId !== undefined) {
+      onClickDelBtn(assignmentId)
+    }
   };
 
   return (
@@ -174,11 +177,16 @@ const MyAssignmentTable = ({
                     {actions.return && (
                       <FaUndoAlt
                         style={{
-                          cursor: "pointer",
+                          cursor: (obj.requestForReturn || obj.state !== 'Accepted')?"default":"pointer",
                           marginLeft: 15,
                           color: "blue",
+                          opacity: (obj.requestForReturn || obj.state !== 'Accepted')?0.3:1
                         }}
-                        onClick={() => handleCreateRequest(obj.id)}
+                        onClick={() => {
+                          if(!obj.requestForReturn && obj.state === 'Accepted'){
+                            handleClickIconReturn(obj.id)
+                          }
+                        }}
                       />
                     )}
                   </td>
@@ -194,7 +202,7 @@ const MyAssignmentTable = ({
         yesFunc={handleCreateReturningRequest}
         title="Are you sure?"
         message="Do you want to create a returning request for this asset?"
-        yesBtnName="Delete"
+        yesBtnName="Yes"
       />
 
       {/*US-1651 [Tick Icon] popup for respond to his/her own assignments */}

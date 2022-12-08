@@ -20,6 +20,10 @@ import ModalAssignmentInfo from "./ModalAssignmentInfo";
 
 import "./ManageAssignmentPage.css";
 import PopUpConfirm from "../../components/PopUpConfim";
+import ReturningService from "../../services/ReturningService";
+import validateReturningCreate from "../../utils/validateReturningCreate";
+import getUserIDInSession from "../../utils/getUserIDInSession";
+
 
 const ManageAssignmentPage = () => {
   const cols = [
@@ -66,6 +70,8 @@ const ManageAssignmentPage = () => {
   const [assignedDate, setAssignedDate] = useState(undefined);
 
   const [isDel, setDel] = useState(false);
+
+  // load default => stateReload = 'load'
   const fetchAssignment = async (stateReload) => {
     Loading.standard("Loading...");
     // check location id
@@ -93,8 +99,11 @@ const ManageAssignmentPage = () => {
         if (res.data.listResponse != null) {
           setTotalPage(res.data.totalPage);
         }
-        if ("load" !== stateReload) {
-          alert(stateReload);
+        // alert content load
+        if(stateReload){
+          if ("load" !== stateReload) {
+            alert(stateReload);
+          }
         }
         Loading.remove();
       },
@@ -261,6 +270,39 @@ const ManageAssignmentPage = () => {
       });
   };
 
+  // When click button 'yes' in popup  create request for returning
+  const handleClickYesReturnBtn = (id) => {
+    Loading.standard("Loading...");
+    // set user id
+    const userId = getUserIDInSession();
+    // Validate
+    const validateaAsignment = validateReturningCreate.assignmentId(id);
+    const validateUserId = validateReturningCreate.requestById(userId);
+    if (!validateaAsignment || !validateUserId) {
+      Loading.remove();
+      return null;
+    }
+    let data = {
+      requestById: userId,
+      assignmentId: id
+    }
+    ReturningService.create(data)
+    .then((response) => {
+      console.log(response.data);
+        fetchAssignment('request has been sent')
+    })
+    .catch((error) => {
+        console.log(error);
+        if (error.response.data) {
+            alert(error.response.data.message)
+        } else {
+            alert(error.message)
+        }
+        fetchAssignment('load')
+    });
+  };
+
+
   useEffect(() => {
     if (stateFilter.length === stateList.length || stateFilter.length === 0) {
       setAllState(true);
@@ -288,6 +330,8 @@ const ManageAssignmentPage = () => {
 
   //   }, 5000);
   // }, []);
+
+
 
   return (
     <>
@@ -407,6 +451,7 @@ const ManageAssignmentPage = () => {
           currentNo={currentNo}
           onClickEditBtnFunc={handleEditBtn}
           onClickDeleteBtn={handleDeleteAssignment}
+          onClickReturnBtn={handleClickYesReturnBtn}
         />
         <ReactPaginate
           breakLabel="..."
