@@ -1,5 +1,5 @@
 import axiosClient from "./AxiosCilent";
-const API_BASE_URL = `api/returning`;
+const API_BASE_URL = `api/returns`;
 
 class RequestReturnService {
 
@@ -8,6 +8,10 @@ class RequestReturnService {
       assignBy: assignmentId,
       requestTo: assignTo,
     });
+  }
+
+  completeRequest(payload, returningId){
+    return axiosClient.put(`${API_BASE_URL}/${returningId}`, payload)
   }
 
 }

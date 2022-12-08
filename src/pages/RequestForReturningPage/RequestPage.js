@@ -6,6 +6,8 @@ import ReactPaginate from "react-paginate";
 import queryString from "query-string";
 import AssignmentService from "../../services/AssignmentService";
 import moment from "moment";
+import getUserLoged from "../../utils/getUserLoged";
+import RequestReturnService from "../../services/RequestReturnService";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.min.css";
@@ -19,6 +21,7 @@ import { useEffect } from "react";
 import PopUpConfirm from "../../components/PopUpConfim";
 import ReturningService from "../../services/ReturningService";
 import getLocationInSession from "../../utils/getLocationInSession";
+import CompleteConfirm from "../../components/modal/CompleteConfirm";
 
 const RequestPage = () => {
   const cols = [
@@ -36,6 +39,8 @@ const RequestPage = () => {
   const typingTimeOutRef = useRef(null);
   const [allState, setAllState] = useState(false);
   const [currentNo, setCurrentNo] = useState(0);
+  const [returningId, setReturningId] = useState();
+  const [update, setUpdate] = useState(false);
 
   const [returningList, setReturningList] = useState([]);
   const [stateList, setStateList] = useState([]);
@@ -56,6 +61,7 @@ const RequestPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const [isOpen, setOpen] = useState(false);
+  const [isOpenComple, setOpenComple] = useState(false)
   const [isOpenDel, setOpenDel] = useState(false);
   const [isOpenMess, setOpenMess] = useState(false);
   const [message, setMessage] = useState("");
@@ -107,7 +113,6 @@ const RequestPage = () => {
         Loading.remove();
       }
     );
-    //Loading.remove();
   };
 
   const fetchStates = async () => {
@@ -204,7 +209,35 @@ const RequestPage = () => {
     }
   }, [currentPage]);
 
-  const handleCompleteRequest = (id) => {};
+  const onClickNoCompleModal = () =>{
+    setOpenComple(false)
+  }
+  
+  const onClickCompleteFunc = (id) =>{
+    setReturningId(id)
+    setOpenComple(true)
+  }
+
+  const handleCompleteRequest = () => {
+    Loading.standard("Loading...");
+    var id = null
+    if(returningId){
+      id = returningId
+    }
+    const user = getUserLoged()
+    const payload = {
+      acceptBy: user.id
+    }
+    setOpenComple(false)
+    RequestReturnService.completeRequest(payload, id)
+      .then(res => {
+        setUpdate(!update);
+      })
+      .catch(res => {
+        Loading.remove();
+        alert("error")
+      })
+  };
 
   const handleInputChange = (newValue) => {
     var temp = newValue;
@@ -272,10 +305,10 @@ const RequestPage = () => {
   }, [allState]);
 
   useEffect(() => {
-    //Loading.standard("Loading...");
+    // Loading.standard("Loading...");
     fetchReturning("load");
     fetchStates();
-  }, [currentPage, stateFilter, searchFilter, orderBy, isDel, returnedDate]);
+  }, [currentPage, stateFilter, searchFilter, orderBy, isDel, returnedDate, update]);
 
   return (
     <>
@@ -364,8 +397,15 @@ const RequestPage = () => {
           actions={actions}
           sortFunc={sortByCol}
           currentNo={currentNo}
-          onClickCompleteFunc={handleCompleteRequest}
-          onClickCancelBtn={handleCancelRequest}
+          onClickCompleteFunc={onClickCompleteFunc}
+        />
+        <CompleteConfirm
+          showModal={isOpenComple}
+          closePopupFunc={onClickNoCompleModal}
+          yesFunc={handleCompleteRequest}
+          title="Are you sure?"
+          message="Do you want to mark this returning request as 'Completed'?"
+          yesBtnName="Yes"
         />
 
         <ReactPaginate
