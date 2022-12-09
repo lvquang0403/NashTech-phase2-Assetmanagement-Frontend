@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 
-const PopUpConfirm = ({ title, message, showModal, closePopupFunc, yesFunc, yesBtnName }) => {
+const PopUpConfirm = ({ title, message, showModal, closePopupFunc, yesFunc, yesBtnName, cancelBtnName }) => {
 
     const handleClose = () => {
         if (closePopupFunc) {
@@ -16,7 +16,7 @@ const PopUpConfirm = ({ title, message, showModal, closePopupFunc, yesFunc, yesB
     }
 
     return (
-        <Modal show={showModal} onHide={handleClose} size="lg" backdrop='static' keyboard={false} size="md">
+        <Modal show={showModal} onHide={handleClose}  backdrop='static' keyboard={false} size="md">
             <Modal.Header closeButton style={{ color: '#cf2338', backgroundColor: 'lightgrey' }}>
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
@@ -36,7 +36,7 @@ const PopUpConfirm = ({ title, message, showModal, closePopupFunc, yesFunc, yesB
                             id="cancel-button"
                             onClick={handleClose}
                         >
-                            Cancel
+                           {(cancelBtnName)?cancelBtnName:'Cancel'} 
                         </button>
                     </div>
                 </div>

@@ -100,13 +100,16 @@ const RadioListUsers = (props) => {
     <div className='__radioListData'>
         <Row className='__row-header'>
             <Col xs={1}/>
-            <Col xs={3}>
+            <Col xs={2}>
                 <ListGroup.Item action>Staff Code</ListGroup.Item>
             </Col>
-            <Col xs={5}>
+            <Col xs={4}>
                 <ListGroup.Item action >Full Name</ListGroup.Item>
             </Col>
             <Col xs={3}>
+                <ListGroup.Item action >UserName</ListGroup.Item>
+            </Col>
+            <Col xs={2}>
                 <ListGroup.Item action >Type</ListGroup.Item>
             </Col>
         </Row>
@@ -140,19 +143,24 @@ const RadioListUsers = (props) => {
                                 />
                             }
                         </Col>
-                        <Col xs={3} className='__col-content'>
+                        <Col xs={2} className='__col-content'>
                             <ListGroup.Item>
-                            {item.id}
+                                {item.id}
                             </ListGroup.Item>
                         </Col>
-                        <Col xs={5} className='__col-content'>
+                        <Col xs={4} className='__col-content'>
                             <ListGroup.Item>
-                            {shortenSentences(item.fullName, 30)}
+                                {shortenSentences(item.fullName, 30)}
                             </ListGroup.Item>
                         </Col>
-                        <Col xs={3} className='__col-content'>
+                        <Col xs={3}>
                             <ListGroup.Item>
-                            {item.role}
+                                {item.userName}
+                            </ListGroup.Item>
+                        </Col>
+                        <Col xs={2} className='__col-content'>
+                            <ListGroup.Item>
+                                {item.role}
                             </ListGroup.Item>
                         </Col>
                     </Row>

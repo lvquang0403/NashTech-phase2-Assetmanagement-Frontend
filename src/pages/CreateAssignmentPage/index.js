@@ -190,7 +190,7 @@ const CreateAssignment = () => {
                     </Col>
                     <Col xs={9}>
                         <InputGroup className="mb-3">
-                            <Form.Control className='__input-search' readOnly maxLength={0} value={(selectedUser) ? selectedUser.fullName : ''}/>
+                            <Form.Control className='__input-search' readOnly maxLength={0} value={(selectedUser) ? `${selectedUser.fullName} ( ${selectedUser.userName} )` : ''}/>
                             <div className='__button-search' onClick={() => {
                                 setModalSelectUserShow(true)
 

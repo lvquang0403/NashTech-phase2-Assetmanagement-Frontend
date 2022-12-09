@@ -198,6 +198,7 @@ const AssingmentTable = ({
         title="Are you sure?"
         message="Do you want to create a returning request for this asset?"
         yesBtnName="Yes"
+        cancelBtnName="No"
       />
     </div>
   );

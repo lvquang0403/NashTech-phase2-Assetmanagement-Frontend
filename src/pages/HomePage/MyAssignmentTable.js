@@ -203,6 +203,7 @@ const MyAssignmentTable = ({
         title="Are you sure?"
         message="Do you want to create a returning request for this asset?"
         yesBtnName="Yes"
+        cancelBtnName="No"
       />
 
       {/*US-1651 [Tick Icon] popup for respond to his/her own assignments */}

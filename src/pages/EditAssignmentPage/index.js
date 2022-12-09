@@ -51,7 +51,8 @@ const EditAssignmentPage = () => {
 
                 const user = {
                     id:response.data.assignToId,
-                    fullName: response.data.assignToFirstName + ' ' + response.data.assignToLastName
+                    fullName: response.data.assignToFirstName + ' ' + response.data.assignToLastName,
+                    userName: response.data.assignByUsername
                 }
                 const asset = {
                     id:response.data.assetId,
@@ -220,7 +221,7 @@ const EditAssignmentPage = () => {
                 </Col>
                 <Col xs={9}>
                     <InputGroup className="mb-3">
-                        <Form.Control readOnly className='__input-search' maxLength={0} value={(selectedUser)?selectedUser.fullName:''}/>
+                        <Form.Control readOnly className='__input-search' maxLength={0} value={(selectedUser)?`${selectedUser.fullName} ( ${selectedUser.userName} )`:''}/>
                         <div  className='__button-search'  onClick={() => setModalSelectUserShow(true)}>
                             <BsSearch className='__icon-search'/>
                         </div>
