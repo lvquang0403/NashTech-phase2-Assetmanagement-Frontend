@@ -13,6 +13,9 @@ class RequestReturnService {
   completeRequest(payload, returningId){
     return axiosClient.put(`${API_BASE_URL}/${returningId}`, payload)
   }
+  cancelRequest(returningId){
+    return axiosClient.delete(`${API_BASE_URL}/${returningId}`)
+  }
 
 }
 
