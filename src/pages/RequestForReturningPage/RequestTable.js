@@ -30,7 +30,7 @@ const RequestTable = ({
     }
   };
   console.log(currentNo);
-
+  console.log(data)
   return (
     <div class="table-listing">
       <table>

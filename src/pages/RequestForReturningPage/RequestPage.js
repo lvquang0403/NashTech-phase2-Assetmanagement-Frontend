@@ -211,11 +211,16 @@ const RequestPage = () => {
 
   const onClickNoCompleModal = () => {
     setOpenComple(false);
+    setOpenDel(false);
   };
 
   const onClickCompleteFunc = (id) => {
     setReturningId(id);
     setOpenComple(true);
+  };
+  const onClickCancelBtn = (id) => {
+    setReturningId(id);
+    setOpenDel(true);
   };
 
   const handleCompleteRequest = () => {
@@ -273,21 +278,24 @@ const RequestPage = () => {
     }
   };
 
-  const handleCancelRequest = (id) => {
+  const handleCancelRequest = () => {
     Loading.standard("Loading...");
-    AssignmentService.delete(id)
-      .then((response) => {
-        console.log(response.data);
-        fetchReturning("delete");
+    let id = null;
+    if (returningId) {
+      id = returningId;
+    }
+    const user = getUserLoged();
+    const payload = {
+      acceptBy: user.id,
+    };
+    setOpenDel(false);
+    RequestReturnService.cancelRequest(id)
+      .then((res) => {
+        setUpdate(!update);
       })
-      .catch((error) => {
-        console.log(error);
-        if (error.response.data && error.response.data !== "") {
-          alert(error.response.data.message);
-        } else {
-          alert(error.message);
-        }
+      .catch((res) => {
         Loading.remove();
+        alert("error");
       });
   };
 
@@ -406,6 +414,7 @@ const RequestPage = () => {
           sortFunc={sortByCol}
           currentNo={currentNo}
           onClickCompleteFunc={onClickCompleteFunc}
+          onClickCancelBtn={onClickCancelBtn}
         />
         <CompleteConfirm
           showModal={isOpenComple}
@@ -413,6 +422,14 @@ const RequestPage = () => {
           yesFunc={handleCompleteRequest}
           title="Are you sure?"
           message="Do you want to mark this returning request as 'Completed'?"
+          yesBtnName="Yes"
+        />
+        <CompleteConfirm
+          showModal={isOpenDel}
+          closePopupFunc={onClickNoCompleModal}
+          yesFunc={handleCancelRequest}
+          title="Are you sure?"
+          message="Do you want to cancel this returning request?"
           yesBtnName="Yes"
         />
 
