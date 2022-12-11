@@ -252,7 +252,7 @@ const ManageAssignmentPage = () => {
       }
     }
   };
-
+  
   const handleDeleteAssignment = (id) => {
     Loading.standard("Loading...");
     AssignmentService.delete(id)

@@ -8,7 +8,7 @@ import {
 } from "../../components/icon";
 import PopUpConfirm from "../../components/PopUpConfim";
 
-const AssingmentTable = ({
+const AssignmentTable = ({
   cols,
   data,
   actions,
@@ -16,15 +16,20 @@ const AssingmentTable = ({
   onClickRecordFunc,
   onClickEditBtnFunc,
   onClickReturnBtn,
+  onClickDeleteBtn,
   currentNo,
 }) => {
 
+  
+ 
+    
    // show popup
-   const [isOpenReturn, setOpenReturn] = useState(false);
+  const [isOpenReturn, setOpenReturn] = useState(false);
+  const [isOpenDel, setOpenDel]= useState(false);
 
-   // save id for create request for returning asset
-   const [assignmentId, setAssignmentId] = useState(undefined);
-
+  // save id for create request for returning asset
+  const [assignmentId, setAssignmentId] = useState(undefined);
+  const [selectAssignmentIdDelete, setSelectAssignmentIdDelete]= useState(undefined);
   const handleSort = (col) => {
     if (sortFunc) {
       sortFunc(col);
@@ -47,10 +52,26 @@ const AssingmentTable = ({
 
   console.log(currentNo);
 
+  // when cancel in modal
   const handleCloseModal = () => {
     setOpenReturn(false)
+    setOpenDel(false);
+    setSelectAssignmentIdDelete(undefined)
   };
 
+ 
+// when click Btn delete
+  const handleOnClickDeleteButton = (id) => {
+    setOpenDel(true)
+    setSelectAssignmentIdDelete(id)
+  };
+  // when admin confirm is delete 
+  const handleDeleteAssignment = async () => {
+    if(selectAssignmentIdDelete){
+      onClickDeleteBtn(selectAssignmentIdDelete)
+    }
+    setOpenDel(false)
+  };
   // When click return incon 
   const handleClickIconReturn = (id) => {
     setOpenReturn(true)
@@ -166,8 +187,16 @@ const AssingmentTable = ({
                           cursor: "pointer",
                           marginLeft: 15,
                           color: "red",
+                          opacity:
+                            obj.state !== "Waiting for acceptance"
+                              ? "0.3"
+                              : "1",
                         }}
-                        // onClick={() => handleDelBtn(obj.id)}
+                        onClick={() =>
+                          obj.state === "Waiting for acceptance"
+                            ? handleOnClickDeleteButton(obj.id)
+                            : null
+                        }
                       />
                     )}
                     {actions.remove && (
@@ -191,6 +220,14 @@ const AssingmentTable = ({
             ))}
         </tbody>
       </table>
+       <PopUpConfirm
+          showModal={isOpenDel}
+          closePopupFunc={handleCloseModal}
+          yesFunc={handleDeleteAssignment}
+          title="Are you sure?"
+          message="Do you want to delete this assignment?"
+          yesBtnName="Delete"
+        />
       <PopUpConfirm
         showModal={isOpenReturn}
         closePopupFunc={handleCloseModal}
@@ -204,4 +241,4 @@ const AssingmentTable = ({
   );
 };
 
-export default AssingmentTable;
+export default AssignmentTable;
