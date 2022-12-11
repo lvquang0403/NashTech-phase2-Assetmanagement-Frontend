@@ -37,7 +37,7 @@ const RequestPage = () => {
 
   const navigate = useNavigate();
   const typingTimeOutRef = useRef(null);
-  const [allState, setAllState] = useState(false);
+  const [allState, setAllState] = useState(true);
   const [currentNo, setCurrentNo] = useState(0);
   const [returningId, setReturningId] = useState();
   const [update, setUpdate] = useState(false);
