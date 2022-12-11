@@ -37,7 +37,7 @@ const RequestPage = () => {
 
   const navigate = useNavigate();
   const typingTimeOutRef = useRef(null);
-  const [allState, setAllState] = useState(false);
+  const [allState, setAllState] = useState(true);
   const [currentNo, setCurrentNo] = useState(0);
   const [returningId, setReturningId] = useState();
   const [update, setUpdate] = useState(false);
@@ -61,7 +61,7 @@ const RequestPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const [isOpen, setOpen] = useState(false);
-  const [isOpenComple, setOpenComple] = useState(false)
+  const [isOpenComple, setOpenComple] = useState(false);
   const [isOpenDel, setOpenDel] = useState(false);
   const [isOpenMess, setOpenMess] = useState(false);
   const [message, setMessage] = useState("");
@@ -116,7 +116,7 @@ const RequestPage = () => {
   };
 
   const fetchStates = async () => {
-    setStateList(["Waiting for returning", "Completed"]);
+    setStateList(["Completed", "Waiting for returning"]);
   };
 
   const sortByCol = (col) => {
@@ -209,41 +209,40 @@ const RequestPage = () => {
     }
   }, [currentPage]);
 
-  const onClickNoCompleModal = () =>{
-    setOpenComple(false)
-    setOpenDel(false)
-  }
-  
-  const onClickCompleteFunc = (id) =>{
-    setReturningId(id)
-    setOpenComple(true)
-  }
-  const onClickCancelBtn = (id) =>{
-    setReturningId(id)
-    setOpenDel(true)
-  }
+  const onClickNoCompleModal = () => {
+    setOpenComple(false);
+    setOpenDel(false);
+  };
+
+  const onClickCompleteFunc = (id) => {
+    setReturningId(id);
+    setOpenComple(true);
+  };
+  const onClickCancelBtn = (id) => {
+    setReturningId(id);
+    setOpenDel(true);
+  };
 
   const handleCompleteRequest = () => {
     Loading.standard("Loading...");
-    var id = null
-    if(returningId){
-      id = returningId
+    var id = null;
+    if (returningId) {
+      id = returningId;
     }
-    const user = getUserLoged()
+    const user = getUserLoged();
     const payload = {
-      acceptBy: user.id
-    }
-    setOpenComple(false)
+      acceptBy: user.id,
+    };
+    setOpenComple(false);
     RequestReturnService.completeRequest(payload, id)
-      .then(res => {
+      .then((res) => {
         setUpdate(!update);
       })
-      .catch(res => {
+      .catch((res) => {
         Loading.remove();
-        alert("error")
-      })
+        alert("error");
+      });
   };
-
 
   const handleInputChange = (newValue) => {
     var temp = newValue;
@@ -281,23 +280,23 @@ const RequestPage = () => {
 
   const handleCancelRequest = () => {
     Loading.standard("Loading...");
-    let id = null
-    if(returningId){
-      id = returningId
+    let id = null;
+    if (returningId) {
+      id = returningId;
     }
-    const user = getUserLoged()
+    const user = getUserLoged();
     const payload = {
-      acceptBy: user.id
-    }
-    setOpenDel(false)
+      acceptBy: user.id,
+    };
+    setOpenDel(false);
     RequestReturnService.cancelRequest(id)
-      .then(res => {
+      .then((res) => {
         setUpdate(!update);
       })
-      .catch(res => {
+      .catch((res) => {
         Loading.remove();
-        alert("error")
-      })
+        alert("error");
+      });
   };
 
   useEffect(() => {
@@ -317,7 +316,15 @@ const RequestPage = () => {
     // Loading.standard("Loading...");
     fetchReturning("load");
     fetchStates();
-  }, [currentPage, stateFilter, searchFilter, orderBy, isDel, returnedDate, update]);
+  }, [
+    currentPage,
+    stateFilter,
+    searchFilter,
+    orderBy,
+    isDel,
+    returnedDate,
+    update,
+  ]);
 
   return (
     <>
