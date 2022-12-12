@@ -82,11 +82,9 @@ const ManageUserPage = () => {
   const handleRoleChange = (val) => {
     setCurrentPage(0);
 
-    if (val === "All") {
-      if (allRole) {
-        setAllRole(true);
-        setRoleFilter([...roleList]);
-      }
+    if (val === "All") {      
+      setAllRole(true);
+      setRoleFilter([...roleList]);      
     } else {
       let isExisted = roleFilter.findIndex((item) => item === val);
       if (isExisted > -1) {
