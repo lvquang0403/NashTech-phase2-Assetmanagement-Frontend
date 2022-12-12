@@ -329,7 +329,7 @@ const ManageUserPage = () => {
                   navigate("/manage-user/create");
                 }}
               >
-                Create new User
+                Create new user
               </button>
             </div>
           </div>
