@@ -6,6 +6,7 @@ import SearchInput from "../../components/SearchInput/index";
 import AssignmentService from "../../services/AssignmentService";
 import moment from "moment";
 import DatePicker from "react-datepicker";
+import { ToastContainer, toast } from "react-toastify";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.min.css";
@@ -102,7 +103,13 @@ const ManageAssignmentPage = () => {
         // alert content load
         if(stateReload){
           if ("load" !== stateReload) {
-            alert(stateReload);
+            if(stateReload === 'delete'){
+              toast.success("Delete success !!!", {
+                position: toast.POSITION.TOP_CENTER,
+              });
+            }else{
+              alert(stateReload);
+            }
           }
         }
         Loading.remove();
@@ -258,7 +265,7 @@ const ManageAssignmentPage = () => {
     AssignmentService.delete(id)
       .then((response) => {
         console.log(response.data);
-        fetchAssignment("successfully deleted");
+        fetchAssignment("delete");
       })
       .catch((error) => {
         console.log(error);
@@ -336,6 +343,7 @@ const ManageAssignmentPage = () => {
   return (
     <>
       <div className="board-container">
+      <ToastContainer />
         <div className="title">
           <h3>Assignment List</h3>
         </div>
