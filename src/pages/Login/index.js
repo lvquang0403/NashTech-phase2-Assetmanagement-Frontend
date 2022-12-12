@@ -19,6 +19,25 @@ const LoginPage = () => {
       navigate("/");
     }
   }, []);
+
+  useEffect(() => {
+    const keyDownHandler = event => {
+      console.log('User pressed: ', event.key);
+
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        loginHandler()
+      }
+    };
+
+    document.addEventListener('keydown', keyDownHandler);
+
+    return () => {
+      document.removeEventListener('keydown', keyDownHandler);
+    };
+  }, [username, password]);
+
+
   //   const notify = () => toast("Wow so easy!");
   const loginHandler = () => {
     // if(username && password){
