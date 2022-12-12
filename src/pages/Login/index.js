@@ -22,8 +22,6 @@ const LoginPage = () => {
 
   useEffect(() => {
     const keyDownHandler = event => {
-      console.log('User pressed: ', event.key);
-
       if (event.key === 'Enter') {
         event.preventDefault();
         loginHandler()
@@ -38,13 +36,7 @@ const LoginPage = () => {
   }, [username, password]);
 
 
-  //   const notify = () => toast("Wow so easy!");
   const loginHandler = () => {
-    // if(username && password){
-    //   const payload = { username, password };
-    //   console.log(AuthService.login(payload))
-    // }
-    // notify()
     if (username && password) {
       const payload = { username, password };
       Loading.standard("Loading...");
