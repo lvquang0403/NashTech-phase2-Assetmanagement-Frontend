@@ -16,6 +16,7 @@ import ModalAssignmentInfo from "../ManageAssignment/ModalAssignmentInfo";
 import AssignmentService from "../../services/AssignmentService";
 import ReturningService from "../../services/ReturningService";
 import validateReturningCreate from "../../utils/validateReturningCreate";
+import { ToastContainer, toast } from "react-toastify";
 
 const HomePage = () => {
   //First login change password!
@@ -88,9 +89,12 @@ const HomePage = () => {
           setTotalPage(res.data.totalPage);
         }
         // alert content load
+        // alert content load
         if(stateReload){
           if ("load" !== stateReload) {
-            alert(stateReload);
+            toast.success(stateReload, {
+              position: toast.POSITION.TOP_CENTER,
+            });
           }
         }
         Loading.remove();
@@ -228,6 +232,7 @@ const HomePage = () => {
   return (
     <>
       <ChangePassFirst active={active} setActive={setActive}></ChangePassFirst>
+      <ToastContainer />
       <>
         <div className="board-container">
           <div className="title">

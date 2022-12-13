@@ -103,13 +103,9 @@ const ManageAssignmentPage = () => {
         // alert content load
         if(stateReload){
           if ("load" !== stateReload) {
-            if(stateReload === 'delete'){
-              toast.success("Delete success !!!", {
-                position: toast.POSITION.TOP_CENTER,
-              });
-            }else{
-              alert(stateReload);
-            }
+            toast.success(stateReload, {
+              position: toast.POSITION.TOP_CENTER,
+            });
           }
         }
         Loading.remove();
@@ -265,7 +261,7 @@ const ManageAssignmentPage = () => {
     AssignmentService.delete(id)
       .then((response) => {
         console.log(response.data);
-        fetchAssignment("delete");
+        fetchAssignment("Delete success !!!");
       })
       .catch((error) => {
         console.log(error);

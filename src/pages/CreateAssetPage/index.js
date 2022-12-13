@@ -223,7 +223,7 @@ const CreateAsset = () => {
                             max="9999-01-01"
                             className='__input-date'
                             onChange={handleChangeInputInstalledDate}
-                            defaultValue={now}
+                            defaultValue={installedDate}
                         />
                         {
                             // Validate
