@@ -52,7 +52,7 @@ const LoginPage = () => {
             role: res.data.data.role.name,
             locationId: res.data.data.location.id,
             accessToken: res.data.data.accessToken,
-            status: res.data.data.state,
+            status: res.data.data.status,
           };
           sessionStorage.clear();
           sessionStorage.setItem("user", JSON.stringify(user));
