@@ -21,10 +21,10 @@ import ModalAssignmentInfo from "./ModalAssignmentInfo";
 
 import "./ManageAssignmentPage.css";
 import PopUpConfirm from "../../components/PopUpConfim";
+import getLocationInSession from "../../utils/getLocationInSession";
 import ReturningService from "../../services/ReturningService";
 import validateReturningCreate from "../../utils/validateReturningCreate";
 import getUserIDInSession from "../../utils/getUserIDInSession";
-
 
 const ManageAssignmentPage = () => {
   const cols = [
@@ -76,6 +76,12 @@ const ManageAssignmentPage = () => {
   const fetchAssignment = async (stateReload) => {
     Loading.standard("Loading...");
     // check location id
+    let locationID = getLocationInSession();
+    if (locationID === null) {
+      alert("The administrator's location could not be found");
+      Loading.remove();
+      return null;
+    }
     var assignedDateString = undefined;
 
     if (assignedDate !== undefined) {
@@ -89,6 +95,7 @@ const ManageAssignmentPage = () => {
       keyword: searchFilter,
       states: stateFilter.length === 0 ? undefined : stateFilter,
       orderBy: orderBy,
+      locationId: locationID,
       assignDate: assignedDateString,
     };
 
@@ -101,7 +108,7 @@ const ManageAssignmentPage = () => {
           setTotalPage(res.data.totalPage);
         }
         // alert content load
-        if(stateReload){
+        if (stateReload) {
           if ("load" !== stateReload) {
             toast.success(stateReload, {
               position: toast.POSITION.TOP_CENTER,
@@ -255,7 +262,7 @@ const ManageAssignmentPage = () => {
       }
     }
   };
-  
+
   const handleDeleteAssignment = (id) => {
     Loading.standard("Loading...");
     AssignmentService.delete(id)
@@ -287,24 +294,23 @@ const ManageAssignmentPage = () => {
     }
     let data = {
       requestById: userId,
-      assignmentId: id
-    }
+      assignmentId: id,
+    };
     ReturningService.create(data)
-    .then((response) => {
-      console.log(response.data);
-        fetchAssignment('request has been sent')
-    })
-    .catch((error) => {
+      .then((response) => {
+        console.log(response.data);
+        fetchAssignment("request has been sent");
+      })
+      .catch((error) => {
         console.log(error);
         if (error.response.data) {
-            alert(error.response.data.message)
+          alert(error.response.data.message);
         } else {
-            alert(error.message)
+          alert(error.message);
         }
-        fetchAssignment('load')
-    });
+        fetchAssignment("load");
+      });
   };
-
 
   useEffect(() => {
     if (stateFilter.length === stateList.length || stateFilter.length === 0) {
@@ -334,12 +340,10 @@ const ManageAssignmentPage = () => {
   //   }, 5000);
   // }, []);
 
-
-
   return (
     <>
       <div className="board-container">
-      <ToastContainer />
+        <ToastContainer />
         <div className="title">
           <h3>Assignment List</h3>
         </div>

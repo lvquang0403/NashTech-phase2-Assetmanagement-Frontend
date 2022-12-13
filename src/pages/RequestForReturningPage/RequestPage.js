@@ -182,6 +182,7 @@ const RequestPage = () => {
   };
 
   const handleReturnedDateChange = (e) => {
+    setCurrentPage(0);
     if (typingTimeOutRef.current) {
       clearTimeout(typingTimeOutRef.current);
     }
@@ -388,7 +389,7 @@ const RequestPage = () => {
                 </ul>
               </div>
 
-              {/* AssignedDate */}
+              {/* ReturnedDate */}
               <div>
                 <div>
                   <input
