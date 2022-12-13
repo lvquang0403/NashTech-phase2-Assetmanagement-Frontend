@@ -112,6 +112,7 @@ const LoginPage = () => {
             Password
           </label>
           <input
+            style={{paddingRight:"30px"}}
             type={showPassword ? "text" : "password"}
             id="password"
             className="form__input"
