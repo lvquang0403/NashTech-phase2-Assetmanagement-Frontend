@@ -19,13 +19,24 @@ const LoginPage = () => {
       navigate("/");
     }
   }, []);
-  //   const notify = () => toast("Wow so easy!");
+
+  useEffect(() => {
+    const keyDownHandler = event => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        loginHandler()
+      }
+    };
+
+    document.addEventListener('keydown', keyDownHandler);
+
+    return () => {
+      document.removeEventListener('keydown', keyDownHandler);
+    };
+  }, [username, password]);
+
+
   const loginHandler = () => {
-    // if(username && password){
-    //   const payload = { username, password };
-    //   console.log(AuthService.login(payload))
-    // }
-    // notify()
     if (username && password) {
       const payload = { username, password };
       Loading.standard("Loading...");
@@ -41,7 +52,7 @@ const LoginPage = () => {
             role: res.data.data.role.name,
             locationId: res.data.data.location.id,
             accessToken: res.data.data.accessToken,
-            status: res.data.data.state,
+            status: res.data.data.status,
           };
           sessionStorage.clear();
           sessionStorage.setItem("user", JSON.stringify(user));
@@ -101,6 +112,7 @@ const LoginPage = () => {
             Password
           </label>
           <input
+            style={{paddingRight:"30px"}}
             type={showPassword ? "text" : "password"}
             id="password"
             className="form__input"

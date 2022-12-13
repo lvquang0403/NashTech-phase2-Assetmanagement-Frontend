@@ -64,6 +64,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFun
                             </label>
                             <div className="d-flex flex-column" >
                                 <input
+                                    style={{paddingRight:"30px"}}
                                     type={showOldPass ? "text" : "password"}
                                     id="old-pass"
                                     value={oldPassword}
@@ -77,11 +78,11 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFun
                                     required
                                 />
                                 {!showOldPass ? (
-                                    <AiFillEye style={{ position: 'absolute', marginLeft: 160, marginTop: 5 }}
+                                    <AiFillEye style={{ position: 'absolute', marginLeft: 190, marginTop: 5 }}
                                         onClick={() => setShowOldPass(true)}
                                     ></AiFillEye>
                                 ) : (
-                                    <AiFillEyeInvisible style={{ position: 'absolute', marginLeft: 160, marginTop: 5 }}
+                                    <AiFillEyeInvisible style={{ position: 'absolute', marginLeft: 190, marginTop: 5 }}
                                         onClick={() => setShowOldPass(false)}
                                     ></AiFillEyeInvisible>
                                 )}
@@ -96,6 +97,7 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFun
                             <div className="d-flex flex-column">
 
                                 <input
+                                    style={{paddingRight:"30px"}}
                                     type={showNewPass ? "text" : "password"}
                                     id="new-pass"
                                     className="border rounded"
@@ -109,12 +111,12 @@ const PopUpChangePass = ({ title, showModal, closePopupFunc, openModalSuccessFun
 
                                 {!showNewPass ? (
                                     <AiFillEye
-                                        style={{ position: 'absolute', marginLeft: 160, marginTop: 5 }}
+                                        style={{ position: 'absolute', marginLeft: 190, marginTop: 5 }}
                                         onClick={() => setShowNewPass(true)}
                                     ></AiFillEye>
                                 ) : (
                                     <AiFillEyeInvisible
-                                        style={{ position: 'absolute', marginLeft: 160, marginTop: 5 }}
+                                        style={{ position: 'absolute', marginLeft: 190, marginTop: 5 }}
                                         onClick={() => setShowNewPass(false)}
                                     ></AiFillEyeInvisible>
                                 )}

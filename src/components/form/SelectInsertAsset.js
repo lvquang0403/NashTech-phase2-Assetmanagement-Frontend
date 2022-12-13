@@ -6,6 +6,7 @@ import { Loading } from "notiflix/build/notiflix-loading-aio";
 import CategoryService from "../../services/CategoryService";
 import validateCategoryInsert from "../../utils/validateCategoryInsert";
 import "./SelectInsertAsset.scss";
+import shortenSentences from "../../utils/shortenSentences";
 
 
 
@@ -142,7 +143,7 @@ const SelectInsertAsset = () => {
                         document.getElementById('_select_'+item.id).checked = true;
                         dropdown()
                     }} >
-                        <label for={'_select_'+item.id}  onClick={dropdown}>{item.name}</label>
+                        <label for={'_select_'+item.id} title={item.name} onClick={dropdown}>{shortenSentences(item.name, 40)}</label>
                         {
                             (index===0)?
                             <input 

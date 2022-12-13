@@ -222,7 +222,7 @@ const CreateUserForm = ({ user }) => {
                             }
                             {
                                 errors.birth && errors.birth.type === "required" && (
-                                    <div className="error text-danger">This is required field</div>
+                                    <div className="error text-danger">Invalid date</div>
                                 )
                             }
                             {
@@ -282,7 +282,7 @@ const CreateUserForm = ({ user }) => {
                             }
                             {
                                 errors.joinedDate && errors.joinedDate.type === "required" && (
-                                    <div className="error text-danger">This is required field</div>
+                                    <div className="error text-danger">Invalid date</div>
                                 )
                             }
                            {

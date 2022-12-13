@@ -188,12 +188,12 @@ const AssignmentTable = ({
                           marginLeft: 15,
                           color: "red",
                           opacity:
-                            obj.state !== "Waiting for acceptance"
+                            (obj.state !== "Waiting for acceptance" && obj.state !== "Declined")
                               ? "0.3"
                               : "1",
                         }}
                         onClick={() =>
-                          obj.state === "Waiting for acceptance"
+                          (obj.state === "Waiting for acceptance" || obj.state === "Declined")
                             ? handleOnClickDeleteButton(obj.id)
                             : null
                         }
