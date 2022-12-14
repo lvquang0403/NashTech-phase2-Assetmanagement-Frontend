@@ -89,7 +89,6 @@ const HomePage = () => {
           setTotalPage(res.data.totalPage);
         }
         // alert content load
-        // alert content load
         if(stateReload){
           if ("load" !== stateReload) {
             toast.success(stateReload, {

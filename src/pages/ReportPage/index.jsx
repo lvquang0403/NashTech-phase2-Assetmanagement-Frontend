@@ -5,12 +5,13 @@ import ReportService from '../../services/ReportService';
 
 import * as XLSX from "xlsx";
 import { Loading } from "notiflix/build/notiflix-loading-aio";
+import getLocationInSession from '../../utils/getLocationInSession';
 
 export default function ReportPage() {
     const [data,setData]=useState([]);
     useEffect(() => {
         Loading.standard("Loading...");
-        ReportService.getReports()
+        ReportService.getReports(getLocationInSession())
             .then((response)=>{
                 setData(response.data)
                 Loading.remove();
