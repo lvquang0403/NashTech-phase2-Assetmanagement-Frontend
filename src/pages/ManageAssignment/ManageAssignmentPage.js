@@ -5,7 +5,6 @@ import queryString from "query-string";
 import SearchInput from "../../components/SearchInput/index";
 import AssignmentService from "../../services/AssignmentService";
 import moment from "moment";
-import DatePicker from "react-datepicker";
 import { ToastContainer, toast } from "react-toastify";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -20,7 +19,6 @@ import { useEffect } from "react";
 import ModalAssignmentInfo from "./ModalAssignmentInfo";
 
 import "./ManageAssignmentPage.css";
-import PopUpConfirm from "../../components/PopUpConfim";
 import getLocationInSession from "../../utils/getLocationInSession";
 import ReturningService from "../../services/ReturningService";
 import validateReturningCreate from "../../utils/validateReturningCreate";
@@ -60,6 +58,7 @@ const ManageAssignmentPage = () => {
   //paging
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
+  const [changePage, setChangePage] = useState(0);
 
   //id asset to show detail asset
   const [assignmentId, setAssignmentId] = useState();
@@ -187,6 +186,7 @@ const ManageAssignmentPage = () => {
   };
 
   const handleAssignedDateChange = (e) => {
+    setCurrentPage(0);
     if (typingTimeOutRef.current) {
       clearTimeout(typingTimeOutRef.current);
     }
@@ -210,6 +210,7 @@ const ManageAssignmentPage = () => {
   const handlePageChange = (e) => {
     const { selected } = e;
     setCurrentPage(selected);
+    setChangePage(selected);
   };
 
   useEffect(() => {
@@ -230,6 +231,7 @@ const ManageAssignmentPage = () => {
   };
 
   const handleInputChange = (newValue) => {
+    setCurrentPage(0);
     var temp = newValue;
     setInput(temp);
 
@@ -239,8 +241,7 @@ const ManageAssignmentPage = () => {
     typingTimeOutRef.current = setTimeout(() => {
       setSearchFilter(temp);
       setOrderBy(null);
-      setCurrentPage(0);
-    }, 500);
+    }, 1000);
   };
 
   const handleStatesChange = (val) => {
@@ -329,7 +330,7 @@ const ManageAssignmentPage = () => {
     //Loading.standard("Loading...");
     fetchAssignment("load");
     fetchStates();
-  }, [currentPage, stateFilter, searchFilter, orderBy, isDel, assignedDate]);
+  }, [changePage, stateFilter, searchFilter, orderBy, isDel, assignedDate]);
 
   // useEffect(() => {
   //   typingTimeOutRef.current = setTimeout(() => {
