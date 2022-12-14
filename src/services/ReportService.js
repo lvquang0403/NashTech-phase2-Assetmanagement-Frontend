@@ -5,8 +5,8 @@ const API_BASE_URL = `api/reports`;
 
 
 class ReportService {
-    getReports() {
-        return axiosClient.get(`${API_BASE_URL}`)
+    getReports(locationId) {
+        return axiosClient.get(`${API_BASE_URL}?locationId=${locationId}`)
     }
    
 }
