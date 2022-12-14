@@ -49,6 +49,7 @@ const ManageUserPage = () => {
   //paging
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
+  const [changePage, setChangePage] = useState(0);
 
   //id asset to show detail asset
   const [userId, setUserId] = useState();
@@ -61,6 +62,8 @@ const ManageUserPage = () => {
   const [isDel, setDel] = useState(false);
 
   const handleInputChange = (newValue) => {
+    setCurrentPage(0);
+
     var temp = newValue;
     setInput(temp);
 
@@ -70,21 +73,21 @@ const ManageUserPage = () => {
     typingTimeOutRef.current = setTimeout(() => {
       setSearchFilter(temp.trim());
       setOrderBy(null);
-      setCurrentPage(0);
-    }, 500);
+    }, 1000);
   };
 
   const handlePageChange = (e) => {
     const { selected } = e;
     setCurrentPage(selected);
+    setChangePage(selected);
   };
 
   const handleRoleChange = (val) => {
     setCurrentPage(0);
 
-    if (val === "All") {      
+    if (val === "All") {
       setAllRole(true);
-      setRoleFilter([...roleList]);      
+      setRoleFilter([...roleList]);
     } else {
       let isExisted = roleFilter.findIndex((item) => item === val);
       if (isExisted > -1) {
@@ -172,7 +175,7 @@ const ManageUserPage = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, [currentPage, roleFilter, searchFilter, orderBy, isDel]);
+  }, [changePage, roleFilter, searchFilter, orderBy, isDel]);
   useEffect(() => {
     fetchUsers();
     fetchRoles();

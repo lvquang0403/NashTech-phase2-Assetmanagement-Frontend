@@ -55,7 +55,7 @@ const ManageAsset = () => {
   //paging
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-
+  const [changePage, setChangePage] = useState(0);
   //id asset to show detail asset
   const [assetId, setAssetId] = useState();
 
@@ -69,6 +69,7 @@ const ManageAsset = () => {
 
   const handleInputChange = (newValue) => {
     var temp = newValue;
+    setCurrentPage(0);
     setInput(temp);
 
     if (typingTimeOutRef.current) {
@@ -76,12 +77,13 @@ const ManageAsset = () => {
     }
     typingTimeOutRef.current = setTimeout(() => {
       setSearchFilter(temp.trim());
-    }, 500);
+    }, 1000);
   };
 
   const handlePageChange = (e) => {
     const { selected } = e;
     setCurrentPage(selected);
+    setChangePage(selected);
   };
   const handleCatesChange = (val) => {
     setCurrentPage(0);
@@ -209,7 +211,7 @@ const ManageAsset = () => {
     // var date =""
     // console.log(Object.getPrototypeOf(date));
     fetchAssets();
-  }, [currentPage, stateFilter, cateFitler, searchFilter, orderBy, isDel]);
+  }, [changePage, stateFilter, cateFitler, searchFilter, orderBy, isDel]);
   useEffect(() => {
     fetchAssets();
     fetchCategories();
@@ -379,6 +381,7 @@ const ManageAsset = () => {
                 </button>
                 <ul
                   className="dropdown-menu form-check"
+                  style={{ overflowY: "scroll", height: 200 }}
                   aria-labelledby="dropMenuFilterType"
                 >
                   <li>

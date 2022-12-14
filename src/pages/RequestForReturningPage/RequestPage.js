@@ -247,6 +247,7 @@ const RequestPage = () => {
 
   const handleInputChange = (newValue) => {
     var temp = newValue;
+    setCurrentPage(0);
     setInput(temp);
 
     if (typingTimeOutRef.current) {
@@ -255,8 +256,7 @@ const RequestPage = () => {
     typingTimeOutRef.current = setTimeout(() => {
       setSearchFilter(temp);
       setOrderBy(null);
-      setCurrentPage(0);
-    }, 500);
+    }, 1000);
   };
 
   const handleStatesChange = (val) => {
