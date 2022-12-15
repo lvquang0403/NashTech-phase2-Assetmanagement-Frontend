@@ -336,7 +336,9 @@ const RequestPage = () => {
         <div className="title">
           <h3>Request List</h3>
         </div>
-
+        <label style={{ marginLeft: "260px", marginBottom: "5px" }}>
+          Returned Date
+        </label>
         <div class="table-board">
           <div className="left-board">
             <div className="filter">
@@ -408,7 +410,7 @@ const RequestPage = () => {
                   maxDate={new Date("01-01-2100")}
                   selected={returnedDate}
                   onChange={(date) => handleReturnedDateChange(date)}
-                  placeholderText="Assigned Date    🗓️"
+                  placeholderText="Returned Date    🗓️"
                 />
               </div>
             </div>

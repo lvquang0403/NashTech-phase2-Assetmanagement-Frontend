@@ -354,6 +354,9 @@ const ManageAssignmentPage = () => {
         <div className="title">
           <h3>Assignment List</h3>
         </div>
+        <label style={{ marginLeft: "260px", marginBottom: "5px" }}>
+          Assigned Date
+        </label>
         <div class="table-board">
           <div className="left-board">
             <div className="filter">
