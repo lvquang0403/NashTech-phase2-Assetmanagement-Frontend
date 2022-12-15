@@ -23,6 +23,7 @@ import getLocationInSession from "../../utils/getLocationInSession";
 import ReturningService from "../../services/ReturningService";
 import validateReturningCreate from "../../utils/validateReturningCreate";
 import getUserIDInSession from "../../utils/getUserIDInSession";
+import DatePicker from "react-datepicker";
 
 const ManageAssignmentPage = () => {
   const cols = [
@@ -84,10 +85,11 @@ const ManageAssignmentPage = () => {
     var assignedDateString = undefined;
 
     if (assignedDate !== undefined) {
+      console.log("Run into if in fetch");
       assignedDateString = moment(assignedDate).format("YYYY-MM-DD");
-      console.log("date" + assignedDate);
+      console.log("Date in fetch " + assignedDate);
     }
-    console.log("date String" + assignedDateString);
+    console.log("Date String " + assignedDateString);
 
     const filter = {
       page: currentPage,
@@ -191,14 +193,18 @@ const ManageAssignmentPage = () => {
       clearTimeout(typingTimeOutRef.current);
     }
 
-    console.log(e.target.value);
+    console.log("Date");
+    console.log(e);
+
     typingTimeOutRef.current = setTimeout(() => {
-      if (e.target.value === null || e.target.value === "") {
+      if (e !== null) {
+        console.log("Run into if in handle");
+        setAssignedDate(e);
+      } else if (e === null) {
+        console.log("Run into else if in handle");
         setAssignedDate(undefined);
-      } else {
-        setAssignedDate(e.target.value);
       }
-    }, 1000);
+    }, 1500);
   };
 
   const handleCloseModal = () => {
@@ -351,7 +357,6 @@ const ManageAssignmentPage = () => {
         <label style={{ marginLeft: "260px", marginBottom: "5px" }}>
           Assigned Date
         </label>
-
         <div class="table-board">
           <div className="left-board">
             <div className="filter">
@@ -407,21 +412,23 @@ const ManageAssignmentPage = () => {
               {/* AssignedDate */}
               <div>
                 <div>
-                  <input
+                  {/* <input
                     className="btn btn-outline-secondary dropdown-toggle"
                     min="1900-01-01"
                     max="3000-01-01"
                     type="date"
                     onChange={(e) => handleAssignedDateChange(e)}
-                  />
+                  /> */}
 
-                  {/* <DatePicker
+                  <DatePicker
                     className="btn btn-outline-secondary dropdown-toggle"
                     dateFormat="dd/MM/yyyy"
+                    minDate={new Date("01-01-1970")}
+                    maxDate={new Date("01-01-2100")}
                     selected={assignedDate}
                     onChange={(date) => handleAssignedDateChange(date)}
                     placeholderText="Assigned Date    🗓️"
-                  /> */}
+                  />
                 </div>
               </div>
             </div>

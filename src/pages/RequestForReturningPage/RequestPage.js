@@ -22,6 +22,7 @@ import PopUpConfirm from "../../components/PopUpConfim";
 import ReturningService from "../../services/ReturningService";
 import getLocationInSession from "../../utils/getLocationInSession";
 import CompleteConfirm from "../../components/modal/CompleteConfirm";
+import DatePicker from "react-datepicker";
 
 const RequestPage = () => {
   const cols = [
@@ -68,6 +69,7 @@ const RequestPage = () => {
   const [returnedDate, setReturnedDate] = useState(undefined);
 
   const [isDel, setDel] = useState(false);
+
   const fetchReturning = async (stateReload) => {
     Loading.standard("Loading...");
     // check location id
@@ -187,14 +189,15 @@ const RequestPage = () => {
       clearTimeout(typingTimeOutRef.current);
     }
 
-    console.log(e.target.value);
     typingTimeOutRef.current = setTimeout(() => {
-      if (e.target.value === null || e.target.value === "") {
+      if (e !== null) {
+        console.log("Run into if in handle");
+        setReturnedDate(e);
+      } else if (e === null) {
+        console.log("Run into else if in handle");
         setReturnedDate(undefined);
-      } else {
-        setReturnedDate(e.target.value);
       }
-    }, 1000);
+    }, 1500);
   };
 
   const handlePageChange = (e) => {
@@ -336,7 +339,6 @@ const RequestPage = () => {
         <label style={{ marginLeft: "260px", marginBottom: "5px" }}>
           Returned Date
         </label>
-
         <div class="table-board">
           <div className="left-board">
             <div className="filter">
@@ -391,7 +393,7 @@ const RequestPage = () => {
 
               {/* ReturnedDate */}
               <div>
-                <div>
+                {/* <div>
                   <input
                     className="btn btn-outline-secondary dropdown-toggle"
                     min="1900-01-01"
@@ -399,7 +401,17 @@ const RequestPage = () => {
                     type="date"
                     onChange={(e) => handleReturnedDateChange(e)}
                   />
-                </div>
+                </div> */}
+
+                <DatePicker
+                  className="btn btn-outline-secondary dropdown-toggle"
+                  dateFormat="dd/MM/yyyy"
+                  minDate={new Date("01-01-1970")}
+                  maxDate={new Date("01-01-2100")}
+                  selected={returnedDate}
+                  onChange={(date) => handleReturnedDateChange(date)}
+                  placeholderText="Returned Date    🗓️"
+                />
               </div>
             </div>
           </div>
