@@ -19,6 +19,11 @@ const CreateUserForm = ({ user }) => {
     const onSubmit = (data) => {
         data.lastName = data.lastName.trim()
         data.firstName = data.firstName.trim()
+        const birthDate = new Date(data.birth)
+        const joinDate = new Date(data.joinedDate)
+        data.birth = birthDate.getFullYear() + '-' + (birthDate.getMonth() + 1) + '-' + birthDate.getDate()
+        data.joinedDate = joinDate.getFullYear() + '-' + (joinDate.getMonth() + 1) + '-' + joinDate.getDate()
+        
         submitBtn.current.disabled = true
         Loading.standard("Loading...");
         // check location id
@@ -29,6 +34,7 @@ const CreateUserForm = ({ user }) => {
             return null;
         }
         if (user) {
+            
             UserService.updateById(data, user.id)
                 .then(res => {
                     Loading.remove();
