@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import SelectInsertAsset from '../../components/form/SelectInsertAsset';
 import AssetService from '../../services/AssetService';
 import validateAssetInsert from '../../utils/validateAssetInsert';
+import DatePicker from "react-datepicker";
 import { Loading } from "notiflix/build/notiflix-loading-aio";
 
 import "./index.scss";
@@ -19,7 +20,7 @@ const CreateAsset = () => {
     // save data to create assets
     const [nameAsset, setNameAsset] = useState('');
     const [specification, setSpecification] = useState('');
-    const [installedDate, setInstalledDate] = useState(defaultDate);
+    const [installedDate, setInstalledDate] = useState(now);
     // error message text
     const [textError, setTextError] = useState({
         name: 'success',
@@ -59,8 +60,8 @@ const CreateAsset = () => {
         setSpecification(inpSpecification)
     }
     // when change value in input Installed Date
-    const handleChangeInputInstalledDate = (e) => {
-        let date = e.target.value;
+    const handleChangeInputInstalledDate = (date) => {
+        console.log("date", date)
         let error = {};
         error.installedDate = validateAssetInsert.installedDate(date);
         error.name = validateAssetInsert.name(nameAsset);
@@ -115,7 +116,7 @@ const CreateAsset = () => {
                 categoryID = select[i].value;
             }
         }
-//      if there is invalid data then out
+        //      if there is invalid data then out
         if (error.name !== 'success' || error.specification !== 'success' || error.installedDate !== 'success') {
             setButtonSave(false)
             setTextError(error)
@@ -128,7 +129,7 @@ const CreateAsset = () => {
                 categoryId: categoryID,
                 state: state,
                 locationId: locationID,
-                installedDate: installedDate
+                installedDate: installedDate.getFullYear() + '-' + (installedDate.getMonth() + 1) + '-' + installedDate.getDate()
             }
             // call API Create Asset
             AssetService.insert(data)
@@ -218,7 +219,7 @@ const CreateAsset = () => {
                         <label for="installedDate" className='_label'>Installed date</label>
                     </Col>
                     <Col xs={9}>
-                        <Form.Control
+                        {/* <Form.Control
                             min="1900-01-01"
                             id="installedDate"
                             type="date"
@@ -226,14 +227,27 @@ const CreateAsset = () => {
                             className='__input-date'
                             onChange={handleChangeInputInstalledDate}
                             defaultValue={installedDate}
+                        /> */}
+                        <DatePicker
+                            // {...register("birth", { validate: { ageCondition, validDateConfidtion }, required: true })}
+                            placeholderText='dd/mm/yyyy                                                         🗓️'
+                            className="form-control"
+                            onChange={(date) => handleChangeInputInstalledDate(date)}
+                            selected={installedDate}
+                            minDate={new Date("01-01-1900")}
+                            maxDate={new Date("01-01-3000")}
+                            dateFormat="dd/MM/yyyy"
+                            style={{ padding: "18px 0px", border: "1px solid #ced4da" }}
                         />
-                        {
-                            // Validate
-                            (textError.installedDate !== 'success') ?
-                                <Form.Text className="_text-error">
-                                    {textError.installedDate}
-                                </Form.Text> : null
-                        }
+                        <div>
+                            {
+                                // Validate
+                                (textError.installedDate !== 'success') ?
+                                    <Form.Text className="_text-error">
+                                        {textError.installedDate}
+                                    </Form.Text> : null
+                            }
+                        </div>
                     </Col>
                 </Row>
                 <Row className='_rowCreateAsset'>

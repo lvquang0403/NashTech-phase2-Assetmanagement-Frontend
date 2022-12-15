@@ -7,6 +7,7 @@ import UserService from '../../services/UserService';
 import RoleService from '../../services/RoleService';
 import { ToastContainer, toast } from 'react-toastify';
 import getLocationInSession from '../../utils/getLocationInSession';
+import DatePicker from "react-datepicker";
 import formatDate from '../../utils/formatDate';
 const CreateUserForm = ({ user }) => {
     const { register, watch, handleSubmit, trigger, setValue, control, formState: { errors } } = useForm({ mode: "onChange" });
@@ -144,6 +145,7 @@ const CreateUserForm = ({ user }) => {
                         </div>
                         <div className="col-auto">
                             <input
+                                defaultValue=""
                                 disabled={user ? true : false}
                                 maxLength="30"
                                 type="text"
@@ -170,6 +172,7 @@ const CreateUserForm = ({ user }) => {
                         </div>
                         <div className="col-auto">
                             <input
+                                defaultValue={""}
                                 disabled={user ? true : false}
                                 maxLength="30"
                                 type="text"
@@ -194,27 +197,34 @@ const CreateUserForm = ({ user }) => {
                             <label className="col-form-label">Date of Birth</label>
                         </div>
                         <div className="col-auto">
-                            {/* <Controller
-                                control={control}
-                                name='date-input'
-                                render={({ field }) => (
-                                    <DatePicker
-                                        placeholderText='Select date'
-                                        onChange={(date) => field.onChange(date)}
-                                        selected={field.value}
-                                        format="DD/MM/YYYY"
-                                        placeholder='dd/mm/yyyy'
-                                        style={{padding: "18px 0px", paddingLeft: "12px", paddingRight:"27px"}}
-                                    />
-                                )}
-                            /> */}
-                            <input
+                            <div style={{ width: "228px" }}>
+                                <Controller
+                                    control={control}
+                                    name='birth'
+                                    rules={{ validate: { ageCondition, validDateConfidtion }, required: true }}
+                                    render={({ field }) => (
+                                        <DatePicker
+                                            // {...register("birth", { validate: { ageCondition, validDateConfidtion }, required: true })}
+                                            placeholderText='dd/mm/yyyy                 🗓️'
+                                            className="form-control"
+                                            onChange={(date) => field.onChange(date)}
+                                            selected={field.value}
+                                            minDate={new Date("01-01-1900")}
+                                            maxDate={new Date("01-01-3000")}
+                                            dateFormat="dd/MM/yyyy"
+                                            style={{ padding: "18px 0px", border: "1px solid #ced4da" }}
+                                        />
+                                    )}
+                                />
+                            </div>
+                            {/* <input
                                 style={{ width: "228px" }}
                                 type="date"
+                                placeholder="dd-mm-yyyy"    
                                 min="1900-01-01"
                                 max="3000-01-01"
                                 {...register("birth", { validate: { ageCondition, validDateConfidtion }, required: true })}
-                                className="form-control pe-3 __input-date" />
+                                className="form-control pe-3 __input-date" /> */}
                             {
                                 errors.birth && errors.birth.type === "ageCondition" && (
                                     <div className="error text-danger">User is under 18. Please select a different date</div>
@@ -261,20 +271,40 @@ const CreateUserForm = ({ user }) => {
                             <label className="col-form-label pe-4">Joined Date</label>
                         </div>
                         <div className="col-auto">
-                            <input
+                            {/* <input
                                 min="1900-01-01"
                                 max="3000-01-01"
                                 style={{ width: "222px" }}
                                 type="date"
                                 {...register("joinedDate", { validate: { joinedDateConditionNotSatAndSun, joinedDateCondition, validDateConfidtion }, required: true })}
-                                className="form-control __input-date" />
+                                className="form-control __input-date" /> */}
+                                                            <div style={{ width: "228px" }}>
+                                <Controller
+                                    control={control}
+                                    name='joinedDate'
+                                    rules={{ validate: { joinedDateConditionNotSatAndSun, joinedDateCondition, validDateConfidtion }, required: true }}
+                                    render={({ field }) => (
+                                        <DatePicker
+                                            // {...register("birth", { validate: { ageCondition, validDateConfidtion }, required: true })}
+                                            placeholderText='dd/mm/yyyy                 🗓️'
+                                            className="form-control"
+                                            onChange={(date) => field.onChange(date)}
+                                            selected={field.value}
+                                            minDate={new Date("01-01-1900")}
+                                            maxDate={new Date("01-01-3000")}
+                                            dateFormat="dd/MM/yyyy"
+                                            style={{ padding: "18px 0px", border: "1px solid #ced4da" }}
+                                        />
+                                    )}
+                                />
+                            </div>
                         </div>
                         <div style={{ marginLeft: "122px" }}>  {
                             errors.joinedDate && errors.joinedDate.type === "joinedDateCondition" && (
                                 <div className="error text-danger">Joined date is not later than Date of Birth. Please select a different date</div>
                             )
 
-                            }
+                        }
                             {
                                 errors.joinedDate && errors.joinedDate.type === "joinedDateConditionNotSatAndSun" && (
                                     <div className="error text-danger">Joined date is Saturday or Sunday. Please select a different date</div>
@@ -285,13 +315,13 @@ const CreateUserForm = ({ user }) => {
                                     <div className="error text-danger">Invalid date</div>
                                 )
                             }
-                           {
+                            {
                                 errors.joinedDate && errors.joinedDate.type === "validDateConfidtion" && (
                                     <div className="error text-danger">Invalid date</div>
                                 )
                             }
-                            
-                            </div>
+
+                        </div>
                     </div>
                     <div className="row g-3 align-items-center mb-2">
                         <div className="col-auto pe-4">

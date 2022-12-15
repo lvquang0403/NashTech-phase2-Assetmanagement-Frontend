@@ -10,6 +10,7 @@ import ModalSelectRadio from '../../components/modalSelectRadio/ModalSelectRadio
 import validateAssignmentCreateUpdate from '../../utils/validateAssignmentCreateUpdate';
 import getUserLoged from '../../utils/getUserLoged';
 import shortenSentences from '../../utils/shortenSentences.js';
+import DatePicker from "react-datepicker";
 
 
 const CreateAssignment = () => {
@@ -23,7 +24,7 @@ const CreateAssignment = () => {
     const [selectedUser, setSelectedUser] = useState(undefined);
     const [selectedAsset, setSelectedAsset] = useState(undefined);
     const [note, setNote] = useState('');
-    const [assignedDate, setAssignedDate] = useState(setDefaultInputDate());
+    const [assignedDate, setAssignedDate] = useState(new Date());
     //  show button save
     const [buttonSave, setButtonSave] = useState(false);
     //  text validate
@@ -33,7 +34,7 @@ const CreateAssignment = () => {
         note: 'success',
         assignedDate: 'success'
     })
-    
+
     const formatDate = (date) => {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -55,7 +56,7 @@ const CreateAssignment = () => {
         error.asset = validateAssignmentCreateUpdate.asset(selectedAsset);
         error.note = validateAssignmentCreateUpdate.note(inpNote);
         error.assignedDate = validateAssignmentCreateUpdate.assignedDate(assignedDate);
-        if (error.assignedDate === 'success' && error.note === 'success' && error.user === 'success' && error.asset=== 'success' ) {
+        if (error.assignedDate === 'success' && error.note === 'success' && error.user === 'success' && error.asset === 'success') {
             setButtonSave(true)
         } else {
             setButtonSave(false)
@@ -64,15 +65,15 @@ const CreateAssignment = () => {
         setNote(inpNote)
     }
     // When change value of input Assigned Date
-    const handleChangeInputAssignedDate = (e) => {
-        let date = e.target.value;
+    const handleChangeInputAssignedDate = (date) => {
+        // let date = e.target.value;
         let error = {};
 
         error.user = validateAssignmentCreateUpdate.user(selectedUser);
         error.asset = validateAssignmentCreateUpdate.asset(selectedAsset);
         error.assignedDate = validateAssignmentCreateUpdate.assignedDate(date);
         error.note = validateAssignmentCreateUpdate.note(note);
-        if (error.assignedDate === 'success' && error.note === 'success' && error.user === 'success'   && error.asset === 'success' ) {
+        if (error.assignedDate === 'success' && error.note === 'success' && error.user === 'success' && error.asset === 'success') {
             setButtonSave(true)
         } else {
             setButtonSave(false)
@@ -88,7 +89,7 @@ const CreateAssignment = () => {
         error.asset = validateAssignmentCreateUpdate.asset(selectedAsset);
         error.assignedDate = validateAssignmentCreateUpdate.assignedDate(assignedDate);
         error.note = validateAssignmentCreateUpdate.note(note);
-        if (error.assignedDate === 'success' && error.note === 'success' && error.user === 'success'  && error.asset === 'success' ) {
+        if (error.assignedDate === 'success' && error.note === 'success' && error.user === 'success' && error.asset === 'success') {
             setButtonSave(true)
         } else {
             setButtonSave(false)
@@ -105,7 +106,7 @@ const CreateAssignment = () => {
         error.asset = validateAssignmentCreateUpdate.asset(data);
         error.assignedDate = validateAssignmentCreateUpdate.assignedDate(assignedDate);
         error.note = validateAssignmentCreateUpdate.note(note);
-        if (error.assignedDate === 'success' && error.note === 'success' && error.user === 'success'  && error.asset === 'success' ) {
+        if (error.assignedDate === 'success' && error.note === 'success' && error.user === 'success' && error.asset === 'success') {
             setButtonSave(true)
         } else {
             setButtonSave(false)
@@ -143,7 +144,7 @@ const CreateAssignment = () => {
                 assignBy: userLoged.id,
                 assignTo: selectedUser.id,
                 assetId: selectedAsset.id,
-                assignedDate: assignedDateFormated,
+                assignedDate: assignedDate.getFullYear() + '-' + (assignedDate.getMonth() + 1) + '-' + assignedDate.getDate(),
                 note: note
             }
             console.log(data);
@@ -175,11 +176,11 @@ const CreateAssignment = () => {
             <h5 className='_title'>Create New Assignment</h5>
             <form onSubmit={handleSubmit} >
                 <ModalSelectRadio title='Select User' select='user'
-                    idData={(selectedUser)?selectedUser.id:undefined}
+                    idData={(selectedUser) ? selectedUser.id : undefined}
                     show={modalSelectUserShow} onHide={() => setModalSelectUserShow(false)}
                     setSelectedData={handleChangeUserSelected} />
-                <ModalSelectRadio title='Select Asset' select='asset' 
-                    idData={(selectedAsset)?selectedAsset.id:undefined}
+                <ModalSelectRadio title='Select Asset' select='asset'
+                    idData={(selectedAsset) ? selectedAsset.id : undefined}
                     show={modalSelectAssetShow}
                     onHide={() => setModalSelectAssetShow(false)}
                     setSelectedData={handleChangeAssetSelected} />
@@ -190,7 +191,7 @@ const CreateAssignment = () => {
                     </Col>
                     <Col xs={9}>
                         <InputGroup className="mb-3">
-                            <Form.Control className='__input-search' readOnly maxLength={0} value={(selectedUser) ? `${selectedUser.fullName} ( ${selectedUser.userName} )` : ''}/>
+                            <Form.Control className='__input-search' readOnly maxLength={0} value={(selectedUser) ? `${selectedUser.fullName} ( ${selectedUser.userName} )` : ''} />
                             <div className='__button-search' onClick={() => {
                                 setModalSelectUserShow(true)
 
@@ -212,11 +213,11 @@ const CreateAssignment = () => {
                     </Col>
                     <Col xs={9}>
                         <InputGroup className="mb-3">
-                            <Form.Control readOnly className='__input-search' 
-                                maxLength={0} 
-                                title={(selectedAsset) ? selectedAsset.name: ''}
-                                value={(selectedAsset) ? shortenSentences(selectedAsset.name, 35): ''} 
-                                />
+                            <Form.Control readOnly className='__input-search'
+                                maxLength={0}
+                                title={(selectedAsset) ? selectedAsset.name : ''}
+                                value={(selectedAsset) ? shortenSentences(selectedAsset.name, 35) : ''}
+                            />
                             <div className='__button-search' onClick={() => setModalSelectAssetShow(true)}>
                                 <BsSearch className='__icon-search' />
                             </div>
@@ -234,19 +235,33 @@ const CreateAssignment = () => {
                         <label for="assignedDate" className='_label'>Assigned Date</label>
                     </Col>
                     <Col xs={9}>
-                        <Form.Control
+                        {/* <Form.Control
                             id="assignedDate"
                             type="date"
                             max="9999-01-01"
                             onChange={handleChangeInputAssignedDate}
                             defaultValue={setDefaultInputDate()}
+                        /> */}
+                        <DatePicker
+                            // {...register("birth", { validate: { ageCondition, validDateConfidtion }, required: true })}
+                            placeholderText='dd/mm/yyyy                                                         🗓️'
+                            className="form-control"
+                            onChange={(date) => handleChangeInputAssignedDate(date)}
+                            selected={assignedDate}
+                            minDate={new Date("01-01-1900")}
+                            maxDate={new Date("01-01-3000")}
+                            dateFormat="dd/MM/yyyy"
+                            style={{ padding: "18px 0px", border: "1px solid #ced4da" }}
                         />
-                        {
-                            (textError.assignedDate !== 'success') ?
-                                <Form.Text className="_text-error">
-                                    {textError.assignedDate}
-                                </Form.Text> : null
-                        }
+                        <div>
+                            {
+                                (textError.assignedDate !== 'success') ?
+                                    <Form.Text className="_text-error">
+                                        {textError.assignedDate}
+                                    </Form.Text> : null
+                            }
+                        </div>
+
                     </Col>
                 </Row>
                 <Row className='_rowCreateAssignment'>
