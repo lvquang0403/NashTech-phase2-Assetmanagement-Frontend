@@ -258,6 +258,7 @@ const CreateAssignment = () => {
                             className={`_textarea `}
                             id="note"
                             as="textarea"
+                            defaultValue=''
                             onChange={handleChangeInputNote}
                             maxLength={500}
                             style={{ height: '100px' }}

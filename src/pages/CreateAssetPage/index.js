@@ -168,6 +168,7 @@ const CreateAsset = () => {
                             onChange={handleChangeInputName}
                             id='nameAsset'
                             type="text"
+                            defaultValue=''
                             placeholder="Enter Name Asset"
                             maxLength={50} />
                         {
@@ -197,6 +198,7 @@ const CreateAsset = () => {
                             className={`_textarea `}
                             id="specification"
                             as="textarea"
+                            defaultValue=''
                             onChange={handleChangeInputSpecification}
                             placeholder="Specification"
                             maxLength={500}
